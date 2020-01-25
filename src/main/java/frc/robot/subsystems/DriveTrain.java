@@ -95,6 +95,11 @@ public class DriveTrain extends Subsystem {
         tankDrive(leftMotorSpeed, rightMotorSpeed);
     }
 
+    public void allStop() {
+        leftSparkDrive1.set(0);
+        rightSparkDrive1.set(0);
+    }
+
     public void setDriveGear(boolean toggle) {
         driveGearShift.set(toggle);
     }

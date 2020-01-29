@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake extends Subsystem {
 
-    // Intake Motors
+    // Intake Motors (Shared with Color Wheel)
     public TalonSRX intakeTalon;
 
     // Intake Solenoids
     private Solenoid intakeDeploySol;
 
     public Intake() {
-        // Intake Motors
+        // Intake Motors (Shared with Color Wheel)
         intakeTalon = new TalonSRX(5);
         intakeTalon.setInverted(false);
         intakeTalon.setNeutralMode(NeutralMode.Coast);
@@ -28,7 +28,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        // No Default Command - Intake Shares a Motor with WoF
+        // No Default Command - Intake Shares a Motor with Color Wheel
     }
 
     @Override
@@ -46,5 +46,9 @@ public class Intake extends Subsystem {
 
     public void setIntakeSpeed(double speed) {
         intakeTalon.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void intakeStop(){
+        intakeTalon.set(ControlMode.PercentOutput, 0);
     }
 }

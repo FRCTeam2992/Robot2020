@@ -23,7 +23,7 @@ public class StartSorter extends Command {
     double m_rightSideSpeed;
 
     public StartSorter(double leftSideSpeed, double rightSideSpeed) {
-        requires(Robot.ballSorter);
+        requires(Robot.sorter);
 
         // Add Parameters to Variable
         m_leftSideSpeed = leftSideSpeed;
@@ -39,7 +39,7 @@ public class StartSorter extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.ballSorter.setSorterSpeed(m_leftSideSpeed, m_rightSideSpeed);
+        Robot.sorter.setSorterSpeed(m_leftSideSpeed, m_rightSideSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

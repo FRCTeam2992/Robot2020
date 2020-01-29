@@ -8,13 +8,13 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.StopSorter;
 
-public class BallSorter extends Subsystem {
+public class Sorter extends Subsystem {
 
     // Sorter Motors
     private VictorSPX sorterVictor1;
     private VictorSPX sorterVictor2;
 
-    public BallSorter() {
+    public Sorter() {
         // Sorter Motors
         sorterVictor1 = new VictorSPX(6);
         sorterVictor1.setInverted(false);

@@ -7,7 +7,7 @@ import frc.robot.Robot;
 public class StopSorter extends Command {
 
     public StopSorter() {
-        requires(Robot.ballSorter);
+        requires(Robot.sorter);
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +20,7 @@ public class StopSorter extends Command {
     @Override
     protected void execute() {
         // Turn All Motors Off
-        Robot.ballSorter.setSorterSpeed(0, 0);
+        Robot.sorter.setSorterSpeed(0, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()

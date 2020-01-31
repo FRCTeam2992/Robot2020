@@ -44,4 +44,9 @@ public class Sorter extends Subsystem {
         sorterVictor2.set(ControlMode.PercentOutput, right);
     }
 
+    public void sorterStop() {
+        sorterVictor1.set(ControlMode.PercentOutput, 0);
+        sorterVictor2.set(ControlMode.PercentOutput, 0);
+    }
+
 }

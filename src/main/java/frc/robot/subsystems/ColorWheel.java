@@ -75,8 +75,20 @@ public class ColorWheel extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
+    public void setColorWheelSpeed(double speed) {
+        colorWheelMotor.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void stopColorWheel() {
+        colorWheelMotor.set(ControlMode.PercentOutput, 0);
+    }
+
     public void setColorWheelPostion(double position) {
         colorWheelMotor.set(ControlMode.Position, 0);
+    }
+
+    public int getMotorPosition() {
+        return colorWheelMotor.getSelectedSensorPosition();
     }
 
     public String getDetectedColor() {

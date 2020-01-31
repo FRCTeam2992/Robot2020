@@ -48,7 +48,7 @@ public class Intake extends Subsystem {
         intakeTalon.set(ControlMode.PercentOutput, speed);
     }
 
-    public void intakeStop(){
+    public void intakeStop() {
         intakeTalon.set(ControlMode.PercentOutput, 0);
     }
 }

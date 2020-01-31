@@ -39,14 +39,13 @@ public class Sorter extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public void setSorterSpeed(double left, double right) {
-        sorterVictor1.set(ControlMode.PercentOutput, left);
-        sorterVictor2.set(ControlMode.PercentOutput, right);
-    }
-
-    public void sorterStop() {
+    public void stopSorter() {
         sorterVictor1.set(ControlMode.PercentOutput, 0);
         sorterVictor2.set(ControlMode.PercentOutput, 0);
     }
 
+    public void setSorterSpeed(double left, double right) {
+        sorterVictor1.set(ControlMode.PercentOutput, left);
+        sorterVictor2.set(ControlMode.PercentOutput, right);
+    }
 }

@@ -40,15 +40,15 @@ public class Intake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public void deployIntake(boolean toggle) {
-        intakeDeploySol.set(toggle);
+    public void stopIntake() {
+        intakeTalon.set(ControlMode.PercentOutput, 0);
     }
 
     public void setIntakeSpeed(double speed) {
         intakeTalon.set(ControlMode.PercentOutput, speed);
     }
 
-    public void intakeStop() {
-        intakeTalon.set(ControlMode.PercentOutput, 0);
+    public void deployIntake(boolean toggle) {
+        intakeDeploySol.set(toggle);
     }
 }

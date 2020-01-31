@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package frc.robot;
+package frc.lib.drive;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -14,11 +14,6 @@ public class mhJoystick extends Joystick {
 		super(port);
 
 	};
-
-	/*
-	 * public mhJoystick(int port, int numAxisTypes, int numButtonTypes){
-	 * super(port, numAxisTypes, numButtonTypes); }
-	 */
 
 	/*
 	 * get x axis with smoothing

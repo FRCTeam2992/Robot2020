@@ -63,9 +63,9 @@ public class DriveTrain extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public void setIdleMode(IdleMode mode) {
-        leftSparkDrive1.setIdleMode(mode);
-        rightSparkDrive1.setIdleMode(mode);
+    public void stopDriveTrain() {
+        leftSparkDrive1.set(0);
+        rightSparkDrive1.set(0);
     }
 
     public void tankDrive(double left, double right) {
@@ -98,13 +98,13 @@ public class DriveTrain extends Subsystem {
         tankDrive(leftMotorSpeed, rightMotorSpeed);
     }
 
-    public void allStop() {
-        leftSparkDrive1.set(0);
-        rightSparkDrive1.set(0);
-    }
-
     public void setDriveGear(boolean toggle) {
         driveGearShift.set(toggle);
+    }
+
+    public void setIdleMode(IdleMode mode) {
+        leftSparkDrive1.setIdleMode(mode);
+        rightSparkDrive1.setIdleMode(mode);
     }
 
     public double calcGyroError(double heading) {

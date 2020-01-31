@@ -19,8 +19,7 @@ public class StopSorter extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        // Turn All Motors Off
-        Robot.sorter.setSorterSpeed(0, 0);
+        Robot.sorter.stopSorter();
     }
 
     // Make this return true when this Command no longer needs to run execute()

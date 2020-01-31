@@ -77,7 +77,7 @@ public class DriveSticks extends Command {
             minJoystickValue = Math.min(Math.abs(rawRight), Math.abs(rawLeft));
 
             // Deadzone for Initiating Straight Drive
-            straightDriveDeadzone = maxJoystickValue - (maxJoystickValue * .2);
+            straightDriveDeadzone = maxJoystickValue - (maxJoystickValue * Constants.straightDriveThreshold);
 
             if (minJoystickValue >= straightDriveDeadzone
                     && ((rawRight > 0 && rawLeft > 0) || (rawRight < 0 && rawLeft < 0))) {
@@ -130,11 +130,13 @@ public class DriveSticks extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.driveTrain.stopDriveTrain();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.driveTrain.stopDriveTrain();
     }
 }

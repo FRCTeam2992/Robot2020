@@ -6,18 +6,24 @@ import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj.util.Color;
 
 public class Constants {
-
     // Drive Constants
-    public static final double straightDriveP = 0.015; // Coefficient for Straight Drive Gyro Corrections
-    public static final double driveTurnDamp = 0.2; // Drive Turn Speed Dampening
+    public static final double straightDriveThreshold = 0.2;
+    public static final double straightDriveP = 0.015;
+    public static final double driveTurnDamp = 0.2;
+
+    // Color Wheel Constants
+    public static final int colorWheelEncoderPulses = 1024;
 
     // Color Wheel Target Colors
-    public static Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-    public static Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-    public static Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-    public static Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+    public static final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+    public static final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+    public static final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+    public static final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
-    // Color Wheel
-    public static double autoSpinCount = 4; // How many times should we spin the color wheel?
+    // Color Wheel Rotations
+    public static final double autoSpinCount = 4;
 
+    // Shooter Constants
+    public static final int deafaultShooterSpeed = 4000;
+    public static final int shooterEncoderPulses = 2048;
 }

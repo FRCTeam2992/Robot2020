@@ -7,7 +7,7 @@ import frc.robot.Robot;
 public class AutoLimelightTilt extends Command {
 
     public AutoLimelightTilt() {
-        requires(Robot.limeLight);
+        requires(Robot.vision);
     }
 
     // Called just before this Command runs the first time

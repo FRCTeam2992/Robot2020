@@ -1,147 +1,84 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package frc.lib.drive;
 
 import edu.wpi.first.wpilibj.XboxController;
 
-public class mhController extends XboxController{
+/**
+ * Handles input from Xbox controllers connected to the Driver Station.
+ * <p>
+ * This class extends the XboxController class. It adds the functionality to
+ * smooth joystick and trigger values.
+ */
+public class mhController extends XboxController {
 
-	public mhController(int port) {
-
-		super(port);
-
-	};
-	
-	/*
-	 * get x axis with smoothing
+	/**
+	 * @param port the port on the Driver Station that the controller is plugged in
+	 *             to.
 	 */
-	
-	public double smoothGetX(Hand hand){
+	public mhController(int port) {
+		super(port);
+	}
 
+	/**
+	 * @param hand the left or right hand joystick.
+	 * @return the deadzoned and smoothed value of the controller's X axis for the
+	 *         selected hand.
+	 */
+	public double smoothGetX(Hand hand) {
 		double val = super.getX(hand);
 
 		return smoothPowerCurve(deadzone(val, .05));
-
 	}
 
-	
-
-	/*
-	 * get y axis with smoothing
+	/**
+	 * @param hand the left or right hand joystick.
+	 * @return the deadzoned and smoothed value of the controller's Y axis for the
+	 *         selected hand.
 	 */
-
-	public double smoothGetY(Hand hand){
-
+	public double smoothGetY(Hand hand) {
 		double val = super.getY(hand);
 
 		return smoothPowerCurve(deadzone(val, .05));
-
 	}
 
-	public double smoothGetTrigger(Hand hand){
-
+	/**
+	 * @param hand the left or right hand trigger.
+	 * @return the smoothed value of the controller's trigger for the selected hand.
+	 */
+	public double smoothGetTrigger(Hand hand) {
 		double val = super.getTriggerAxis(hand);
 
 		return smoothPowerCurve(val);
 	}
 
-	
+	// This does the cubic smoothing equation on the input value. Assumes you have
+	// already done any deadzone processing.
+	protected double smoothPowerCurve(double x) {
+		if (x > 0 || x < 0) {
+			return (x * x * x);
+		} else {
+			return 0;
+		}
+	}
 
-	
+	// Applies a Deadzone to the Input
+	protected double deadzone(double input, double threshold) {
+		// Force Limit from -1.0 to 1.0
+		input = Math.max(-1, Math.min(1, input));
 
-	/* This does the cubic smoothing equation on joystick value.
-	 * Assumes you have already done any deadzone processing.
-	 * 
-	 * @param x  joystick input
-	 * @return  smoothed value
-	 */
-
-	protected double smoothPowerCurve (double x) {
-
-        
-
-        if (x > 0 || x< 0){
-
-            return (x*x*x);
-
-        }else{
-
-        	return 0;
-
-        }
-
-    }
-
-	
-
-	
-
-	/*
-	 * adds deadzone to joysticks
-	 * 
-	 * @param rawStick Raw value from joystick read -1.0 to 1.0
-	 * @param dz	Deadzone value to use 0 to 0.999
-     * @return		Value after deadzone processing
-	 */
-
-	 protected double deadzone(double rawStick, double dz) {
-
-	        double stick;
-
-
-
-	        // Force limit to -1.0 to 1.0
-
-	        if (rawStick > 1.0) {
-
-	            stick = 1.0;
-
-	        } else if (rawStick < -1.0) {
-
-	            stick = -1.0;
-
-	        } else {
-
-	            stick = rawStick;
-
-	        }
-
-
-
-	        // Check if value is inside the dead zone
-
-	        if (stick >= 0.0){
-
-	            if (Math.abs(stick) >= dz) 
-
-	                return (stick - dz)/(1 -  dz);
-
-	            else 
-
-	                return 0.0;
-
-	            
-
-	        }
-
-	        else {
-
-	            if (Math.abs(stick) >= dz) 
-
-	                return (stick + dz)/(1 - dz);
-
-	            else 
-
-	                return 0.0;
-
-	            
-
-	        }
-
-	 }
-
+		// Check If Value is Inside the Deadzone
+		if (input >= 0.0) {
+			if (Math.abs(input) >= threshold) {
+				return (input - threshold) / (1 - threshold);
+			} else {
+				return 0.0;
+			}
+		} else {
+			if (Math.abs(input) >= threshold) {
+				return (input + threshold) / (1 - threshold);
+			} else {
+				return 0.0;
+			}
+		}
+	}
 }

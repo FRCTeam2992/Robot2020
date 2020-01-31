@@ -3,9 +3,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class LimeLight extends Subsystem {
+public class Vision extends Subsystem {
 
-    public LimeLight() {
+    public Vision() {
 
     }
 
@@ -18,10 +18,8 @@ public class LimeLight extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-
     }
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-
 }

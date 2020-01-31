@@ -1,123 +1,70 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package frc.lib.drive;
 
 import edu.wpi.first.wpilibj.Joystick;
 
+/**
+ * Handles input from joysticks connected to the Driver Station.
+ * <p>
+ * This class extends the Joystick class. It adds the functionality to smooth
+ * and apply a deadzone to the joystick values.
+ */
 public class mhJoystick extends Joystick {
 
+	/**
+	 * @param port the port on the Driver Station that the joystick is plugged in
+	 *             to.
+	 */
 	public mhJoystick(int port) {
 		super(port);
-
 	};
 
-	/*
-	 * get x axis with smoothing
+	/**
+	 * @return the deadzoned and smoothed value of the joystick's X axis.
 	 */
-
 	public double smoothGetX() {
-
 		double val = super.getX();
 
 		return smoothPowerCurve(deadzone(val, .1));
-
 	}
 
-	/*
-	 * get y axis with smoothing
+	/**
+	 * @return the deadzoned and smoothed value of the joystick's Y axis.
 	 */
-
 	public double smoothGetY() {
-
 		double val = super.getY();
 
-		return smoothPowerCurve(deadzone(val, .1));// 10% deadzone is normal
-
+		return smoothPowerCurve(deadzone(val, .1));
 	}
 
-	/*
-	 * This does the cubic smoothing equation on joystick value. Assumes you have
-	 * already done any deadzone processing.
-	 * 
-	 * @param x joystick input
-	 * 
-	 * @return smoothed value
-	 */
-
+	// This does the cubic smoothing equation on the input value. Assumes you have
+	// already done any deadzone processing.
 	protected double smoothPowerCurve(double x) {
-
 		if (x > 0 || x < 0) {
-
 			return (x * x * x);
-
 		} else {
-
 			return 0;
-
 		}
-
 	}
 
-	/*
-	 * adds deadzone to joysticks
-	 * 
-	 * @param rawStick Raw value from joystick read -1.0 to 1.0
-	 * 
-	 * @param dz Deadzone value to use 0 to 0.999
-	 * 
-	 * @return Value after deadzone processing
-	 */
+	// Applies a Deadzone to the Input
+	protected double deadzone(double input, double threshold) {
+		// Force Limit from -1.0 to 1.0
+		input = Math.max(-1, Math.min(1, input));
 
-	protected double deadzone(double rawStick, double dz) {
-
-		double stick;
-
-		// Force limit to -1.0 to 1.0
-
-		if (rawStick > 1.0) {
-
-			stick = 1.0;
-
-		} else if (rawStick < -1.0) {
-
-			stick = -1.0;
-
+		// Check If Value is Inside the Deadzone
+		if (input >= 0.0) {
+			if (Math.abs(input) >= threshold) {
+				return (input - threshold) / (1 - threshold);
+			} else {
+				return 0.0;
+			}
 		} else {
-
-			stick = rawStick;
-
-		}
-
-		// Check if value is inside the dead zone
-
-		if (stick >= 0.0) {
-
-			if (Math.abs(stick) >= dz)
-
-				return (stick - dz) / (1 - dz);
-
-			else
-
+			if (Math.abs(input) >= threshold) {
+				return (input + threshold) / (1 - threshold);
+			} else {
 				return 0.0;
-
+			}
 		}
-
-		else {
-
-			if (Math.abs(stick) >= dz)
-
-				return (stick + dz) / (1 - dz);
-
-			else
-
-				return 0.0;
-
-		}
-
 	}
-
 }

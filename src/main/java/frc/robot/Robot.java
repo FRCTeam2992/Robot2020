@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
     public static Climb climb;
     public static Intake intake;
     public static ColorWheel colorWheel;
-    public static LimeLight limeLight;
+    public static Vision vision;
 
     // Set Drive Controller Modes
     public static boolean isJoystick = true;
@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
         climb = new Climb();
         intake = new Intake();
         colorWheel = new ColorWheel();
-        limeLight = new LimeLight();
+        vision = new Vision();
 
         // OI must be constructed after subsystems. If the OI creates Commands
         // (which it very likely will), subsystems are not guaranteed to be

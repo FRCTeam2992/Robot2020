@@ -4,14 +4,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class StartBottomLift extends Command {
+public class SorterMove extends Command {
 
-    double m_bottomLiftSpeed;
+    double m_leftSideSpeed;
+    double m_rightSideSpeed;
 
-    public StartBottomLift(double bottomLiftSpeed) {
-        requires(Robot.bottomLift);
+    public SorterMove(double leftSideSpeed, double rightSideSpeed) {
+        requires(Robot.sorter);
 
-        m_bottomLiftSpeed = bottomLiftSpeed;
+        m_leftSideSpeed = leftSideSpeed;
+        m_rightSideSpeed = rightSideSpeed;
     }
 
     // Called just before this Command runs the first time
@@ -23,11 +25,7 @@ public class StartBottomLift extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.bottomLift.liftBallSensor.get()) {
-            Robot.bottomLift.stopBottomLift();
-        } else {
-            Robot.bottomLift.setBottomLiftSpeed(m_bottomLiftSpeed);
-        }
+        Robot.sorter.setSorterSpeed(m_leftSideSpeed, m_rightSideSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,13 +37,13 @@ public class StartBottomLift extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.bottomLift.stopBottomLift();
+        Robot.sorter.stopSorter();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.bottomLift.stopBottomLift();
+        Robot.sorter.stopSorter();
     }
 }

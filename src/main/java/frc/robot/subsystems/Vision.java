@@ -2,17 +2,25 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.lib.vision.LimeLight;
+import frc.lib.vision.LimeLight.*;
+import frc.robot.commands.StopLimelightTilt;
 
 public class Vision extends Subsystem {
 
-    public Vision() {
+    private LimeLight limeLightCamera;
 
+    public Vision() {
+        limeLightCamera = new LimeLight();
+        limeLightCamera.setCameraMode(CameraMode.Driver);
+        limeLightCamera.setActivePipline(0);
+        limeLightCamera.setTakeSnapshots(false);
     }
 
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new StopLimelightTilt());
     }
 
     @Override
@@ -22,4 +30,8 @@ public class Vision extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+
+    public LimeLight getLimeLight() {
+        return limeLightCamera;
+    }
 }

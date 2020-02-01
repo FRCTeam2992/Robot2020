@@ -5,7 +5,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
 import frc.robot.commands.StopSorter;
 
 public class Sorter extends Subsystem {
@@ -13,6 +15,9 @@ public class Sorter extends Subsystem {
     // Sorter Motors
     private VictorSPX sorterVictor1;
     private VictorSPX sorterVictor2;
+
+    // Sensor for the Sorter
+    public DigitalInput sorterBallSensor;
 
     public Sorter() {
         // Sorter Motors
@@ -23,6 +28,9 @@ public class Sorter extends Subsystem {
         sorterVictor2 = new VictorSPX(7);
         sorterVictor2.setInverted(false);
         sorterVictor2.setNeutralMode(NeutralMode.Coast);
+
+        // Sorter Sensor
+        sorterBallSensor = Robot.bottomLift.liftBallSensor;
     }
 
     @Override

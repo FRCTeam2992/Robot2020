@@ -4,9 +4,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class AutoShooterShoot extends Command {
+public class AutoShooterSetSpeed extends Command {
 
-    public AutoShooterShoot() {
+    public AutoShooterSetSpeed() {
         requires(Robot.shooter);
     }
 

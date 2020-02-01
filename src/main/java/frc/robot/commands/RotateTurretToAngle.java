@@ -2,18 +2,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class StartSorter extends Command {
+public class RotateTurretToAngle extends Command {
 
-    double m_leftSideSpeed;
-    double m_rightSideSpeed;
+    private double m_angle = 0;
 
-    public StartSorter(double leftSideSpeed, double rightSideSpeed) {
-        requires(Robot.sorter);
+    public RotateTurretToAngle(double angle) {
+        requires(Robot.turretRotate);
 
-        m_leftSideSpeed = leftSideSpeed;
-        m_rightSideSpeed = rightSideSpeed;
+        m_angle = angle;
     }
 
     // Called just before this Command runs the first time
@@ -25,25 +24,25 @@ public class StartSorter extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.sorter.setSorterSpeed(m_leftSideSpeed, m_rightSideSpeed);
+        Robot.turretRotate.goToAngle(m_angle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.turretRotate.atTarget();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.sorter.stopSorter();
+        Robot.turretRotate.stopTurret();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.sorter.stopSorter();
+        Robot.turretRotate.stopTurret();
     }
 }

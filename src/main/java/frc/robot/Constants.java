@@ -26,4 +26,10 @@ public class Constants {
     // Shooter Constants
     public static final int deafaultShooterSpeed = 4000;
     public static final int shooterEncoderPulses = 2048;
+
+    // Turret Constants
+    public static final double turretP = 0.02;
+    public static final double turretI = 0.0001;
+    public static final double turretD = 0.0005;
+    public static final double turretTolerance = 1;
 }

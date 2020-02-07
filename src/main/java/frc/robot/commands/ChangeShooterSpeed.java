@@ -21,7 +21,7 @@ public class ChangeShooterSpeed extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.shooter.shooterSpeed += m_changeSpeed;
+        Robot.shooter.setShooterSetSpeed(Robot.shooter.getShooterSetSpeed() + m_changeSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -19,7 +19,7 @@ public class Shooter extends Subsystem {
     private VictorSPX shooterVictor;
 
     // Shooter Set Speed
-    public int shooterSpeed = Constants.deafaultShooterSpeed;
+    private int shooterSetSpeed = Constants.deafaultShooterSpeed;
 
     public Shooter() {
         // Shooter Motors
@@ -49,6 +49,14 @@ public class Shooter extends Subsystem {
 
     public void stopShooter() {
         shooterTalon.set(ControlMode.PercentOutput, 0);
+    }
+
+    public int getShooterSetSpeed() {
+        return shooterSetSpeed;
+    }
+
+    public void setShooterSetSpeed(int speed) {
+        shooterSetSpeed = speed;
     }
 
     public void setShooterVelocity(double speed) {

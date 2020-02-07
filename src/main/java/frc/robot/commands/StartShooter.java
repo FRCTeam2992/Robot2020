@@ -23,7 +23,7 @@ public class StartShooter extends Command {
     @Override
     protected void execute() {
         // Convert RPM to Ticks per 100ms
-        m_shooterSpeed = Robot.shooter.shooterSpeed;
+        m_shooterSpeed = Robot.shooter.getShooterSetSpeed();
         m_shooterSpeed = (m_shooterSpeed / 600) * (Constants.shooterEncoderPulses * 4);
 
         Robot.shooter.setShooterVelocity(m_shooterSpeed);

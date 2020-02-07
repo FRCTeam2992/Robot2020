@@ -12,7 +12,7 @@ import frc.lib.encoder.AS5600EncoderPwm;
 import frc.robot.Constants;
 import frc.robot.commands.*;
 
-public class TurretRotate extends Subsystem {
+public class Turret extends Subsystem {
 
     private TalonSRX turretTalon;
 
@@ -20,7 +20,7 @@ public class TurretRotate extends Subsystem {
 
     private PIDController turretRotate;
 
-    public TurretRotate() {
+    public Turret() {
         turretTalon = new TalonSRX(10);
         turretTalon.setNeutralMode(NeutralMode.Brake);
 

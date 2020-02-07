@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib.vision.LimeLight.CameraMode;
-import frc.lib.vision.LimeLight.LedMode;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -28,7 +26,7 @@ public class Robot extends TimedRobot {
     public static OI oi;
     public static DriveTrain driveTrain;
     public static Shooter shooter;
-    public static TurretRotate turretRotate;
+    public static Turret turret;
     public static TopLift topLift;
     public static BottomLift bottomLift;
     public static Sorter sorter;
@@ -51,7 +49,7 @@ public class Robot extends TimedRobot {
 
         driveTrain = new DriveTrain();
         shooter = new Shooter();
-        turretRotate = new TurretRotate();
+        turret = new Turret();
         topLift = new TopLift();
         bottomLift = new BottomLift();
         sorter = new Sorter();
@@ -87,8 +85,7 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
 
-        Robot.vision.getLimeLight().setLedMode(LedMode.Off);
-        Robot.vision.getLimeLight().setCameraMode(CameraMode.Driver);
+        Robot.vision.setLimelightVisionMode(false);
     }
 
     @Override

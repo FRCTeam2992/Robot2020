@@ -5,7 +5,6 @@ import frc.lib.drive.mhController;
 import frc.lib.drive.mhJoystick;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class OI {
@@ -14,8 +13,6 @@ public class OI {
     public mhJoystick leftJoystick;
     public mhController controller;
     public Joystick buttonBox;
-
-    public JoystickButton autoLoadBall;
 
     public OI() {
         // Can't Switch Between Joystick and Controller After Init
@@ -55,8 +52,7 @@ public class OI {
     }
 
     public void initJoystickBtns() {
-        autoLoadBall = new JoystickButton(rightJoystick, 4);
-        autoLoadBall.whenPressed(new IntakeBallStart());
+
     }
 
     public void initControllerBtns() {

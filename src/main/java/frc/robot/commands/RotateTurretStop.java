@@ -7,20 +7,19 @@ import frc.robot.Robot;
 public class RotateTurretStop extends Command {
 
     public RotateTurretStop() {
-        requires(Robot.turretRotate);
+        requires(Robot.turret);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
         this.setInterruptible(true);
-
-        Robot.turretRotate.stopTurret();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.turret.stopTurret();
     }
 
     // Make this return true when this Command no longer needs to run execute()

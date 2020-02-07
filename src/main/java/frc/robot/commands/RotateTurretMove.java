@@ -9,7 +9,7 @@ public class RotateTurretMove extends Command {
     private double m_speed = 0;
 
     public RotateTurretMove(double speed) {
-        requires(Robot.turretRotate);
+        requires(Robot.turret);
 
         m_speed = speed;
     }
@@ -23,7 +23,7 @@ public class RotateTurretMove extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.turretRotate.setTurretSpeed(m_speed);
+        Robot.turret.setTurretSpeed(m_speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -35,13 +35,13 @@ public class RotateTurretMove extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.turretRotate.stopTurret();
+        Robot.turret.stopTurret();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.turretRotate.stopTurret();
+        Robot.turret.stopTurret();
     }
 }

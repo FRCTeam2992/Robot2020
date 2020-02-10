@@ -28,8 +28,11 @@ public class Constants {
     public static final int shooterEncoderPulses = 2048;
 
     // Turret Constants
-    public static final double turretP = 0.02;
-    public static final double turretI = 0.0001;
-    public static final double turretD = 0.0005;
+    public static final double turretP = 0.08;
+    public static final double turretI = 0.0;
+    public static final double turretD = 0.005;
     public static final double turretTolerance = 1;
+    public static final int turretOffset = 1068;
+    public static final int turretMinEnd = 40;
+    public static final int turretMaxEnd = 320;
 }

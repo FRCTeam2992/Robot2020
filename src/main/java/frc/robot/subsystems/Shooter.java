@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.commands.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -41,7 +40,6 @@ public class Shooter extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.putNumber("Get Shooter RPM", getShooterRPM());
     }
 
     // Put methods for controlling this subsystem

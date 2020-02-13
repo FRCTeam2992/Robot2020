@@ -11,7 +11,7 @@ import frc.robot.commands.*;
 public class Vision extends Subsystem {
 
     // LimeLight Camera
-    private LimeLight limeLightCamera;
+    public LimeLight limeLightCamera;
 
     // LimeLight Tilt Servo
     private Servo limelightServo;

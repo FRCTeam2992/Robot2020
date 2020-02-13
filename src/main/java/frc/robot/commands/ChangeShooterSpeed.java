@@ -15,7 +15,7 @@ public class ChangeShooterSpeed extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        this.setInterruptible(true);
+  
     }
 
     // Called repeatedly when this Command is scheduled to run

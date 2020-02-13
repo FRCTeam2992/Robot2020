@@ -1,6 +1,7 @@
 
 package frc.robot.subsystems;
 
+import frc.lib.util.ShooterSpeeds;
 import frc.robot.Constants;
 import frc.robot.commands.*;
 
@@ -10,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends Subsystem {
 
@@ -19,6 +21,9 @@ public class Shooter extends Subsystem {
 
     // Shooter Set Speed
     private int shooterSetSpeed = Constants.deafaultShooterSpeed;
+
+    // Shooter Speed List
+    public ShooterSpeeds shooterSpeedList = new ShooterSpeeds();
 
     public Shooter() {
         // Shooter Motors
@@ -30,6 +35,12 @@ public class Shooter extends Subsystem {
         shooterVictor = new VictorSPX(12);
         shooterVictor.setInverted(false);
         shooterVictor.follow(shooterTalon);
+
+        // Shooter Speed List
+        shooterSpeedList.addSetpoint(60, 4000);
+        shooterSpeedList.addSetpoint(120, 4500);
+        shooterSpeedList.addSetpoint(250, 5000);
+        shooterSpeedList.addSetpoint(400, 5500);
     }
 
     @Override

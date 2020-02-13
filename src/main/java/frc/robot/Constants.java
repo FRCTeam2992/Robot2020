@@ -11,6 +11,11 @@ public class Constants {
     public static final double straightDriveP = 0.015;
     public static final double driveTurnDamp = 0.2;
 
+    // Vision Constants
+    public static final double cameraAngle = 0;
+    public static final double cameraHeight = 0;
+    public static final double goalHeight = 0;
+
     // Color Wheel Constants
     public static final int colorWheelEncoderPulses = 1024;
 

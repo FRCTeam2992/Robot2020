@@ -170,7 +170,7 @@ public class LimeLight {
     }
 
     /**
-     * @param mode the desired set LED mode
+     * @param mode the desired set LED mode.
      */
     public void setLedMode(LedMode mode) {
         switch (mode) {

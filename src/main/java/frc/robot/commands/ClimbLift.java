@@ -1,0 +1,74 @@
+
+package frc.robot.commands;
+
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
+import frc.robot.Robot;
+
+public class ClimbLift extends Command {
+
+    private double m_climbLiftSpeed = 0;
+
+    private boolean movingUp = false;
+
+    private Timer CJTimer;
+
+    public ClimbLift(double climbLiftSpeed) {
+        requires(Robot.climb);
+
+        m_climbLiftSpeed = climbLiftSpeed;
+
+        CJTimer = new Timer();
+    }
+
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        this.setInterruptible(true);
+
+        if (m_climbLiftSpeed > 0) {
+            movingUp = true;
+
+            Robot.climb.lockClimb(false);
+        }
+
+        CJTimer.reset();
+        CJTimer.start();
+    }
+
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+        if (movingUp) {
+            if (CJTimer.get() >= Constants.climbUpDelay) {
+                Robot.climb.setClimbLiftSpeed(m_climbLiftSpeed);
+            }
+        } else {
+            Robot.climb.setClimbLiftSpeed(m_climbLiftSpeed);
+        }
+    }
+
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
+
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+        Robot.climb.stopClimbMotors();
+
+        Robot.climb.lockClimb(true);
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+        Robot.climb.stopClimbMotors();
+
+        Robot.climb.lockClimb(true);
+    }
+}

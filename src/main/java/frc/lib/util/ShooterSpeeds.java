@@ -2,6 +2,12 @@ package frc.lib.util;
 
 import java.util.ArrayList;
 
+/**
+ * Handles creating list of speeds and distances.
+ * <p>
+ * This class allows you to create list of speeds and distances for use with
+ * shooters. It can find the closest value for either speed or distance.
+ */
 public class ShooterSpeeds {
 
     private ArrayList<Double> distanceList = new ArrayList<Double>();

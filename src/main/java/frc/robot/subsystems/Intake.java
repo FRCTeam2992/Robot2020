@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.commands.*;
 
 public class Intake extends Subsystem {
 
@@ -28,13 +29,12 @@ public class Intake extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        // No Default Command - Intake Shares a Motor with Color Wheel
+        setDefaultCommand(new StopIntakeAndWheel());
     }
 
     @Override
     public void periodic() {
         // Put code here to be run every loop
-
     }
 
     // Put methods for controlling this subsystem

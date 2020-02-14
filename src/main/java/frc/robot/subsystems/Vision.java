@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.lib.vision.LimeLight;
 import frc.lib.vision.LimeLight.CameraMode;
 import frc.lib.vision.LimeLight.LedMode;
+import frc.robot.Constants;
 import frc.robot.commands.*;
 
 public class Vision extends Subsystem {
@@ -16,7 +17,8 @@ public class Vision extends Subsystem {
     // LimeLight Tilt Servo
     private Servo limelightServo;
 
-    private double limelightTilt = 20;
+    // Limelight Set Angle
+    public double limelightSetAngle = Constants.defaultLimelightAngle;
 
     public Vision() {
         // LimeLight Camera
@@ -49,32 +51,8 @@ public class Vision extends Subsystem {
         }
     }
 
-    public double getLimelightXOffset() {
-        return limeLightCamera.getTargetXOffset();
-    }
-
-    public double getLimelightYOffset() {
-        return limeLightCamera.getTargetYOffset();
-    }
-
-    public boolean limelightHasTarget() {
-        return limeLightCamera.hasTarget();
-    }
-
     public void stopLimelightServo() {
         limelightServo.setDisabled();
-    }
-
-    public double getLimelightSetTilt() {
-        return limelightTilt;
-    }
-
-    public void setLimelightSetTilt(double angle) {
-        limelightTilt = angle;
-    }
-
-    public double getLimelightServoAngle() {
-        return limelightServo.getAngle();
     }
 
     public void setLimelightServoAngle(double angle) {

@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends Subsystem {
 
@@ -20,7 +19,7 @@ public class Shooter extends Subsystem {
     private VictorSPX shooterVictor;
 
     // Shooter Set Speed
-    private int shooterSetSpeed = Constants.deafaultShooterSpeed;
+    public int shooterSetSpeed = Constants.deafaultShooterSpeed;
 
     // Shooter Speed List
     public ShooterSpeeds shooterSpeedList = new ShooterSpeeds();
@@ -60,16 +59,11 @@ public class Shooter extends Subsystem {
         shooterTalon.set(ControlMode.PercentOutput, 0);
     }
 
-    public int getShooterSetSpeed() {
-        return shooterSetSpeed;
-    }
-
-    public void setShooterSetSpeed(int speed) {
-        shooterSetSpeed = speed;
-    }
-
-    public void setShooterVelocity(double speed) {
-        shooterTalon.set(ControlMode.Velocity, speed);
+    /**
+     * @param velocity speed in position change per 100ms
+     */
+    public void setShooterVelocity(double velocity) {
+        shooterTalon.set(ControlMode.Velocity, velocity);
     }
 
     public int getShooterRPM() {

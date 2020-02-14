@@ -12,6 +12,7 @@ public class Constants {
     public static final double driveTurnDamp = 0.2;
 
     // Vision Constants
+    public static final double defaultLimelightAngle = 20;
     public static final double cameraAngle = 0;
     public static final double cameraHeight = 0;
     public static final double goalHeight = 0;
@@ -40,4 +41,7 @@ public class Constants {
     public static final int turretOffset = 1068;
     public static final int turretMinEnd = 40;
     public static final int turretMaxEnd = 320;
+
+    // Climb Constants
+    public static final double climbUpDelay = 0.25;
 }

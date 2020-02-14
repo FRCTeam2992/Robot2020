@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class BottomLift extends Subsystem {
 
     // Bottom Lift Motors
-    public VictorSPX bottomLiftMotor;
+    private VictorSPX bottomLiftMotor;
 
     // Bottom Lift Sensors
     public DigitalInput liftBallSensor;

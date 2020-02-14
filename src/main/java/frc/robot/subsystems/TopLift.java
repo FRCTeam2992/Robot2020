@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class TopLift extends Subsystem {
 
     // Top Lift Motors
-    public VictorSPX topLiftMotor;
+    private VictorSPX topLiftMotor;
 
     public TopLift() {
         // Top Lift Motors
@@ -29,7 +29,6 @@ public class TopLift extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-
     }
 
     // Put methods for controlling this subsystem

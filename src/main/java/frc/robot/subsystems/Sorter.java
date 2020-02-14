@@ -16,7 +16,7 @@ public class Sorter extends Subsystem {
     private VictorSPX sorterVictor1;
     private VictorSPX sorterVictor2;
 
-    // Sensor for the Sorter
+    // Sorter Sensor
     public DigitalInput sorterBallSensor;
 
     public Sorter() {
@@ -29,7 +29,7 @@ public class Sorter extends Subsystem {
         sorterVictor2.setInverted(false);
         sorterVictor2.setNeutralMode(NeutralMode.Coast);
 
-        // Sorter Sensor
+        // Sorter Sensor (Shared with Bottom Lift)
         sorterBallSensor = Robot.bottomLift.liftBallSensor;
     }
 
@@ -41,7 +41,6 @@ public class Sorter extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-
     }
 
     // Put methods for controlling this subsystem

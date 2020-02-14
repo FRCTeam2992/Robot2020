@@ -20,7 +20,7 @@ public class DriveTrain extends Subsystem {
     private CANSparkMax rightSparkDrive1;
     private CANSparkMax rightSparkDrive2;
 
-    // Drive Shift Solenoid
+    // Drive Solenoids
     private Solenoid driveGearShift;
 
     // Robot Gyro
@@ -57,7 +57,6 @@ public class DriveTrain extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-
     }
 
     // Put methods for controlling this subsystem
@@ -108,7 +107,7 @@ public class DriveTrain extends Subsystem {
     }
 
     public double calcGyroError(double heading) {
-        return scaleAngle(navx.getYaw()) - heading;
+        return navx.getYaw() - heading;
     }
 
     public double scaleAngle(double angle) {

@@ -6,7 +6,7 @@ import frc.robot.Robot;
 
 public class AutoLimelightServo extends Command {
 
-    private int counter = 0;
+    private int updateCounter = 8;
 
     public AutoLimelightServo() {
         requires(Robot.vision);
@@ -16,28 +16,28 @@ public class AutoLimelightServo extends Command {
     @Override
     protected void initialize() {
         this.setInterruptible(true);
-
-        Robot.vision.setLimelightVisionMode(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        counter++;
+        Robot.vision.setLimelightVisionMode(true);
 
-        if (counter > 8) {
-            if (Robot.vision.limelightHasTarget()) {
-                double limelightYOffset = Robot.vision.getLimelightYOffset();
+        updateCounter++;
+
+        if (updateCounter > 8) {
+            if (Robot.vision.limeLightCamera.hasTarget()) {
+                double limelightYOffset = Robot.vision.limeLightCamera.getTargetYOffset();
 
                 if (Math.abs(limelightYOffset) > 1) {
-                    Robot.vision.setLimelightSetTilt(Robot.vision.getLimelightServoAngle() + limelightYOffset);
+                    Robot.vision.limelightSetAngle += limelightYOffset;
                 }
             }
 
-            Robot.vision.setLimelightServoAngle(Robot.vision.getLimelightSetTilt());
-
-            counter = 0;
+            updateCounter = 0;
         }
+
+        Robot.vision.setLimelightServoAngle(Robot.vision.limelightSetAngle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -49,11 +49,13 @@ public class AutoLimelightServo extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.vision.setLimelightVisionMode(false);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.vision.setLimelightVisionMode(false);
     }
 }

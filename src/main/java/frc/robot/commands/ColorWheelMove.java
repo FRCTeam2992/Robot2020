@@ -4,14 +4,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RotateTurretToAngle extends Command {
+public class ColorWheelMove extends Command {
 
-    private double m_angle = 0;
+    private double m_rotateSpeed;
 
-    public RotateTurretToAngle(double angle) {
-        requires(Robot.turret);
+    public ColorWheelMove(double rotateSpeed) {
+        requires(Robot.colorWheel);
+        requires(Robot.intake);
 
-        m_angle = angle;
+        m_rotateSpeed = rotateSpeed;
     }
 
     // Called just before this Command runs the first time
@@ -23,29 +24,25 @@ public class RotateTurretToAngle extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.turret.goToAngle(m_angle);
+        Robot.colorWheel.setColorWheelSpeed(m_rotateSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if (Math.abs(m_angle - Robot.turret.getTurretAngle()) < 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.turret.stopTurret();
+        Robot.colorWheel.stopColorWheel();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.turret.stopTurret();
+        Robot.colorWheel.stopColorWheel();
     }
 }

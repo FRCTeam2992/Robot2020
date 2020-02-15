@@ -35,13 +35,13 @@ public class ClimbSlide extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.climb.stopClimbMotors();
+        Robot.climb.stopClimb();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.climb.stopClimbMotors();
+        Robot.climb.stopClimb();
     }
 }

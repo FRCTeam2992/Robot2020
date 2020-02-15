@@ -6,7 +6,7 @@ import frc.robot.Robot;
 
 public class AutoTurretAim extends Command {
 
-    private int counter = 5;
+    private int updateCounter = 8;
 
     private double turretSetAngle = 0;
 
@@ -18,21 +18,21 @@ public class AutoTurretAim extends Command {
     @Override
     protected void initialize() {
         this.setInterruptible(true);
-
-        Robot.vision.setLimelightVisionMode(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        counter++;
+        Robot.vision.setLimelightVisionMode(true);
 
-        if (counter > 8) {
-            if (Robot.vision.limelightHasTarget()) {
-                turretSetAngle = Robot.turret.getTurretAngle() + Robot.vision.getLimelightXOffset();
+        updateCounter++;
 
-                counter = 0;
+        if (updateCounter > 8) {
+            if (Robot.vision.limeLightCamera.hasTarget()) {
+                turretSetAngle = Robot.turret.getTurretAngle() + Robot.vision.limeLightCamera.getTargetXOffset();
             }
+
+            updateCounter = 0;
         }
 
         Robot.turret.goToAngle(turretSetAngle);
@@ -48,6 +48,8 @@ public class AutoTurretAim extends Command {
     @Override
     protected void end() {
         Robot.turret.stopTurret();
+
+        Robot.vision.setLimelightVisionMode(false);
     }
 
     // Called when another command which requires one or more of the same
@@ -55,5 +57,7 @@ public class AutoTurretAim extends Command {
     @Override
     protected void interrupted() {
         Robot.turret.stopTurret();
+
+        Robot.vision.setLimelightVisionMode(false);
     }
 }

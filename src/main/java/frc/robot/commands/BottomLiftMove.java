@@ -23,11 +23,7 @@ public class BottomLiftMove extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.bottomLift.liftBallSensor.get()) {
-            Robot.bottomLift.stopBottomLift();
-        } else {
-            Robot.bottomLift.setBottomLiftSpeed(m_bottomLiftSpeed);
-        }
+        Robot.bottomLift.setBottomLiftSpeed(m_bottomLiftSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

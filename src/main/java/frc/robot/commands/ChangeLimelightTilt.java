@@ -21,7 +21,7 @@ public class ChangeLimelightTilt extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.vision.setLimelightSetTilt(Robot.vision.getLimelightSetTilt() + m_changeAngle);
+        Robot.vision.limelightSetAngle += m_changeAngle;
     }
 
     // Make this return true when this Command no longer needs to run execute()

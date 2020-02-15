@@ -14,14 +14,12 @@ public class LimelightServoMove extends Command {
     @Override
     protected void initialize() {
         this.setInterruptible(true);
-
-        Robot.vision.setLimelightVisionMode(false);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.vision.setLimelightServoAngle(Robot.vision.getLimelightSetTilt());
+        Robot.vision.setLimelightServoAngle(Robot.vision.limelightSetAngle);
     }
 
     // Make this return true when this Command no longer needs to run execute()

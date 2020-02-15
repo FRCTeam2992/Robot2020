@@ -4,9 +4,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RotateTurretStop extends Command {
+public class StopTurret extends Command {
 
-    public RotateTurretStop() {
+    public StopTurret() {
         requires(Robot.turret);
     }
 

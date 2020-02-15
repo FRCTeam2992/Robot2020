@@ -26,13 +26,17 @@ public class AutoSorterLoad extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.sorter.setSorterSpeed(m_leftSorterMotorSpeed, m_rightSorterMotorSpeed);
+        if (Robot.sorter.sorterBallSensor.get()) {
+            Robot.sorter.stopSorter();
+        } else {
+            Robot.sorter.setSorterSpeed(m_leftSorterMotorSpeed, m_rightSorterMotorSpeed);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.sorter.sorterBallSensor.get();
+        return false;
     }
 
     // Called once after isFinished returns true

@@ -4,11 +4,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RotateTurretMove extends Command {
+public class TurretMove extends Command {
 
     private double m_speed = 0;
 
-    public RotateTurretMove(double speed) {
+    public TurretMove(double speed) {
         requires(Robot.turret);
 
         m_speed = speed;

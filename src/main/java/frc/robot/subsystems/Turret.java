@@ -16,7 +16,7 @@ public class Turret extends Subsystem {
     private TalonSRX turretTalon;
 
     // Turret PID Controller
-    private PIDController turretRotate;
+    public PIDController turretRotate;
 
     public Turret() {
         // Turret Motors
@@ -31,7 +31,7 @@ public class Turret extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new RotateTurretStop());
+        setDefaultCommand(new StopTurret());
     }
 
     @Override

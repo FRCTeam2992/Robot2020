@@ -58,7 +58,7 @@ public class ClimbLift extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.climb.stopClimbMotors();
+        Robot.climb.stopClimb();
 
         Robot.climb.lockClimb(true);
     }
@@ -67,7 +67,7 @@ public class ClimbLift extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.climb.stopClimbMotors();
+        Robot.climb.stopClimb();
 
         Robot.climb.lockClimb(true);
     }

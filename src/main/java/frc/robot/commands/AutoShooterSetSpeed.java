@@ -19,10 +19,14 @@ public class AutoShooterSetSpeed extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double distanceToTarget = Robot.vision.limeLightCamera.getDistanceToTarget(Constants.cameraAngle,
-                Constants.cameraHeight, Constants.goalHeight);
+        Robot.vision.setLimelightVisionMode(true);
 
-        Robot.shooter.setShooterSetSpeed(Robot.shooter.shooterSpeedList.getShooterSpeed(distanceToTarget));
+        if (Robot.vision.limeLightCamera.hasTarget()) {
+            double distanceToTarget = Robot.vision.limeLightCamera.getDistanceToTarget(Constants.cameraAngle,
+                    Constants.cameraHeight, Constants.goalHeight);
+
+            Robot.shooter.shooterSetSpeed = Robot.shooter.shooterSpeedList.getShooterSpeed(distanceToTarget);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -34,11 +38,13 @@ public class AutoShooterSetSpeed extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.vision.setLimelightVisionMode(false);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.vision.setLimelightVisionMode(false);
     }
 }

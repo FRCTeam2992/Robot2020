@@ -40,7 +40,7 @@ public class Climb extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public void stopClimbMotors() {
+    public void stopClimb() {
         climbLiftMtr.set(ControlMode.PercentOutput, 0);
         climbSlideMtr.set(ControlMode.PercentOutput, 0);
     }

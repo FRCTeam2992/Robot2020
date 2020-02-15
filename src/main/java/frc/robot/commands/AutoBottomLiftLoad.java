@@ -23,13 +23,17 @@ public class AutoBottomLiftLoad extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.bottomLift.setBottomLiftSpeed(m_bottomLiftSpeed);
+        if (Robot.bottomLift.liftBallSensor.get()) {
+            Robot.bottomLift.stopBottomLift();
+        } else {
+            Robot.bottomLift.setBottomLiftSpeed(m_bottomLiftSpeed);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.bottomLift.liftBallSensor.get();
+        return false;
     }
 
     // Called once after isFinished returns true

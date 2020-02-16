@@ -24,6 +24,10 @@ public class ColorWheel extends Subsystem {
     private final I2C.Port sensor = I2C.Port.kOnboard;
     private final ColorMatch colorMatcher = new ColorMatch();
 
+    enum TargetColor {
+        Blue, Green, Red, Yellow, Unknown
+    }
+
     public ColorWheel() {
         // Color Sensor
         colorSensor = new ColorSensorV3(sensor);
@@ -68,21 +72,21 @@ public class ColorWheel extends Subsystem {
         colorWheelMotor.setSelectedSensorPosition(0);
     }
 
-    public String getDetectedColor() {
+    public TargetColor getDetectedColor() {
         Color detectedColor = colorSensor.getColor();
 
         ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
 
         if (match.color == Constants.kBlueTarget) {
-            return "Blue";
+            return TargetColor.Blue;
         } else if (match.color == Constants.kRedTarget) {
-            return "Red";
+            return TargetColor.Red;
         } else if (match.color == Constants.kGreenTarget) {
-            return "Green";
+            return TargetColor.Green;
         } else if (match.color == Constants.kYellowTarget) {
-            return "Yellow";
+            return TargetColor.Yellow;
         } else {
-            return "Unknown";
+            return TargetColor.Unknown;
         }
     }
 }

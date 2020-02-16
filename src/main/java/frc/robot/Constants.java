@@ -12,11 +12,11 @@ public class Constants {
     public static final double driveTurnDamp = 0.2;
 
     // Vision Constants
-    public static final double defaultLimelightAngle = 20;
-    public static final double cameraAngle = 0;
-    public static final double cameraHeight = 0;
-    public static final double goalHeight = 0;
-    public static final double loadHeight = 0;
+    public static final double defaultLimelightAngle = 20.0;
+    public static final double cameraAngle = 0.0;
+    public static final double cameraHeight = 0.0;
+    public static final double goalHeight = 0.0;
+    public static final double loadHeight = 0.0;
     public static final double visionSteerP = 0.025;
 
     // Color Wheel Constants
@@ -29,7 +29,7 @@ public class Constants {
     public static final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
     // Color Wheel Rotations
-    public static final double autoSpinCount = 4;
+    public static final double autoSpinCount = 4.0;
 
     // Shooter Constants
     public static final int deafaultShooterSpeed = 4000;
@@ -39,11 +39,14 @@ public class Constants {
     public static final double turretP = 0.08;
     public static final double turretI = 0.0;
     public static final double turretD = 0.005;
-    public static final double turretTolerance = 1;
+    public static final double turretTolerance = 1.0;
     public static final int turretOffset = 1068;
     public static final int turretMinEnd = 40;
     public static final int turretMaxEnd = 320;
 
     // Climb Constants
     public static final double climbUpDelay = 0.25;
+
+    // Sorter Constants
+    public static final double autoSorterSpeedChangeDelay = 3.0;
 }

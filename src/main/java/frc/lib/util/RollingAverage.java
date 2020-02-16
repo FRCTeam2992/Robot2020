@@ -1,29 +1,52 @@
 
 package frc.lib.util;
 
+import java.util.ArrayList;
+
+/**
+ * Handles getting the average of a rolling number.
+ */
 public class RollingAverage {
 
-    private int size;
-    private double total = 0.0;
-    private int index = 0;
-    private double[] samples;
+    ArrayList<Double> numberList = new ArrayList<Double>();
 
+    private int mSize;
+
+    /**
+     * @param size the max size of the rolling average number list.
+     */
     public RollingAverage(int size) {
-        this.size = size;
-        samples = new double[size];
-        for (int i = 0; i < size; i++)
-            samples[i] = 0.0;
+        mSize = size;
     }
 
-    public void add(double x) {
-        total -= samples[index];
-        samples[index] = x;
-        total += x;
-        if (++index == size)
-            index = 0;
+    /**
+     * @param number the number to add to the list.
+     */
+    public void add(double number) {
+        numberList.add(number);
+
+        if (numberList.size() > mSize) {
+            numberList.remove(0);
+        }
     }
 
+    /**
+     * @return the average of all the numbers in the stored rolling average.
+     */
     public double getAverage() {
-        return total / size;
+        double total = 0;
+
+        for (double number : numberList) {
+            total += number;
+        }
+
+        return total / numberList.size();
+    }
+
+    /**
+     * Clears the stored number list.
+     */
+    public void clear() {
+        numberList.clear();
     }
 }

@@ -7,35 +7,35 @@ import frc.robot.Robot;
 import frc.robot.commands.groups.AutoShooterShoot;
 
 /**
- * This Command makes sure the commandGroups using Limelight get cancelled and
- * don't conflict Fix: This command is called in OI by a single button make
- * better
+ * This command checks to see what drive mode the robot is in and starts the
+ * coresponding vision process. It can stop the currently running vision command
+ * group.
  */
 public class VisionProcessing extends Command {
 
   private static CommandGroup visionGroup;
 
-  private boolean m_toggle;
+  private boolean mStopRunning;
 
-  public VisionProcessing(boolean toggle) {
-    m_toggle = toggle;
+  public VisionProcessing(boolean stopRunning) {
+    mStopRunning = stopRunning;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (m_toggle) {
+    if (mStopRunning) {
+      if (visionGroup != null) {
+        visionGroup.cancel();
+      }
+    } else {
       if (Robot.isLoadMode) {
-
+        //TODO add load mode vision command group
       } else {
         visionGroup = new AutoShooterShoot();
       }
 
       visionGroup.start();
-    } else {
-      if (visionGroup != null) {
-        visionGroup.cancel();
-      }
     }
   }
 

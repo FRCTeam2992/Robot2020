@@ -10,20 +10,19 @@ import frc.robot.Robot;
 
 public class DriveSticks extends Command {
 
-    boolean straightDrive = false;
-    double maxJoystickValue = 0;
-    double minJoystickValue = 0;
-    double straightDriveDeadzone = 0;
-    double straightDriveHeading = 0;
+    private boolean straightDrive = false;
+    private double maxJoystickValue = 0;
+    private double minJoystickValue = 0;
+    private double straightDriveDeadzone = 0;
+    private double straightDriveHeading = 0;
 
-    double left = 0;
-    double rightY = 0;
-    double rightX = 0;
-    double rawLeft = 0;
-    double rawRight = 0;
+    private double left = 0;
+    private double rightY = 0;
+    private double rightX = 0;
+    private double rawLeft = 0;
+    private double rawRight = 0;
 
-    boolean driveGear = false;
-    boolean loadingMode = false;
+    private boolean driveGear = false;
 
     public DriveSticks() {
         requires(Robot.driveTrain);
@@ -40,7 +39,6 @@ public class DriveSticks extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-
         // Read Joystick and Controller Values
         if (Robot.isJoystick) {
             left = Robot.oi.leftJoystick.smoothGetY();
@@ -49,7 +47,7 @@ public class DriveSticks extends Command {
             rawLeft = Robot.oi.leftJoystick.getY();
             rawRight = Robot.oi.rightJoystick.getY();
 
-            loadingMode = Robot.oi.leftJoystick.getTrigger();
+            Robot.isLoadMode = Robot.oi.leftJoystick.getTrigger();
             driveGear = Robot.oi.rightJoystick.getTrigger();
         } else {
             if (Robot.isTriggers) {
@@ -62,7 +60,7 @@ public class DriveSticks extends Command {
                 rightX = Robot.oi.controller.smoothGetX(Hand.kRight);
             }
 
-            loadingMode = Robot.oi.controller.getBumper(Hand.kRight);
+            Robot.isLoadMode = Robot.oi.controller.getBumper(Hand.kRight);
             driveGear = Robot.oi.controller.getBumper(Hand.kLeft);
         }
 
@@ -106,11 +104,11 @@ public class DriveSticks extends Command {
         Robot.driveTrain.setDriveGear(driveGear);
 
         // Call Tank Drive and Arcade Drive Functions
-        if (loadingMode) {
+        if (Robot.isLoadMode) {
             if (Robot.isTankDrive) {
                 Robot.driveTrain.tankDrive(-rightY, -left);
             } else {
-                Robot.driveTrain.arcadeDrive(left, -rightX);
+                Robot.driveTrain.arcadeDrive(-left, rightX);
             }
         } else {
             if (Robot.isTankDrive) {

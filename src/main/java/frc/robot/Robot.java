@@ -5,11 +5,7 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
 /**
@@ -20,8 +16,6 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-    Command autonomousCommand;
-    SendableChooser<Command> chooser = new SendableChooser<>();
 
     public static OI oi;
     public static DriveTrain driveTrain;
@@ -39,6 +33,8 @@ public class Robot extends TimedRobot {
     public static boolean isJoystick = true;
     public static boolean isTankDrive = false;
     public static boolean isTriggers = false;
+
+    public static boolean isLoadMode = false;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -65,11 +61,6 @@ public class Robot extends TimedRobot {
         oi = new OI();
 
         HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_RobotBuilder);
-
-        // Add commands to Autonomous Sendable Chooser
-        chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
-
-        SmartDashboard.putData("Auto mode", chooser);
     }
 
     /**
@@ -90,10 +81,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        autonomousCommand = chooser.getSelected();
-        // schedule the autonomous command (example)
-        if (autonomousCommand != null)
-            autonomousCommand.start();
+
     }
 
     /**
@@ -106,12 +94,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        // This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-        if (autonomousCommand != null)
-            autonomousCommand.cancel();
+
     }
 
     /**

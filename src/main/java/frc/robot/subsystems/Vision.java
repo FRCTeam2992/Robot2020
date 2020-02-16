@@ -7,6 +7,7 @@ import frc.lib.vision.LimeLight;
 import frc.lib.vision.LimeLight.CameraMode;
 import frc.lib.vision.LimeLight.LedMode;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.commands.*;
 
 public class Vision extends Subsystem {
@@ -36,6 +37,7 @@ public class Vision extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        Robot.oi.test.setToggle(Robot.oi.leftJoystick.getTrigger());
     }
 
     // Put methods for controlling this subsystem

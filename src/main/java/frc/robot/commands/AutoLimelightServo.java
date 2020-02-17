@@ -2,6 +2,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class AutoLimelightServo extends Command {
@@ -16,6 +17,8 @@ public class AutoLimelightServo extends Command {
     @Override
     protected void initialize() {
         this.setInterruptible(true);
+
+        Robot.vision.limelightSetAngle = Constants.limelightShooterAngle;
     }
 
     // Called repeatedly when this Command is scheduled to run

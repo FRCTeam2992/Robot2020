@@ -31,6 +31,8 @@ public class LimelightLoadStation extends Command {
         this.setInterruptible(true);
 
         Robot.driveTrain.setDriveGear(false);
+
+        Robot.vision.limelightSetAngle = Constants.limelightLoadStationAngle;
     }
 
     // Called repeatedly when this Command is scheduled to run

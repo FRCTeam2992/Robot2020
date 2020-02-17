@@ -18,7 +18,7 @@ public class Vision extends Subsystem {
     private Servo limelightServo;
 
     // Limelight Set Angle
-    public double limelightSetAngle = Constants.defaultLimelightAngle;
+    public double limelightSetAngle = Constants.limelightShooterAngle;
 
     public Vision() {
         // LimeLight Camera
@@ -49,10 +49,6 @@ public class Vision extends Subsystem {
             limeLightCamera.setLedMode(LedMode.Off);
             limeLightCamera.setCameraMode(CameraMode.Driver);
         }
-    }
-
-    public void stopLimelightServo() {
-        limelightServo.setDisabled();
     }
 
     public void setLimelightServoAngle(double angle) {

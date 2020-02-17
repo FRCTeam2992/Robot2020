@@ -11,6 +11,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -25,7 +26,7 @@ public class ColorWheel extends Subsystem {
     private final ColorMatch colorMatcher = new ColorMatch();
 
     enum TargetColor {
-        Blue, Green, Red, Yellow, Unknown
+        Blue, Green, Red, Yellow, Unknown, Corrupt
     }
 
     public ColorWheel() {
@@ -85,6 +86,27 @@ public class ColorWheel extends Subsystem {
             return TargetColor.Green;
         } else if (match.color == Constants.kYellowTarget) {
             return TargetColor.Yellow;
+        } else {
+            return TargetColor.Unknown;
+        }
+    }
+
+    public TargetColor getFMSColorData() {
+        String gameData = DriverStation.getInstance().getGameSpecificMessage();
+
+        if (gameData.length() > 0) {
+            switch (gameData.charAt(0)) {
+            case 'B':
+                return TargetColor.Blue;
+            case 'G':
+                return TargetColor.Green;
+            case 'R':
+                return TargetColor.Red;
+            case 'Y':
+                return TargetColor.Yellow;
+            default:
+                return TargetColor.Corrupt;
+            }
         } else {
             return TargetColor.Unknown;
         }

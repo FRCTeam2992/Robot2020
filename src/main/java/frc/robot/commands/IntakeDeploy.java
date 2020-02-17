@@ -4,11 +4,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class IntakeDeploySol extends Command {
+public class IntakeDeploy extends Command {
 
     boolean m_deployToggle = false;
 
-    public IntakeDeploySol(boolean deployToggle) {
+    public IntakeDeploy(boolean deployToggle) {
         m_deployToggle = deployToggle;
     }
 

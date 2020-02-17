@@ -2,6 +2,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class AutoTurretAim extends Command {
@@ -10,8 +11,12 @@ public class AutoTurretAim extends Command {
 
     private double turretSetAngle = 0;
 
-    public AutoTurretAim() {
+    private boolean mFinishWhenAligned = false;
+
+    public AutoTurretAim(boolean finishWhenAligned) {
         requires(Robot.turret);
+
+        mFinishWhenAligned = finishWhenAligned;
     }
 
     // Called just before this Command runs the first time
@@ -41,7 +46,7 @@ public class AutoTurretAim extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return mFinishWhenAligned && Robot.vision.limeLightCamera.getTargetXOffset() <= Constants.turretTolerance;
     }
 
     // Called once after isFinished returns true

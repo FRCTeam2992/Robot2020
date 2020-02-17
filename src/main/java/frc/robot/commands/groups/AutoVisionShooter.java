@@ -4,9 +4,9 @@ package frc.robot.commands.groups;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.*;
 
-public class AutoShooterShoot extends CommandGroup {
+public class AutoVisionShooter extends CommandGroup {
 
-    public AutoShooterShoot() {
+    public AutoVisionShooter() {
         addParallel(new AutoLimelightServo());
         addParallel(new AutoShooterSetSpeed());
         addParallel(new AutoTurretAim());

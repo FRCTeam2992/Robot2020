@@ -12,7 +12,8 @@ public class Constants {
     public static final double driveTurnDamp = 0.2;
 
     // Vision Constants
-    public static final double defaultLimelightAngle = 20.0;
+    public static final double limelightShooterAngle = 20.0;
+    public static final double limelightLoadStationAngle = 0.0;
     public static final double cameraAngle = 0.0;
     public static final double cameraHeight = 0.0;
     public static final double goalHeight = 0.0;
@@ -29,7 +30,7 @@ public class Constants {
     public static final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
     // Color Wheel Rotations
-    public static final double autoSpinCount = 4.0;
+    public static final double colorWheelSpinRatio = 8.0;
 
     // Shooter Constants
     public static final int deafaultShooterSpeed = 4000;

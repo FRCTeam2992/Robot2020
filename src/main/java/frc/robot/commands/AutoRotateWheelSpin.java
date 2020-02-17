@@ -1,6 +1,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -9,9 +10,19 @@ public class AutoRotateWheelSpin extends Command {
 
     private double encoderSetValue;
 
-    public AutoRotateWheelSpin() {
+    private double mRotations;
+    private double mTimeout;
+
+    private Timer timeoutTimer;
+
+    public AutoRotateWheelSpin(double rotations, double timeout) {
         requires(Robot.colorWheel);
         requires(Robot.intake);
+
+        mRotations = rotations;
+        mTimeout = timeout;
+
+        timeoutTimer = new Timer();
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +31,10 @@ public class AutoRotateWheelSpin extends Command {
         this.setInterruptible(true);
 
         Robot.colorWheel.zeroMotorPosition();
-        encoderSetValue = (Constants.autoSpinCount * 8) * (Constants.colorWheelEncoderPulses * 4);
+        encoderSetValue = (mRotations * Constants.colorWheelSpinRatio) * (Constants.colorWheelEncoderPulses * 4);
+
+        timeoutTimer.reset();
+        timeoutTimer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,11 +46,7 @@ public class AutoRotateWheelSpin extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if (Math.abs(encoderSetValue - Robot.colorWheel.getMotorPostion()) <= 50) {
-            return true;
-        } else {
-            return false;
-        }
+        return Math.abs(encoderSetValue - Robot.colorWheel.getMotorPostion()) <= 50 || timeoutTimer.get() >= mTimeout;
     }
 
     // Called once after isFinished returns true

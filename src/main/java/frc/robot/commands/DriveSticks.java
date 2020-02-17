@@ -1,8 +1,6 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.CANSparkMax.IdleMode;
-
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Constants;
@@ -33,7 +31,7 @@ public class DriveSticks extends Command {
     protected void initialize() {
         this.setInterruptible(true);
 
-        Robot.driveTrain.setIdleMode(IdleMode.kCoast);
+        Robot.driveTrain.setBrakeMode(false);
     }
 
     // Called repeatedly when this Command is scheduled to run

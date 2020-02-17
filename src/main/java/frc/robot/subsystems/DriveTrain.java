@@ -21,7 +21,7 @@ public class DriveTrain extends Subsystem {
     private CANSparkMax rightSparkDrive2;
 
     // Drive Solenoids
-    private Solenoid driveGearShift;
+    private Solenoid driveGearShiftSol;
 
     // Robot Gyro
     public final AHRS navx;
@@ -31,6 +31,7 @@ public class DriveTrain extends Subsystem {
         leftSparkDrive1 = new CANSparkMax(1, MotorType.kBrushless);
         leftSparkDrive1.setInverted(true);
         leftSparkDrive1.setIdleMode(IdleMode.kCoast);
+        leftSparkDrive1.setSmartCurrentLimit(40);
 
         leftSparkDrive2 = new CANSparkMax(2, MotorType.kBrushless);
         leftSparkDrive2.follow(leftSparkDrive1);
@@ -38,12 +39,13 @@ public class DriveTrain extends Subsystem {
         rightSparkDrive1 = new CANSparkMax(3, MotorType.kBrushless);
         rightSparkDrive1.setInverted(false);
         rightSparkDrive1.setIdleMode(IdleMode.kCoast);
+        rightSparkDrive1.setSmartCurrentLimit(40);
 
         rightSparkDrive2 = new CANSparkMax(4, MotorType.kBrushless);
         rightSparkDrive2.follow(rightSparkDrive1);
 
         // Drive Shift Solenoid
-        driveGearShift = new Solenoid(0, 0);
+        driveGearShiftSol = new Solenoid(0, 0);
 
         // Robot Gyro
         navx = new AHRS(SPI.Port.kMXP);
@@ -98,12 +100,17 @@ public class DriveTrain extends Subsystem {
     }
 
     public void setDriveGear(boolean toggle) {
-        driveGearShift.set(toggle);
+        driveGearShiftSol.set(toggle);
     }
 
-    public void setIdleMode(IdleMode mode) {
-        leftSparkDrive1.setIdleMode(mode);
-        rightSparkDrive1.setIdleMode(mode);
+    public void setBrakeMode(boolean toggleMode) {
+        if (toggleMode) {
+            leftSparkDrive1.setIdleMode(IdleMode.kBrake);
+            rightSparkDrive1.setIdleMode(IdleMode.kBrake);
+        } else {
+            leftSparkDrive1.setIdleMode(IdleMode.kCoast);
+            rightSparkDrive1.setIdleMode(IdleMode.kCoast);
+        }
     }
 
     public double calcGyroError(double heading) {

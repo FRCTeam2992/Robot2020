@@ -30,6 +30,7 @@ public class LimelightLoadStation extends Command {
     protected void initialize() {
         this.setInterruptible(true);
 
+        Robot.driveTrain.setBrakeMode(false);
         Robot.driveTrain.setDriveGear(false);
 
         Robot.vision.limelightSetAngle = Constants.limelightLoadStationAngle;

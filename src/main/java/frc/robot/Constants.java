@@ -7,9 +7,18 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public class Constants {
     // Drive Constants
+    public static final int driveEncoderPulses = 2048;
+    public static final double driveWheelDiamterMeters = 0.15;
+    public static final double driveTrackWidthMeters = 0.635;
     public static final double straightDriveThreshold = 0.2;
     public static final double straightDriveP = 0.015;
     public static final double driveTurnDamp = 0.2;
+
+    // Drive PID Constants
+    public static final double driveP = 0.0;
+    public static final double driveI = 0.0;
+    public static final double driveD = 0.0;
+    public static final double driveFeedForward = 0.0;
 
     // Vision Constants
     public static final double limelightShooterAngle = 20.0;

@@ -22,8 +22,9 @@ public class AutoShooterSetSpeed extends Command {
         Robot.vision.setLimelightVisionMode(true);
 
         if (Robot.vision.limeLightCamera.hasTarget()) {
-            double distanceToTarget = Robot.vision.limeLightCamera.getDistanceToTarget(Constants.cameraAngle,
-                    Constants.cameraHeight, Constants.goalHeight);
+            double distanceToTarget = Robot.vision.limeLightCamera.getDistanceToTarget(
+                    Constants.cameraAngle + Robot.vision.limelightSetAngle, Constants.cameraHeight,
+                    Constants.goalHeight);
 
             Robot.shooter.shooterSetSpeed = Robot.shooter.shooterSpeedList.getShooterSpeed(distanceToTarget);
         }

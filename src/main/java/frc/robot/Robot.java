@@ -81,7 +81,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-
+        Robot.driveTrain.navx.zeroYaw();
+        Robot.driveTrain.resetEndoders();
     }
 
     /**

@@ -8,16 +8,16 @@ import frc.robot.Robot;
 public class TurretToAngle extends Command {
 
     private double mAngle = 0;
-    private double mTimeout = 0;
 
+    private double mTimeout = 0;
     private Timer timeoutTimer;
 
     public TurretToAngle(double angle, double timeout) {
         requires(Robot.turret);
 
         mAngle = angle;
+        
         mTimeout = timeout;
-
         timeoutTimer = new Timer();
     }
 

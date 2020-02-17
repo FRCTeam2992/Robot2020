@@ -1,16 +1,24 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.Constants;
 import frc.robot.commands.*;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.AlternateEncoderType;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 
 public class DriveTrain extends Subsystem {
 
@@ -20,11 +28,22 @@ public class DriveTrain extends Subsystem {
     private CANSparkMax rightSparkDrive1;
     private CANSparkMax rightSparkDrive2;
 
+    // Drive Encoders
+    private CANEncoder leftDriveEncoder;
+    private CANEncoder rightDriveEncoder;
+
+    // Drive PID Controllers
+    private CANPIDController leftDriveController;
+    private CANPIDController rightDriveController;
+
     // Drive Solenoids
     private Solenoid driveGearShiftSol;
 
     // Robot Gyro
     public final AHRS navx;
+
+    // Drive Odometery
+    private final DifferentialDriveOdometry driveOdometry;
 
     public DriveTrain() {
         // Drive Motors
@@ -44,11 +63,46 @@ public class DriveTrain extends Subsystem {
         rightSparkDrive2 = new CANSparkMax(4, MotorType.kBrushless);
         rightSparkDrive2.follow(rightSparkDrive1);
 
+        // Drive Encoders
+        leftDriveEncoder = new CANEncoder(leftSparkDrive1, AlternateEncoderType.kQuadrature,
+                Constants.driveEncoderPulses);
+
+        rightDriveEncoder = new CANEncoder(rightSparkDrive1, AlternateEncoderType.kQuadrature,
+                Constants.driveEncoderPulses);
+
+        // Convert Encoder Positions to Meters
+        leftDriveEncoder.setPositionConversionFactor(
+                (Constants.driveWheelDiamterMeters * Math.PI) / Constants.driveEncoderPulses * 4);
+        rightDriveEncoder.setPositionConversionFactor(
+                (Constants.driveWheelDiamterMeters * Math.PI) / Constants.driveEncoderPulses * 4);
+
+        // Convert Encoder Velocities to Meters Per Second
+        leftDriveEncoder.setVelocityConversionFactor((Constants.driveWheelDiamterMeters * Math.PI) / 60);
+        rightDriveEncoder.setVelocityConversionFactor((Constants.driveWheelDiamterMeters * Math.PI) / 60);
+
+        // Drive PID Controllers
+        leftDriveController = leftSparkDrive1.getPIDController();
+        leftDriveController.setFeedbackDevice(leftDriveEncoder);
+        leftDriveController.setP(Constants.driveP);
+        leftDriveController.setI(Constants.driveI);
+        leftDriveController.setD(Constants.driveD);
+        leftDriveController.setFF(Constants.driveFeedForward);
+
+        rightDriveController = rightSparkDrive1.getPIDController();
+        rightDriveController.setFeedbackDevice(rightDriveEncoder);
+        rightDriveController.setP(Constants.driveP);
+        rightDriveController.setI(Constants.driveI);
+        rightDriveController.setD(Constants.driveD);
+        rightDriveController.setFF(Constants.driveFeedForward);
+
         // Drive Shift Solenoid
         driveGearShiftSol = new Solenoid(0, 0);
 
         // Robot Gyro
         navx = new AHRS(SPI.Port.kMXP);
+
+        // Drive Odometry
+        driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(navx.getYaw()));
     }
 
     @Override
@@ -59,6 +113,10 @@ public class DriveTrain extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+
+        // Update Drive Odometry
+        driveOdometry.update(Rotation2d.fromDegrees(navx.getYaw()), leftDriveEncoder.getPosition(),
+                rightDriveEncoder.getPosition());
     }
 
     // Put methods for controlling this subsystem
@@ -99,6 +157,11 @@ public class DriveTrain extends Subsystem {
         tankDrive(leftMotorSpeed, rightMotorSpeed);
     }
 
+    public void velocityDrive(double leftMetersPerSecond, double rightMetersPerSecond) {
+        leftDriveController.setReference(leftMetersPerSecond, ControlType.kVelocity);
+        rightDriveController.setReference(rightMetersPerSecond, ControlType.kVelocity);
+    }
+
     public void setDriveGear(boolean toggle) {
         driveGearShiftSol.set(toggle);
     }
@@ -111,6 +174,15 @@ public class DriveTrain extends Subsystem {
             leftSparkDrive1.setIdleMode(IdleMode.kCoast);
             rightSparkDrive1.setIdleMode(IdleMode.kCoast);
         }
+    }
+
+    public void resetEndoders() {
+        leftDriveEncoder.setPosition(0);
+        rightDriveEncoder.setPosition(0);
+    }
+
+    public Pose2d getCurrentPoseMeters() {
+        return driveOdometry.getPoseMeters();
     }
 
     public double calcGyroError(double heading) {

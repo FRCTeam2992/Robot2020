@@ -10,9 +10,9 @@ public class AutoRotateWheelSpin extends Command {
 
     private double encoderSetValue;
 
-    private double mRotations;
-    private double mTimeout;
+    private double mRotations = 0;
 
+    private double mTimeout = 0;
     private Timer timeoutTimer;
 
     public AutoRotateWheelSpin(double rotations, double timeout) {
@@ -21,7 +21,7 @@ public class AutoRotateWheelSpin extends Command {
 
         mRotations = rotations;
         mTimeout = timeout;
-
+        
         timeoutTimer = new Timer();
     }
 

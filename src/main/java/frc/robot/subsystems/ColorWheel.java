@@ -25,7 +25,7 @@ public class ColorWheel extends Subsystem {
     private final I2C.Port sensor = I2C.Port.kOnboard;
     private final ColorMatch colorMatcher = new ColorMatch();
 
-    enum TargetColor {
+    public enum TargetColor {
         Blue, Green, Red, Yellow, Unknown, Corrupt
     }
 

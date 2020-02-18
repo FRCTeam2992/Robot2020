@@ -2,6 +2,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.lib.vision.LimeLight.LedMode;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
@@ -23,13 +24,14 @@ public class AutoTurretAim extends Command {
     @Override
     protected void initialize() {
         this.setInterruptible(true);
+
+        Robot.vision.limeLightManager.ledModeRequest(LedMode.On);
+        Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipeline);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.vision.setLimelightVisionMode(true);
-
         updateCounter++;
 
         if (updateCounter > 8) {
@@ -54,7 +56,7 @@ public class AutoTurretAim extends Command {
     protected void end() {
         Robot.turret.stopTurret();
 
-        Robot.vision.setLimelightVisionMode(false);
+        Robot.vision.limeLightManager.ledModeRequest(LedMode.Off);
     }
 
     // Called when another command which requires one or more of the same
@@ -63,6 +65,6 @@ public class AutoTurretAim extends Command {
     protected void interrupted() {
         Robot.turret.stopTurret();
 
-        Robot.vision.setLimelightVisionMode(false);
+        Robot.vision.limeLightManager.ledModeRequest(LedMode.Off);
     }
 }

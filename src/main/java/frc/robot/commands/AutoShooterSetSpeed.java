@@ -2,6 +2,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.lib.vision.LimeLight.LedMode;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
@@ -14,13 +15,13 @@ public class AutoShooterSetSpeed extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.vision.limeLightManager.ledModeRequest(LedMode.On);
+        Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipeline);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.vision.setLimelightVisionMode(true);
-
         if (Robot.vision.limeLightCamera.hasTarget()) {
             double distanceToTarget = Robot.vision.limeLightCamera.getDistanceToTarget(
                     Constants.cameraAngle + Robot.vision.limelightSetAngle, Constants.cameraHeight,
@@ -39,13 +40,13 @@ public class AutoShooterSetSpeed extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.vision.setLimelightVisionMode(false);
+        Robot.vision.limeLightManager.ledModeRequest(LedMode.Off);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.vision.setLimelightVisionMode(false);
+        Robot.vision.limeLightManager.ledModeRequest(LedMode.Off);
     }
 }

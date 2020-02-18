@@ -31,8 +31,9 @@ public class Constants {
     public static final double cameraAngle = 0.0;
     public static final double cameraHeight = 0.0;
     public static final double goalHeight = 0.0;
-    public static final double loadHeight = 0.0;
     public static final double visionSteerP = 0.025;
+    public static final int limelightShooterPipeline = 0;
+    public static final int limelightLoadStationPipeline = 1;
 
     // Color Wheel Constants
     public static final int colorWheelEncoderPulses = 1024;

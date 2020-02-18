@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.lib.vision.LimeLight;
+import frc.lib.vision.LimeLightManager;
 import frc.lib.vision.LimeLight.CameraMode;
 import frc.lib.vision.LimeLight.LedMode;
 import frc.robot.Constants;
@@ -14,6 +15,9 @@ public class Vision extends Subsystem {
     // LimeLight Camera
     public LimeLight limeLightCamera;
 
+    // LimeLight Manager
+    public LimeLightManager limeLightManager;
+
     // LimeLight Tilt Servo
     private Servo limelightServo;
 
@@ -23,6 +27,9 @@ public class Vision extends Subsystem {
     public Vision() {
         // LimeLight Camera
         limeLightCamera = new LimeLight();
+
+        // LimeLight Manager
+        limeLightManager = new LimeLightManager(limeLightCamera);
 
         // LimeLight Tilt Servo
         limelightServo = new Servo(0);

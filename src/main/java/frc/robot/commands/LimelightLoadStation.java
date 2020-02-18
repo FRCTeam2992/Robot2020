@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.lib.util.RollingAverage;
+import frc.lib.vision.LimeLight.LedMode;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
@@ -34,13 +35,14 @@ public class LimelightLoadStation extends Command {
         Robot.driveTrain.setDriveGear(false);
 
         Robot.vision.limelightSetAngle = Constants.limelightLoadStationAngle;
+
+        Robot.vision.limeLightManager.ledModeRequest(LedMode.On);
+        Robot.vision.limeLightCamera.setActivePipline(Constants.limelightLoadStationPipeline);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.vision.setLimelightVisionMode(true);
-
         if (Robot.isJoystick) {
             left = Robot.oi.leftJoystick.smoothGetY();
             rightY = Robot.oi.rightJoystick.smoothGetY();
@@ -85,14 +87,14 @@ public class LimelightLoadStation extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.vision.setLimelightVisionMode(false);
+        Robot.vision.limeLightManager.ledModeRequest(LedMode.Off);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.vision.setLimelightVisionMode(false);
+        Robot.vision.limeLightManager.ledModeRequest(LedMode.Off);
     }
 
     public void updateLimelightTracking() {

@@ -5,7 +5,10 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 
 /**
@@ -29,11 +32,16 @@ public class Robot extends TimedRobot {
     public static ColorWheel colorWheel;
     public static Vision vision;
 
+    // Autonomous Command and Selector
+    private Command autonomousCommand;
+    private SendableChooser<Command> autonomouseSelector = new SendableChooser<>();
+
     // Set Drive Controller Modes
     public static boolean isJoystick = true;
     public static boolean isTankDrive = false;
     public static boolean isTriggers = false;
 
+    // Robot Variables
     public static boolean isLoadMode = false;
 
     /**
@@ -61,6 +69,9 @@ public class Robot extends TimedRobot {
         oi = new OI();
 
         HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_RobotBuilder);
+
+        // Autonomous Selector
+        SmartDashboard.putData("Autonomous Path", autonomouseSelector);
     }
 
     /**
@@ -81,8 +92,17 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        // Reset Drive Sensors
         Robot.driveTrain.navx.zeroYaw();
-        Robot.driveTrain.resetEndoders();
+        Robot.driveTrain.resetOdometry();
+        
+        // Set Autonomous Command
+        autonomousCommand = autonomouseSelector.getSelected();
+
+        // Start Autonomous Command
+        if (autonomousCommand != null) {
+            autonomousCommand.start();
+        }
     }
 
     /**
@@ -95,7 +115,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-
+        // Stop Autonomous Command
+        if (autonomousCommand != null) {
+            autonomousCommand.cancel();
+        }
     }
 
     /**

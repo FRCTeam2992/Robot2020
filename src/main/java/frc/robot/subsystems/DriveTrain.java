@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 
 public class DriveTrain extends Subsystem {
@@ -44,7 +45,7 @@ public class DriveTrain extends Subsystem {
     public final AHRS navx;
 
     // Drive Odometery
-    private final DifferentialDriveOdometry driveOdometry;
+    private DifferentialDriveOdometry driveOdometry;
 
     public DriveTrain() {
         // Drive Motors
@@ -102,7 +103,8 @@ public class DriveTrain extends Subsystem {
         // Robot Gyro
         navx = new AHRS(SPI.Port.kMXP);
 
-        // Drive Odometry
+        // Drive Odometry (Need to Reset Encoders First)
+        resetEndoders();
         driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(navx.getYaw()));
     }
 
@@ -193,6 +195,11 @@ public class DriveTrain extends Subsystem {
     public void resetEndoders() {
         leftDriveEncoder.setPosition(0);
         rightDriveEncoder.setPosition(0);
+    }
+
+    public void resetOdometry() {
+        resetEndoders();
+        driveOdometry.resetPosition(new Pose2d(), Rotation2d.fromDegrees(navx.getYaw()));
     }
 
     public Pose2d getCurrentPoseMeters() {

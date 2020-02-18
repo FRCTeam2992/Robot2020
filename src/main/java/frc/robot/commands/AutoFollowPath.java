@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
@@ -24,23 +25,27 @@ public class AutoFollowPath extends Command {
   private String mTrajectoryName = "";
 
   private Timer elpasedTimer;
-
-  private double mTimeout;
+  private double previousTime = 0;
 
   private RamseteController pathController;
   private Trajectory trajectory;
 
-  private DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(
-      Constants.driveTrackWidthMeters);
+  private DifferentialDriveKinematics driveKinematics;
+  private DifferentialDriveWheelSpeeds previousWheelSpeeds;
 
-  public AutoFollowPath(String trajectoryName, double timeout) {
+  private SimpleMotorFeedforward driveFeedforward;
+
+  public AutoFollowPath(String trajectoryName) {
     requires(Robot.driveTrain);
 
     mTrajectoryName = trajectoryName;
 
-    mTimeout = timeout;
-
     pathController = new RamseteController(2.0, 0.7);
+
+    driveKinematics = new DifferentialDriveKinematics(Constants.driveTrackWidthMeters);
+
+    driveFeedforward = new SimpleMotorFeedforward(Constants.driveStaticGain, Constants.driveVelocityGain,
+        Constants.driveAccelerationGain);
   }
 
   // Called just before this Command runs the first time
@@ -50,6 +55,10 @@ public class AutoFollowPath extends Command {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath()
           .resolve("paths/" + mTrajectoryName + ".wpilib.json");
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+
+      Trajectory.State initialState = trajectory.sample(0);
+      previousWheelSpeeds = driveKinematics.toWheelSpeeds(new ChassisSpeeds(initialState.velocityMetersPerSecond, 0,
+          initialState.curvatureRadPerMeter * initialState.velocityMetersPerSecond));
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory " + mTrajectoryName, ex.getStackTrace());
       isDone = true;
@@ -66,11 +75,25 @@ public class AutoFollowPath extends Command {
   @Override
   protected void execute() {
     if (trajectory != null) {
-      Trajectory.State trajectoryState = trajectory.sample(elpasedTimer.get());
-      ChassisSpeeds adjustedSpeeds = pathController.calculate(Robot.driveTrain.getCurrentPoseMeters(), trajectoryState);
-      DifferentialDriveWheelSpeeds wheelSpeeds = driveKinematics.toWheelSpeeds(adjustedSpeeds);
+      double currentTime = elpasedTimer.get();
+      double deltaTime = currentTime - previousTime;
 
-      Robot.driveTrain.velocityDrive(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
+      Trajectory.State trajectoryState = trajectory.sample(currentTime);
+      ChassisSpeeds adjustedSpeeds = pathController.calculate(Robot.driveTrain.getCurrentPoseMeters(), trajectoryState);
+      DifferentialDriveWheelSpeeds targetWheelSpeeds = driveKinematics.toWheelSpeeds(adjustedSpeeds);
+
+      double leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
+      double rightSpeedSetpoint = targetWheelSpeeds.rightMetersPerSecond;
+
+      double leftFeedForward = driveFeedforward.calculate(leftSpeedSetpoint,
+          (leftSpeedSetpoint - previousWheelSpeeds.leftMetersPerSecond) / deltaTime);
+      double rightFeedForward = driveFeedforward.calculate(rightSpeedSetpoint,
+          (rightSpeedSetpoint - previousWheelSpeeds.rightMetersPerSecond) / deltaTime);
+
+      Robot.driveTrain.velocityDrive(leftSpeedSetpoint, leftFeedForward, rightSpeedSetpoint, rightFeedForward);
+
+      previousWheelSpeeds = targetWheelSpeeds;
+      previousTime = currentTime;
     } else {
       isDone = true;
     }
@@ -79,14 +102,13 @@ public class AutoFollowPath extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isDone || pathController.atReference() || elpasedTimer.get() >= mTimeout;
+    return isDone || elpasedTimer.get() >= trajectory.getTotalTimeSeconds();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
     Robot.driveTrain.stopDriveTrain();
-    Robot.driveTrain.setBrakeMode(false);
   }
 
   // Called when another command which requires one or more of the same
@@ -94,6 +116,5 @@ public class AutoFollowPath extends Command {
   @Override
   protected void interrupted() {
     Robot.driveTrain.stopDriveTrain();
-    Robot.driveTrain.setBrakeMode(false);
   }
 }

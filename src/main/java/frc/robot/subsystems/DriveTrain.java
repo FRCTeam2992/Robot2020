@@ -10,6 +10,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANPIDController.ArbFFUnits;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -157,9 +158,22 @@ public class DriveTrain extends Subsystem {
         tankDrive(leftMotorSpeed, rightMotorSpeed);
     }
 
-    public void velocityDrive(double leftMetersPerSecond, double rightMetersPerSecond) {
-        leftDriveController.setReference(leftMetersPerSecond, ControlType.kVelocity);
-        rightDriveController.setReference(rightMetersPerSecond, ControlType.kVelocity);
+    /**
+     * @param leftVelocity              the desired velocity of the left side in
+     *                                  meters per second.
+     * @param leftArbitraryFeedForward  the desired arbitrary feed forward of the
+     *                                  left side in volts.
+     * @param rightVelocity             the desired velocity of the right side in
+     *                                  meters per second.
+     * @param rightArbitraryFeedForward the desired arbitrary feed forward of the
+     *                                  right side in volts.
+     */
+    public void velocityDrive(double leftVelocity, double leftArbitraryFeedForward, double rightVelocity,
+            double rightArbitraryFeedForward) {
+        leftDriveController.setReference(leftVelocity, ControlType.kVelocity, 0, leftArbitraryFeedForward,
+                ArbFFUnits.kVoltage);
+        rightDriveController.setReference(rightVelocity, ControlType.kVelocity, 0, rightArbitraryFeedForward,
+                ArbFFUnits.kVoltage);
     }
 
     public void setDriveGear(boolean toggle) {

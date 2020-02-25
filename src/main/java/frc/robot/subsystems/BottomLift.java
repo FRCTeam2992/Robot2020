@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class BottomLift extends Subsystem {
 
@@ -36,6 +37,7 @@ public class BottomLift extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        SmartDashboard.putBoolean("Ball Sensor", liftBallSensor.get());
     }
 
     // Put methods for controlling this subsystem

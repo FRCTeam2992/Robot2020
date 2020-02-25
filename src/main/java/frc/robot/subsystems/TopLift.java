@@ -16,7 +16,7 @@ public class TopLift extends Subsystem {
 
     public TopLift() {
         // Top Lift Motors
-        topLiftMotor = new VictorSPX(8);
+        topLiftMotor = new VictorSPX(9);
         topLiftMotor.setInverted(false);
         topLiftMotor.setNeutralMode(NeutralMode.Coast);
     }

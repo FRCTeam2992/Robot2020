@@ -67,19 +67,8 @@ public class DriveTrain extends Subsystem {
         // Drive Encoders
         leftDriveEncoder = new CANEncoder(leftSparkDrive1, AlternateEncoderType.kQuadrature,
                 Constants.driveEncoderPulses);
-
         rightDriveEncoder = new CANEncoder(rightSparkDrive1, AlternateEncoderType.kQuadrature,
                 Constants.driveEncoderPulses);
-
-        // Convert Encoder Positions to Meters
-        leftDriveEncoder.setPositionConversionFactor(
-                (Constants.driveWheelDiamterMeters * Math.PI) / Constants.driveEncoderPulses * 4);
-        rightDriveEncoder.setPositionConversionFactor(
-                (Constants.driveWheelDiamterMeters * Math.PI) / Constants.driveEncoderPulses * 4);
-
-        // Convert Encoder Velocities to Meters Per Second
-        leftDriveEncoder.setVelocityConversionFactor((Constants.driveWheelDiamterMeters * Math.PI) / 60);
-        rightDriveEncoder.setVelocityConversionFactor((Constants.driveWheelDiamterMeters * Math.PI) / 60);
 
         // Drive PID Controllers
         leftDriveController = leftSparkDrive1.getPIDController();

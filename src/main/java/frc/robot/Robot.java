@@ -3,6 +3,8 @@ package frc.robot;
 
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
+import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -43,6 +45,11 @@ public class Robot extends TimedRobot {
 
     // Robot Variables
     public static boolean isLoadMode = false;
+
+    // Drive Cameras
+    private static MjpegServer virtualCamera;
+    private static UsbCamera shooterCamera;
+    private static UsbCamera loadCamera;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -88,6 +95,10 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         Robot.vision.setLimelightVisionMode(false);
+
+        updateDriveMode();
+
+        updateDriveCameras();
     }
 
     @Override
@@ -95,7 +106,7 @@ public class Robot extends TimedRobot {
         // Reset Drive Sensors
         Robot.driveTrain.navx.zeroYaw();
         Robot.driveTrain.resetOdometry();
-        
+
         // Set Autonomous Command
         autonomousCommand = autonomouseSelector.getSelected();
 
@@ -127,5 +138,25 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+        updateDriveMode();
+
+        updateDriveCameras();
+    }
+
+    private void updateDriveMode() {
+        if (oi.leftJoystick.getTrigger()) {
+            isLoadMode = true;
+        } else {
+            isLoadMode = false;
+        }
+    }
+
+    private void updateDriveCameras() {
+        if (isLoadMode) {
+            virtualCamera.setSource(loadCamera);
+        } else {
+            virtualCamera.setSource(shooterCamera);
+        }
     }
 }

@@ -52,6 +52,8 @@ public class AutoFollowPath extends Command {
 
     driveFeedforward = new SimpleMotorFeedforward(Constants.driveStaticGain, Constants.driveVelocityGain,
         Constants.driveAccelerationGain);
+
+    elpasedTimer = new Timer();
   }
 
   public AutoFollowPath(String trajectoryName) {
@@ -145,13 +147,13 @@ public class AutoFollowPath extends Command {
     Robot.driveTrain.stopDriveTrain();
   }
 
-  public Pose2d invertPoseHeading(Pose2d pose) {
-    return new Pose2d(pose.getTranslation(), pose.getRotation().unaryMinus());
+  public Pose2d invertPose(Pose2d pose) {
+    return new Pose2d(pose.getTranslation().unaryMinus(), pose.getRotation().unaryMinus());
   }
 
   public void updateCurrentRobotPose() {
     if (mIsLoadMode) {
-      currentRobotPose = invertPoseHeading(Robot.driveTrain.getCurrentPoseMeters());
+      currentRobotPose = invertPose(Robot.driveTrain.getCurrentPoseMeters());
     } else {
       currentRobotPose = Robot.driveTrain.getCurrentPoseMeters();
     }

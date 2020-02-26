@@ -37,15 +37,16 @@ public class Constants {
 
     // Color Wheel Constants
     public static final int colorWheelEncoderPulses = 1024;
+    public static final double colorWheelSpinRatio = 8.0;
+    public static final double colorSensorMinAngle = 0.0;
+    public static final double colorSensorMaxAngle = 180.0;
+    public static final double colorWheelSpinRotations = 4.0;
 
     // Color Wheel Target Colors
     public static final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
     public static final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
     public static final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     public static final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
-
-    // Color Wheel Rotations
-    public static final double colorWheelSpinRatio = 8.0;
 
     // Shooter Constants
     public static final int deafaultShooterSpeed = 4000;

@@ -47,8 +47,6 @@ public class LimelightLoadStation extends Command {
             left = Robot.oi.leftJoystick.smoothGetY();
             rightY = Robot.oi.rightJoystick.smoothGetY();
             rightX = Robot.oi.rightJoystick.smoothGetX();
-
-            Robot.isLoadMode = Robot.oi.leftJoystick.getTrigger();
         } else {
             if (Robot.isTriggers) {
                 left = Robot.oi.controller.smoothGetTrigger(Hand.kLeft);
@@ -59,8 +57,6 @@ public class LimelightLoadStation extends Command {
                 rightY = Robot.oi.controller.smoothGetY(Hand.kRight);
                 rightX = Robot.oi.controller.smoothGetX(Hand.kRight);
             }
-
-            Robot.isLoadMode = Robot.oi.controller.getBumper(Hand.kRight);
         }
 
         if (Robot.isLoadMode) {

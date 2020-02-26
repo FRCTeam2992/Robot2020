@@ -45,7 +45,6 @@ public class DriveSticks extends Command {
             rawLeft = Robot.oi.leftJoystick.getY();
             rawRight = Robot.oi.rightJoystick.getY();
 
-            Robot.isLoadMode = Robot.oi.leftJoystick.getTrigger();
             driveGear = Robot.oi.rightJoystick.getTrigger();
         } else {
             if (Robot.isTriggers) {
@@ -58,8 +57,7 @@ public class DriveSticks extends Command {
                 rightX = Robot.oi.controller.smoothGetX(Hand.kRight);
             }
 
-            Robot.isLoadMode = Robot.oi.controller.getBumper(Hand.kRight);
-            driveGear = Robot.oi.controller.getBumper(Hand.kLeft);
+            driveGear = Robot.oi.controller.getBumper(Hand.kRight);
         }
 
         if (Robot.isTankDrive) {

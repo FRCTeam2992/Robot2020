@@ -6,7 +6,7 @@ import frc.robot.Robot;
 
 public class IntakeDeploy extends Command {
 
-    boolean m_deployToggle = false;
+    private boolean m_deployToggle = false;
 
     public IntakeDeploy(boolean deployToggle) {
         m_deployToggle = deployToggle;

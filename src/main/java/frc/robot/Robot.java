@@ -5,12 +5,13 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSource.ConnectionStrategy;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 
 /**
@@ -36,10 +37,9 @@ public class Robot extends TimedRobot {
 
     // Autonomous Command and Selector
     private Command autonomousCommand;
-    private SendableChooser<Command> autonomouseSelector = new SendableChooser<>();
 
     // Set Drive Controller Modes
-    public static boolean isJoystick = true;
+    public static boolean isJoystick = false;
     public static boolean isTankDrive = false;
     public static boolean isTriggers = false;
 
@@ -77,8 +77,14 @@ public class Robot extends TimedRobot {
 
         HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_RobotBuilder);
 
-        // Autonomous Selector
-        SmartDashboard.putData("Autonomous Path", autonomouseSelector);
+        // Initialize Drive Cameras
+        shooterCamera = CameraServer.getInstance().startAutomaticCapture("Shooter Camera", 0);
+        shooterCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+
+        loadCamera = CameraServer.getInstance().startAutomaticCapture("Load Camera", 1);
+        loadCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+
+        virtualCamera = CameraServer.getInstance().addSwitchedCamera("Drive Cameras");
     }
 
     /**
@@ -108,7 +114,7 @@ public class Robot extends TimedRobot {
         Robot.driveTrain.resetOdometry();
 
         // Set Autonomous Command
-        autonomousCommand = autonomouseSelector.getSelected();
+        setAutonomousCommand();
 
         // Start Autonomous Command
         if (autonomousCommand != null) {
@@ -145,10 +151,18 @@ public class Robot extends TimedRobot {
     }
 
     private void updateDriveMode() {
-        if (oi.leftJoystick.getTrigger()) {
-            isLoadMode = true;
+        if (isJoystick) {
+            if (oi.leftJoystick.getTrigger()) {
+                isLoadMode = true;
+            } else {
+                isLoadMode = false;
+            }
         } else {
-            isLoadMode = false;
+            if (oi.controller.getBumper(Hand.kLeft)) {
+                isLoadMode = true;
+            } else {
+                isLoadMode = false;
+            }
         }
     }
 
@@ -157,6 +171,22 @@ public class Robot extends TimedRobot {
             virtualCamera.setSource(loadCamera);
         } else {
             virtualCamera.setSource(shooterCamera);
+        }
+    }
+
+    public void setAutonomousCommand() {
+        int autoNumber = 0;
+
+        if (oi.autoSwitch1.get()) {
+            autoNumber++;
+        }
+
+        if (oi.autoSwitch2.get()) {
+            autoNumber += 2;
+        }
+
+        if (oi.autoSwitch3.get()) {
+            autoNumber += 4;
         }
     }
 }

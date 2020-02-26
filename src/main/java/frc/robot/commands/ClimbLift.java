@@ -27,10 +27,12 @@ public class ClimbLift extends Command {
     protected void initialize() {
         this.setInterruptible(true);
 
-        if (m_climbLiftSpeed > 0) {
-            movingUp = true;
+        if (Robot.oi.climbOverride.get()) {
+            if (m_climbLiftSpeed > 0) {
+                movingUp = true;
 
-            Robot.climb.lockClimb(false);
+                Robot.climb.lockClimb(false);
+            }
         }
 
         CJTimer.reset();
@@ -40,12 +42,16 @@ public class ClimbLift extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (movingUp) {
-            if (CJTimer.get() >= Constants.climbUpDelay) {
+        if (Robot.oi.climbOverride.get()) {
+            if (movingUp) {
+                if (CJTimer.get() >= Constants.climbUpDelay) {
+                    Robot.climb.setClimbLiftSpeed(m_climbLiftSpeed);
+                }
+            } else {
                 Robot.climb.setClimbLiftSpeed(m_climbLiftSpeed);
             }
         } else {
-            Robot.climb.setClimbLiftSpeed(m_climbLiftSpeed);
+            Robot.climb.stopClimb();
         }
     }
 

@@ -23,7 +23,11 @@ public class ClimbSlide extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.climb.setClimbSlideSpeed(m_climbSlideSpeed);
+        if (Robot.oi.climbOverride.get()) {
+            Robot.climb.setClimbSlideSpeed(m_climbSlideSpeed);
+        } else {
+            Robot.climb.stopClimb();
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

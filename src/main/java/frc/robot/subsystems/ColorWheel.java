@@ -13,12 +13,16 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class ColorWheel extends Subsystem {
 
     // Color Wheel Motors (Shared with Intake)
     private TalonSRX colorWheelMotor = Robot.intake.intakeTalon;
+
+    // Color Sensor Servo
+    private Servo colorSensorServo;
 
     // Color Sensor
     private final ColorSensorV3 colorSensor;
@@ -30,6 +34,9 @@ public class ColorWheel extends Subsystem {
     }
 
     public ColorWheel() {
+        // Color Sensor Servo
+        colorSensorServo = new Servo(1);
+
         // Color Sensor
         colorSensor = new ColorSensorV3(sensor);
 
@@ -71,6 +78,10 @@ public class ColorWheel extends Subsystem {
 
     public void zeroMotorPosition() {
         colorWheelMotor.setSelectedSensorPosition(0);
+    }
+
+    public void setSensorServoAngle(double angle) {
+        colorSensorServo.setAngle(angle);
     }
 
     public TargetColor getDetectedColor() {

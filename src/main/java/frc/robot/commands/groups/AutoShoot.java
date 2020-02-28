@@ -8,9 +8,9 @@ import frc.robot.commands.TopLiftMove;
 
 public class AutoShoot extends CommandGroup {
 
-  public AutoShoot(double sorterSpeed, double bottomLiftSpeed, double topLiftSpeed) {
+  public AutoShoot(double leftSorterSpeed, double rightSorterSpeed, double bottomLiftSpeed, double topLiftSpeed) {
     addParallel(new TopLiftMove(topLiftSpeed));
     addParallel(new BottomLiftMove(bottomLiftSpeed));
-    addSequential(new SorterFeed(sorterSpeed, sorterSpeed));
+    addSequential(new SorterFeed(leftSorterSpeed, rightSorterSpeed));
   }
 }

@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.util.Color;
 public class Constants {
     // Drive Constants
     public static final int driveEncoderPulses = 2048;
-    public static final double driveWheelDiamterMeters = 0.15;
-    public static final double driveTrackWidthMeters = 0.635;
-    
+    public static final double driveWheelDiamterMeters = 0.1524;
+    public static final double driveTrackWidthMeters = 0.590804; // 23.26"
+
     public static final double straightDriveThreshold = 0.2;
     public static final double straightDriveP = 0.015;
     public static final double driveTurnDamp = 0.2;
@@ -58,7 +58,7 @@ public class Constants {
     public static final double turretI = 0.0;
     public static final double turretD = 0.003;
     public static final double turretTolerance = 1.0;
-    public static final int turretOffset = 2586; //31 -1567
+    public static final int turretOffset = 2586; // 31 -1567
     public static final int turretMinEnd = 40;
     public static final int turretMaxEnd = 320;
 

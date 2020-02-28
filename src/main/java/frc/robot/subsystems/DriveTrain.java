@@ -51,7 +51,8 @@ public class DriveTrain extends Subsystem {
         leftSparkDrive1 = new CANSparkMax(1, MotorType.kBrushless);
         leftSparkDrive1.setInverted(true);
         leftSparkDrive1.setIdleMode(IdleMode.kCoast);
-        leftSparkDrive1.setSmartCurrentLimit(40);
+        leftSparkDrive1.setSmartCurrentLimit(45);
+        leftSparkDrive1.setOpenLoopRampRate(0.2);
 
         leftSparkDrive2 = new CANSparkMax(2, MotorType.kBrushless);
         leftSparkDrive2.follow(leftSparkDrive1);
@@ -59,7 +60,8 @@ public class DriveTrain extends Subsystem {
         rightSparkDrive1 = new CANSparkMax(3, MotorType.kBrushless);
         rightSparkDrive1.setInverted(false);
         rightSparkDrive1.setIdleMode(IdleMode.kCoast);
-        rightSparkDrive1.setSmartCurrentLimit(40);
+        rightSparkDrive1.setSmartCurrentLimit(45);
+        rightSparkDrive1.setOpenLoopRampRate(0.2);
 
         rightSparkDrive2 = new CANSparkMax(4, MotorType.kBrushless);
         rightSparkDrive2.follow(rightSparkDrive1);
@@ -106,8 +108,8 @@ public class DriveTrain extends Subsystem {
         // Put code here to be run every loop
 
         // Update Drive Odometry
-        driveOdometry.update(Rotation2d.fromDegrees(navx.getYaw()), leftDriveEncoder.getPosition(),
-                rightDriveEncoder.getPosition());
+        driveOdometry.update(Rotation2d.fromDegrees(navx.getYaw()), rotationsToMeters(leftDriveEncoder.getPosition()),
+                rotationsToMeters(rightDriveEncoder.getPosition()));
     }
 
     // Put methods for controlling this subsystem
@@ -152,8 +154,11 @@ public class DriveTrain extends Subsystem {
      */
     public void velocityDrive(double leftVelocity, double leftArbitraryFeedForward, double rightVelocity,
             double rightArbitraryFeedForward) {
+        leftVelocity = metersToRotations(leftVelocity) * 60;
         leftDriveController.setReference(leftVelocity, ControlType.kVelocity, 0, leftArbitraryFeedForward,
                 ArbFFUnits.kVoltage);
+
+        rightVelocity = metersToRotations(rightVelocity) * 60;
         rightDriveController.setReference(rightVelocity, ControlType.kVelocity, 0, rightArbitraryFeedForward,
                 ArbFFUnits.kVoltage);
     }
@@ -184,6 +189,14 @@ public class DriveTrain extends Subsystem {
 
     public Pose2d getCurrentPoseMeters() {
         return driveOdometry.getPoseMeters();
+    }
+
+    public double rotationsToMeters(double rotations) {
+        return rotations * (Math.PI * Constants.driveWheelDiamterMeters);
+    }
+
+    public double metersToRotations(double meters) {
+        return meters / (Math.PI * Constants.driveWheelDiamterMeters);
     }
 
     public double calcGyroError(double heading) {

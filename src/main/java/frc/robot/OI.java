@@ -6,7 +6,6 @@ import frc.lib.drive.mhJoystick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.groups.*;
 import frc.robot.commands.*;
 
@@ -24,20 +23,24 @@ public class OI {
     private Joystick buttonBox2;
 
     // Left Joystick Buttons
-    private JoystickButton shooterSpeedUp;
-    private JoystickButton shooterSpeedDown;
-    private JoystickButton joystickTurretManualLeft;
-    private JoystickButton joystickTurretManualRight;
+    private POVButton joystickShooterSpeedUp;
+    private POVButton joystickShooterSpeedDown;
+    private POVButton joystickTurretManualLeft;
+    private POVButton joystickTurretManualRight;
+    private JoystickButton joystickAutoShoot;
 
     // Right Joystick Buttons
     public JoystickButton autoLimelightClose;
     public JoystickButton autoLimelightFar;
-    private JoystickButton joystickShoot;
-
-    // Controller Buttons
-    private POVButton controllerShoot;
     private POVButton limelightTiltUp;
     private POVButton limelightTiltDown;
+
+    // Controller Buttons
+    private JoystickButton controllerShooterSpeedUp;
+    private JoystickButton controllerShooterSpeedDown;
+    private JoystickButton controllerTurretManualLeft;
+    private JoystickButton controllerTurretManualRight;
+    private POVButton controllerAutoShoot;
 
     // Button Box 1 Buttons
     private JoystickButton sorterManualForward;
@@ -89,31 +92,60 @@ public class OI {
 
         buttonBox2 = new Joystick(3);
         initButtonBox2Btns();
-
-        SmartDashboard.putData("Turret Stop", new StopTurret());
-        SmartDashboard.putData("Turret Angle 135", new TurretToAngle(135, 5));
-        SmartDashboard.putData("Turret Angle 90", new TurretToAngle(90, 5));
-        SmartDashboard.putData("Turret Angle 270", new TurretToAngle(270, 5));
     }
 
     public void initJoystickBtns() {
+        // Left Joystick
+        joystickShooterSpeedUp = new POVButton(leftJoystick, 0);
+        joystickShooterSpeedUp.whenPressed(new ChangeShooterSpeed(100));
 
-    }
+        joystickShooterSpeedDown = new POVButton(leftJoystick, 180);
+        joystickShooterSpeedDown.whenPressed(new ChangeShooterSpeed(-100));
 
-    public void initControllerBtns() {
-        shooterSpeedUp = new JoystickButton(controller, 4);
-        shooterSpeedUp.whenPressed(new ChangeShooterSpeed(100));
-
-        shooterSpeedDown = new JoystickButton(controller, 1);
-        shooterSpeedDown.whenPressed(new ChangeShooterSpeed(-100));
-
-        joystickTurretManualLeft = new JoystickButton(controller, 3);
+        joystickTurretManualLeft = new POVButton(leftJoystick, 270);
         joystickTurretManualLeft.whenPressed(new TurretMove(-0.4));
         joystickTurretManualLeft.whenReleased(new StopTurret());
 
-        joystickTurretManualRight = new JoystickButton(controller, 2);
+        joystickTurretManualRight = new POVButton(leftJoystick, 90);
         joystickTurretManualRight.whenPressed(new TurretMove(0.4));
         joystickTurretManualRight.whenReleased(new StopTurret());
+
+        joystickAutoShoot = new JoystickButton(leftJoystick, 4);
+        joystickAutoShoot.whenPressed(new AutoShoot(0.6, 0.8, 0.45, 0.45));
+        joystickAutoShoot.whenReleased(new StopTopLiftAndWheel());
+        joystickAutoShoot.whenReleased(new StopBottomLift());
+        joystickAutoShoot.whenReleased(new StopSorter());
+
+        // Right Joystick
+        autoLimelightClose = new JoystickButton(rightJoystick, 3);
+        autoLimelightClose.whenPressed(new VisionProcessing(false, false));
+        autoLimelightClose.whenReleased(new VisionProcessing(true, false));
+
+        autoLimelightFar = new JoystickButton(rightJoystick, 5);
+        autoLimelightFar.whenPressed(new VisionProcessing(false, true));
+        autoLimelightFar.whenReleased(new VisionProcessing(true, true));
+
+        limelightTiltUp = new POVButton(rightJoystick, 0);
+        limelightTiltUp.whenPressed(new ChangeLimelightTilt(10));
+
+        limelightTiltDown = new POVButton(rightJoystick, 180);
+        limelightTiltDown.whenPressed(new ChangeLimelightTilt(-10));
+    }
+
+    public void initControllerBtns() {
+        controllerShooterSpeedUp = new JoystickButton(controller, 4);
+        controllerShooterSpeedUp.whenPressed(new ChangeShooterSpeed(100));
+
+        controllerShooterSpeedDown = new JoystickButton(controller, 1);
+        controllerShooterSpeedDown.whenPressed(new ChangeShooterSpeed(-100));
+
+        controllerTurretManualLeft = new JoystickButton(controller, 3);
+        controllerTurretManualLeft.whenPressed(new TurretMove(-0.4));
+        controllerTurretManualLeft.whenReleased(new StopTurret());
+
+        controllerTurretManualRight = new JoystickButton(controller, 2);
+        controllerTurretManualRight.whenPressed(new TurretMove(0.4));
+        controllerTurretManualRight.whenReleased(new StopTurret());
 
         autoLimelightClose = new JoystickButton(controller, 10);
         autoLimelightClose.whenPressed(new VisionProcessing(false, false));
@@ -123,16 +155,16 @@ public class OI {
         autoLimelightFar.whenPressed(new VisionProcessing(false, true));
         autoLimelightFar.whenReleased(new VisionProcessing(true, true));
 
-        controllerShoot = new POVButton(controller, 0);
-        controllerShoot.whenPressed(new AutoShoot(0.8, 0.45, 0.45));
-        controllerShoot.whenReleased(new StopTopLiftAndWheel());
-        controllerShoot.whenReleased(new StopBottomLift());
-        controllerShoot.whenReleased(new StopSorter());
+        controllerAutoShoot = new POVButton(controller, 90);
+        controllerAutoShoot.whenPressed(new AutoShoot(0.6, 0.8, 0.45, 0.45));
+        controllerAutoShoot.whenReleased(new StopTopLiftAndWheel());
+        controllerAutoShoot.whenReleased(new StopBottomLift());
+        controllerAutoShoot.whenReleased(new StopSorter());
 
-        limelightTiltUp = new POVButton(controller, 90);
+        limelightTiltUp = new POVButton(controller, 0);
         limelightTiltUp.whenPressed(new ChangeLimelightTilt(10));
 
-        limelightTiltDown = new POVButton(controller, 270);
+        limelightTiltDown = new POVButton(controller, 180);
         limelightTiltDown.whenPressed(new ChangeLimelightTilt(-10));
     }
 

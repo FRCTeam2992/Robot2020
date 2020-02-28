@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.geometry.Transform2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.Constants;
@@ -26,6 +27,7 @@ public class AutoFollowPath extends Command {
 
   private String mTrajectoryName = "";
   private boolean mIsLoadMode = false;
+  private boolean mReversePath = false;
 
   private Timer elpasedTimer;
   private double previousTime = 0;
@@ -40,11 +42,12 @@ public class AutoFollowPath extends Command {
 
   private SimpleMotorFeedforward driveFeedforward;
 
-  public AutoFollowPath(String trajectoryName, boolean isLoadMode) {
+  public AutoFollowPath(String trajectoryName, boolean isLoadMode, boolean reversePath) {
     requires(Robot.driveTrain);
 
     mTrajectoryName = trajectoryName;
     mIsLoadMode = isLoadMode;
+    mReversePath = reversePath;
 
     pathController = new RamseteController(2.0, 0.7);
 
@@ -56,8 +59,12 @@ public class AutoFollowPath extends Command {
     elpasedTimer = new Timer();
   }
 
+  public AutoFollowPath(String trajectoryName, boolean isLoadMode) {
+    this(trajectoryName, isLoadMode, false);
+  }
+
   public AutoFollowPath(String trajectoryName) {
-    this(trajectoryName, false);
+    this(trajectoryName, false, false);
   }
 
   // Called just before this Command runs the first time
@@ -68,14 +75,23 @@ public class AutoFollowPath extends Command {
     try {
       // Get Trajectory Path from Deploy Directory
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath()
-          .resolve("paths/" + mTrajectoryName + ".wpilib.json");
+          .resolve("paths/output/" + mTrajectoryName + ".wpilib.json");
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
 
       // Update Current Robot Pose
       updateCurrentRobotPose();
 
       // Set Tarjectory Start Position to Current Robot Position
-      Transform2d transform = currentRobotPose.minus(trajectory.getInitialPose());
+      Transform2d transform;
+
+      if (mReversePath) {
+        Trajectory.State lastState = trajectory.sample(trajectory.getTotalTimeSeconds());
+
+        transform = currentRobotPose.minus(lastState.poseMeters);
+      } else {
+        transform = currentRobotPose.minus(trajectory.getInitialPose());
+      }
+
       trajectory = trajectory.transformBy(transform);
 
       // Set Trajectory Starting Speeds
@@ -87,7 +103,6 @@ public class AutoFollowPath extends Command {
       isDone = true;
     }
 
-    Robot.driveTrain.setDriveGear(false);
     Robot.driveTrain.setBrakeMode(true);
 
     elpasedTimer.reset();
@@ -98,13 +113,21 @@ public class AutoFollowPath extends Command {
   @Override
   protected void execute() {
     if (trajectory != null) {
-      double currentTime = elpasedTimer.get();
-      double deltaTime = currentTime - previousTime;
+      double currentTime;
+      double deltaTime;
+
+      if (mReversePath) {
+        currentTime = trajectory.getTotalTimeSeconds() - elpasedTimer.get();
+        deltaTime = previousTime - currentTime;
+      } else {
+        currentTime = elpasedTimer.get();
+        deltaTime = currentTime - previousTime;
+      }
 
       updateCurrentRobotPose();
 
       Trajectory.State trajectoryState = trajectory.sample(currentTime);
-      ChassisSpeeds adjustedSpeeds = pathController.calculate(Robot.driveTrain.getCurrentPoseMeters(), trajectoryState);
+      ChassisSpeeds adjustedSpeeds = pathController.calculate(currentRobotPose, trajectoryState);
       DifferentialDriveWheelSpeeds targetWheelSpeeds = driveKinematics.toWheelSpeeds(adjustedSpeeds);
 
       double leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
@@ -115,8 +138,11 @@ public class AutoFollowPath extends Command {
       double rightFeedForward = driveFeedforward.calculate(rightSpeedSetpoint,
           (rightSpeedSetpoint - previousWheelSpeeds.rightMetersPerSecond) / deltaTime);
 
+      SmartDashboard.putNumber("Left Feedforward", leftSpeedSetpoint);
+      SmartDashboard.putNumber("Right Feedforward", rightSpeedSetpoint);
+
       if (mIsLoadMode) {
-        Robot.driveTrain.velocityDrive(-rightSpeedSetpoint, rightFeedForward, -leftSpeedSetpoint, leftFeedForward);
+        Robot.driveTrain.velocityDrive(-rightSpeedSetpoint, -rightFeedForward, -leftSpeedSetpoint, -leftFeedForward);
       } else {
         Robot.driveTrain.velocityDrive(leftSpeedSetpoint, leftFeedForward, rightSpeedSetpoint, rightFeedForward);
       }
@@ -148,7 +174,7 @@ public class AutoFollowPath extends Command {
   }
 
   public Pose2d invertPose(Pose2d pose) {
-    return new Pose2d(pose.getTranslation().unaryMinus(), pose.getRotation().unaryMinus());
+    return new Pose2d(pose.getTranslation().unaryMinus(), pose.getRotation());
   }
 
   public void updateCurrentRobotPose() {

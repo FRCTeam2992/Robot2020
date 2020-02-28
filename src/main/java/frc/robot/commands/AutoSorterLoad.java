@@ -61,21 +61,33 @@ public class AutoSorterLoad extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (!Robot.sorter.sorterBallSensor.get()) {
+        if (Robot.sorter.sorterBallSensor.get()) {
             Robot.sorter.stopSorter();
         } else {
+            double left = 0;
+            double right = 0;
+
             if (autoSpeedChangeToggle) {
                 if (speedChangeTimer.get() >= Constants.autoSorterSpeedChangeDelay) {
-                    Robot.sorter.setSorterSpeed(mMinLeftSorterSpeed, mMaxRightSorterSpeed);
+                    left = mMinLeftSorterSpeed;
+                    right = mMaxRightSorterSpeed;
 
                     if (speedChangeTimer.get() >= (2 * Constants.autoSorterSpeedChangeDelay)) {
                         speedChangeTimer.reset();
                     }
                 } else {
-                    Robot.sorter.setSorterSpeed(mMaxLeftSorterSpeed, mMinRightSorterSpeed);
+                    left = mMaxLeftSorterSpeed;
+                    right = mMinRightSorterSpeed;
                 }
             } else {
-                Robot.sorter.setSorterSpeed(mMinLeftSorterSpeed, mMinRightSorterSpeed);
+                left = mMinLeftSorterSpeed;
+                right = mMinRightSorterSpeed;
+            }
+
+            if (Robot.oi.sorterSwitch.get()) {
+                Robot.sorter.setSorterSpeed(left, -right);
+            } else {
+                Robot.sorter.setSorterSpeed(left, right);
             }
         }
     }

@@ -4,11 +4,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class StopIntakeAndWheel extends Command {
+public class StopTopLiftAndWheel extends Command {
 
-    public StopIntakeAndWheel() {
+    public StopTopLiftAndWheel() {
+        requires(Robot.topLift);
         requires(Robot.colorWheel);
-        requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +20,7 @@ public class StopIntakeAndWheel extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intake.stopIntake();
+        Robot.topLift.stopTopLift();
         Robot.colorWheel.stopColorWheel();
     }
 

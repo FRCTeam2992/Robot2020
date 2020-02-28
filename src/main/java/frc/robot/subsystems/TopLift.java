@@ -5,25 +5,25 @@ import frc.robot.commands.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class TopLift extends Subsystem {
 
-    // Top Lift Motors
-    private VictorSPX topLiftMotor;
+    // Top Lift Motors (Shared with Color Wheel)
+    public TalonSRX topLiftMotor;
 
     public TopLift() {
-        // Top Lift Motors
-        topLiftMotor = new VictorSPX(9);
+        // Top Lift Motors (Shared with Color Wheel)
+        topLiftMotor = new TalonSRX(5);
         topLiftMotor.setInverted(false);
         topLiftMotor.setNeutralMode(NeutralMode.Coast);
     }
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new StopTopLift());
+        setDefaultCommand(new StopTopLiftAndWheel());
     }
 
     @Override

@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class ColorWheel extends Subsystem {
 
-    // Color Wheel Motors (Shared with Intake)
-    private TalonSRX colorWheelMotor = Robot.intake.intakeTalon;
+    // Color Wheel Motors (Shared with Top Lift)
+    private TalonSRX colorWheelMotor = Robot.topLift.topLiftMotor;
 
     // Color Sensor Servo
     private Servo colorSensorServo;
@@ -49,7 +49,7 @@ public class ColorWheel extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        // Default command set in intake subsystem
+        // Default command set in top lift subsystem
     }
 
     @Override

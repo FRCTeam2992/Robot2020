@@ -25,7 +25,11 @@ public class SorterFeed extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.sorter.setSorterSpeed(m_leftSideSpeed, m_rightSideSpeed);
+        if (Robot.oi.sorterSwitch.get()) {
+            Robot.sorter.setSorterSpeed(m_leftSideSpeed, -m_rightSideSpeed);
+        } else {
+            Robot.sorter.setSorterSpeed(m_leftSideSpeed, m_rightSideSpeed);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

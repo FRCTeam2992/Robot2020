@@ -8,16 +8,18 @@ import frc.robot.Robot;
 
 public class AutoTurretAim extends Command {
 
-    private int updateCounter = 8;
+    private int updateCounter = 0;
 
-    private double turretSetAngle = 0;
+    private double turretSetAngle = Robot.turret.getTurretAngle();
 
     private boolean mFinishWhenAligned = false;
+    private boolean mIsFar = false;
 
-    public AutoTurretAim(boolean finishWhenAligned) {
+    public AutoTurretAim(boolean finishWhenAligned, boolean isFar) {
         requires(Robot.turret);
 
         mFinishWhenAligned = finishWhenAligned;
+        mIsFar = isFar;
     }
 
     // Called just before this Command runs the first time
@@ -26,7 +28,12 @@ public class AutoTurretAim extends Command {
         this.setInterruptible(true);
 
         Robot.vision.limeLightManager.ledModeRequest(LedMode.On);
-        Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipeline);
+
+        if (mIsFar) {
+            Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipelineFar);
+        } else {
+            Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipelineClose);
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,12 +41,14 @@ public class AutoTurretAim extends Command {
     protected void execute() {
         updateCounter++;
 
-        if (updateCounter > 8) {
+        if (updateCounter > 10) {
             if (Robot.vision.limeLightCamera.hasTarget()) {
-                turretSetAngle = Robot.turret.getTurretAngle() + Robot.vision.limeLightCamera.getTargetXOffset();
-            }
+                double xOffset = Robot.vision.limeLightCamera.getTargetXOffset();
 
-            updateCounter = 0;
+                if (Math.abs(xOffset) > 1) {
+                    turretSetAngle = Robot.turret.getTurretAngle() + xOffset;
+                }
+            }
         }
 
         Robot.turret.goToAngle(turretSetAngle);

@@ -8,10 +8,14 @@ import frc.robot.Robot;
 
 public class AutoLimelightServo extends Command {
 
-    private int updateCounter = 8;
+    private int updateCounter = 0;
 
-    public AutoLimelightServo() {
+    private boolean mIsFar = false; 
+
+    public AutoLimelightServo(boolean isFar) {
         requires(Robot.vision);
+
+        mIsFar = isFar;
     }
 
     // Called just before this Command runs the first time
@@ -22,7 +26,12 @@ public class AutoLimelightServo extends Command {
         Robot.vision.limelightSetAngle = Constants.limelightShooterAngle;
 
         Robot.vision.limeLightManager.ledModeRequest(LedMode.On);
-        Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipeline);
+
+        if(mIsFar) {
+            Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipelineFar);
+        } else {
+            Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipelineClose);
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,11 +44,17 @@ public class AutoLimelightServo extends Command {
                 double limelightYOffset = Robot.vision.limeLightCamera.getTargetYOffset();
 
                 if (Math.abs(limelightYOffset) > 1) {
-                    Robot.vision.limelightSetAngle += limelightYOffset;
+                    Robot.vision.limelightSetAngle -= limelightYOffset;
                 }
             }
 
             updateCounter = 0;
+        }
+
+        if (Robot.vision.limelightSetAngle > 180) {
+            Robot.vision.limelightSetAngle = 180;
+        } else if (Robot.vision.limelightSetAngle < 0) {
+            Robot.vision.limelightSetAngle = 0;
         }
 
         Robot.vision.setLimelightServoAngle(Robot.vision.limelightSetAngle);

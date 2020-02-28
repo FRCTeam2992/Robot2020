@@ -16,10 +16,12 @@ public class VisionProcessing extends Command {
 
   private static CommandGroup visionGroup;
 
-  private boolean mStopRunning;
+  private boolean mStopRunning = false;
+  private boolean mIsFar = false;
 
-  public VisionProcessing(boolean stopRunning) {
+  public VisionProcessing(boolean stopRunning, boolean isFar) {
     mStopRunning = stopRunning;
+    mIsFar = isFar;
   }
 
   // Called just before this Command runs the first time
@@ -33,7 +35,7 @@ public class VisionProcessing extends Command {
       if (Robot.isLoadMode) {
         visionGroup = new AutoVisionLoadStation();
       } else {
-        visionGroup = new AutoVisionShooter();
+        visionGroup = new AutoVisionShooter(mIsFar);
       }
 
       visionGroup.start();

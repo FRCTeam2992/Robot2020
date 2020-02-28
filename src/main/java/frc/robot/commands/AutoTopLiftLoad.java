@@ -4,12 +4,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ChangeLimelightTilt extends Command {
+public class AutoTopLiftLoad extends Command {
 
-    private double mChangeAngle;
+    private double m_topLiftSpeed;
 
-    public ChangeLimelightTilt(double changeAngle) {
-        mChangeAngle = changeAngle;
+    public AutoTopLiftLoad(double topLiftSpeed) {
+        requires(Robot.topLift);
+
+        m_topLiftSpeed = topLiftSpeed;
     }
 
     // Called just before this Command runs the first time
@@ -21,27 +23,29 @@ public class ChangeLimelightTilt extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double servoAngle = Robot.vision.limelightSetAngle + mChangeAngle;
-
-        servoAngle = Math.max(0, Math.min(180, servoAngle));
-
-        Robot.vision.limelightSetAngle = servoAngle;
+        if (Robot.bottomLift.liftBallSensor.get()) {
+            Robot.topLift.stopTopLift();
+        } else {
+            Robot.topLift.setTopLiftSpeed(m_topLiftSpeed);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.topLift.stopTopLift();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.topLift.stopTopLift();
     }
 }

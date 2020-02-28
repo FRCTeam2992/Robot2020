@@ -6,6 +6,7 @@ import frc.lib.drive.mhJoystick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.groups.*;
 import frc.robot.commands.*;
 
@@ -29,12 +30,14 @@ public class OI {
     private JoystickButton joystickTurretManualRight;
 
     // Right Joystick Buttons
-    private JoystickButton autoLimelight;
-    private JoystickButton joystickTopLiftUp;
+    public JoystickButton autoLimelightClose;
+    public JoystickButton autoLimelightFar;
+    private JoystickButton joystickShoot;
 
     // Controller Buttons
-    private POVButton controllerAutoLimelight;
-    private POVButton controllerTopLiftUp;
+    private POVButton controllerShoot;
+    private POVButton limelightTiltUp;
+    private POVButton limelightTiltDown;
 
     // Button Box 1 Buttons
     private JoystickButton sorterManualForward;
@@ -86,6 +89,11 @@ public class OI {
 
         buttonBox2 = new Joystick(3);
         initButtonBox2Btns();
+
+        SmartDashboard.putData("Turret Stop", new StopTurret());
+        SmartDashboard.putData("Turret Angle 135", new TurretToAngle(135, 5));
+        SmartDashboard.putData("Turret Angle 90", new TurretToAngle(90, 5));
+        SmartDashboard.putData("Turret Angle 270", new TurretToAngle(270, 5));
     }
 
     public void initJoystickBtns() {
@@ -107,35 +115,49 @@ public class OI {
         joystickTurretManualRight.whenPressed(new TurretMove(0.4));
         joystickTurretManualRight.whenReleased(new StopTurret());
 
-        controllerAutoLimelight = new POVButton(controller, 90);
-        controllerAutoLimelight.whenPressed(new VisionProcessing(false));
-        controllerAutoLimelight.whenReleased(new VisionProcessing(true));
+        autoLimelightClose = new JoystickButton(controller, 10);
+        autoLimelightClose.whenPressed(new VisionProcessing(false, false));
+        autoLimelightClose.whenReleased(new VisionProcessing(true, false));
 
-        controllerTopLiftUp = new POVButton(controller, 0);
-        controllerTopLiftUp.whenPressed(new TopLiftMove(0.7));
-        controllerTopLiftUp.whenReleased(new StopTopLift());
+        autoLimelightFar = new JoystickButton(controller, 9);
+        autoLimelightFar.whenPressed(new VisionProcessing(false, true));
+        autoLimelightFar.whenReleased(new VisionProcessing(true, true));
+
+        controllerShoot = new POVButton(controller, 0);
+        controllerShoot.whenPressed(new AutoShoot(0.8, 0.45, 0.45));
+        controllerShoot.whenReleased(new StopTopLiftAndWheel());
+        controllerShoot.whenReleased(new StopBottomLift());
+        controllerShoot.whenReleased(new StopSorter());
+
+        limelightTiltUp = new POVButton(controller, 90);
+        limelightTiltUp.whenPressed(new ChangeLimelightTilt(10));
+
+        limelightTiltDown = new POVButton(controller, 270);
+        limelightTiltDown.whenPressed(new ChangeLimelightTilt(-10));
     }
 
     public void initButtonBoxBtns() {
         sorterManualForward = new JoystickButton(buttonBox, 1);
-        sorterManualForward.whenPressed(new SorterFeed(0.3, 0.3));
+        sorterManualForward.whenPressed(new SorterFeed(0.6, 0.8));
         sorterManualForward.whenReleased(new StopSorter());
 
         sorterManualReverse = new JoystickButton(buttonBox, 2);
-        sorterManualReverse.whenPressed(new SorterFeed(-0.3, -0.3));
+        sorterManualReverse.whenPressed(new SorterFeed(-0.6, -0.8));
         sorterManualReverse.whenReleased(new StopSorter());
+
+        sorterSwitch = new JoystickButton(buttonBox, 3);
 
         intakeDeploy = new JoystickButton(buttonBox, 4);
         intakeDeploy.whenPressed(new IntakeDeploy(true));
         intakeDeploy.whenReleased(new IntakeDeploy(false));
 
         intakeManualForward = new JoystickButton(buttonBox, 5);
-        intakeManualForward.whenPressed(new IntakeFeed(0.3));
-        intakeManualForward.whenReleased(new StopIntakeAndWheel());
+        intakeManualForward.whenPressed(new IntakeFeed(1));
+        intakeManualForward.whenReleased(new StopIntake());
 
         intakeManualReverse = new JoystickButton(buttonBox, 6);
-        intakeManualReverse.whenPressed(new IntakeFeed(-0.3));
-        intakeManualReverse.whenReleased(new StopIntakeAndWheel());
+        intakeManualReverse.whenPressed(new IntakeFeed(-1));
+        intakeManualReverse.whenReleased(new StopIntake());
 
         autoColorWheelSpin = new JoystickButton(buttonBox, 7);
         autoColorWheelSpin.whenPressed(new AutoRotateWheelSpin(Constants.colorWheelSpinRotations, 5));
@@ -145,11 +167,11 @@ public class OI {
 
         colorWheelManualLeft = new JoystickButton(buttonBox, 9);
         colorWheelManualLeft.whenPressed(new ColorWheelMove(-0.65));
-        colorWheelManualLeft.whenReleased(new StopIntakeAndWheel());
+        colorWheelManualLeft.whenReleased(new StopIntake());
 
         colorWheelManualRight = new JoystickButton(buttonBox, 10);
         colorWheelManualRight.whenPressed(new ColorWheelMove(0.65));
-        colorWheelManualRight.whenReleased(new StopIntakeAndWheel());
+        colorWheelManualRight.whenReleased(new StopIntake());
 
         climbLiftUp = new JoystickButton(buttonBox, 11);
         climbLiftUp.whenPressed(new ClimbLift(0.5));
@@ -178,23 +200,23 @@ public class OI {
 
     public void initButtonBox2Btns() {
         topLiftManualUp = new JoystickButton(buttonBox2, 1);
-        topLiftManualUp.whenPressed(new TopLiftMove(0.7));
-        topLiftManualUp.whenReleased(new StopTopLift());
+        topLiftManualUp.whenPressed(new TopLiftMove(0.45));
+        topLiftManualUp.whenReleased(new StopTopLiftAndWheel());
 
         topLiftManualDown = new JoystickButton(buttonBox2, 2);
-        topLiftManualDown.whenPressed(new TopLiftMove(-0.7));
-        topLiftManualDown.whenReleased(new StopTopLift());
+        topLiftManualDown.whenPressed(new TopLiftMove(-0.45));
+        topLiftManualDown.whenReleased(new StopTopLiftAndWheel());
 
         bottomLiftManualUp = new JoystickButton(buttonBox2, 3);
-        bottomLiftManualUp.whenPressed(new BottomLiftMove(0.7));
+        bottomLiftManualUp.whenPressed(new BottomLiftMove(0.45));
         bottomLiftManualUp.whenReleased(new StopBottomLift());
 
         bottomLiftManualDown = new JoystickButton(buttonBox2, 4);
-        bottomLiftManualDown.whenPressed(new BottomLiftMove(-0.7));
+        bottomLiftManualDown.whenPressed(new BottomLiftMove(-0.45));
         bottomLiftManualDown.whenReleased(new StopBottomLift());
 
         autoIntakePowerCell = new JoystickButton(buttonBox2, 5);
-        autoIntakePowerCell.whenPressed(new AutoIntakeBall(0.3, .30, .70));
+        autoIntakePowerCell.whenPressed(new AutoIntakeBall(1, 0.6, 0.8, 0.45, 0.45));
 
         autoOverride = new JoystickButton(buttonBox2, 6);
         autoOverride.whenPressed(new AutoOverride());
@@ -204,11 +226,11 @@ public class OI {
         shooterToggle.whenReleased(new StopShooter());
 
         turretManualLeft = new JoystickButton(buttonBox2, 8);
-        turretManualLeft.whenPressed(new TurretMove(-0.4));
+        turretManualLeft.whenPressed(new TurretMove(-1));
         turretManualLeft.whenReleased(new StopTurret());
 
         turretManualRight = new JoystickButton(buttonBox2, 9);
-        turretManualRight.whenPressed(new TurretMove(0.4));
+        turretManualRight.whenPressed(new TurretMove(1));
         turretManualRight.whenReleased(new StopTurret());
 
         colorSensorDeploy = new JoystickButton(buttonBox2, 10);

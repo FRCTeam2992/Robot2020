@@ -10,7 +10,6 @@ public class IntakeFeed extends Command {
 
     public IntakeFeed(double intakeSpeed) {
         requires(Robot.intake);
-        requires(Robot.colorWheel);
 
         m_intakeSpeed = intakeSpeed;
     }

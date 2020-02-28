@@ -110,7 +110,7 @@ public class DriveSticks extends Command {
             if (Robot.isTankDrive) {
                 Robot.driveTrain.tankDrive(left, rightY);
             } else {
-                Robot.driveTrain.arcadeDrive(left, -rightX);
+                Robot.driveTrain.arcadeDrive(left, rightX);
             }
         }
     }

@@ -10,6 +10,7 @@ public class TopLiftMove extends Command {
 
     public TopLiftMove(double topLiftSpeed) {
         requires(Robot.topLift);
+        requires(Robot.colorWheel);
 
         m_topLiftSpeed = topLiftSpeed;
     }

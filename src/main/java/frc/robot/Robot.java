@@ -100,7 +100,11 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
 
-        Robot.vision.setLimelightVisionMode(false);
+        if (oi.autoLimelightClose.get() || oi.autoLimelightFar.get()) {
+            Robot.vision.setLimelightVisionMode(true);
+        } else {
+            Robot.vision.setLimelightVisionMode(false);
+        }
 
         updateDriveMode();
 

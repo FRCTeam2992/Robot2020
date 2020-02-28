@@ -26,14 +26,15 @@ public class Constants {
     public static final double driveAccelerationGain = 0.0;
 
     // Vision Constants
-    public static final double limelightShooterAngle = 20.0;
-    public static final double limelightLoadStationAngle = 0.0;
-    public static final double cameraAngle = 0.0;
-    public static final double cameraHeight = 0.0;
-    public static final double goalHeight = 0.0;
+    public static final double limelightShooterAngle = 175.0;
+    public static final double limelightLoadStationAngle = 20.0;
+    public static final double cameraAngle = 2.0;
+    public static final double cameraHeight = 42.0;
+    public static final double goalHeight = 81.0;
     public static final double visionSteerP = 0.025;
-    public static final int limelightShooterPipeline = 0;
-    public static final int limelightLoadStationPipeline = 1;
+    public static final int limelightShooterPipelineClose = 0;
+    public static final int limelightShooterPipelineFar = 1;
+    public static final int limelightLoadStationPipeline = 2;
 
     // Color Wheel Constants
     public static final int colorWheelEncoderPulses = 1024;
@@ -53,11 +54,11 @@ public class Constants {
     public static final int shooterEncoderPulses = 2048;
 
     // Turret Constants
-    public static final double turretP = 0.08;
+    public static final double turretP = 0.05;
     public static final double turretI = 0.0;
-    public static final double turretD = 0.005;
+    public static final double turretD = 0.003;
     public static final double turretTolerance = 1.0;
-    public static final int turretOffset = 1068;
+    public static final int turretOffset = 2586; //31 -1567
     public static final int turretMinEnd = 40;
     public static final int turretMaxEnd = 320;
 

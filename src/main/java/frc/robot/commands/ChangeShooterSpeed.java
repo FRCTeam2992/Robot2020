@@ -6,10 +6,10 @@ import frc.robot.Robot;
 
 public class ChangeShooterSpeed extends Command {
 
-    private int m_changeSpeed;
+    private int mChangeSpeed;
 
     public ChangeShooterSpeed(int changeSpeed) {
-        m_changeSpeed = changeSpeed;
+        mChangeSpeed = changeSpeed;
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +20,11 @@ public class ChangeShooterSpeed extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.shooter.shooterSetSpeed += m_changeSpeed;
+        int shooterSpeed = Robot.shooter.shooterSetSpeed + mChangeSpeed;
+
+        shooterSpeed = Math.max(0, shooterSpeed);
+
+        Robot.shooter.shooterSetSpeed = shooterSpeed;
     }
 
     // Make this return true when this Command no longer needs to run execute()

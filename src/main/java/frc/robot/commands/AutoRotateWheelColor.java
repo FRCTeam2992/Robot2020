@@ -22,6 +22,7 @@ public class AutoRotateWheelColor extends Command {
 
     public AutoRotateWheelColor(double timeout) {
         requires(Robot.colorWheel);
+        requires(Robot.topLift);
 
         mTimeout = timeout;
         timeoutTimer = new Timer();

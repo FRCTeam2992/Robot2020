@@ -6,9 +6,9 @@ import frc.robot.commands.*;
 
 public class AutoVisionShooter extends CommandGroup {
 
-    public AutoVisionShooter() {
-        addParallel(new AutoLimelightServo());
-        addParallel(new AutoShooterSetSpeed());
-        addParallel(new AutoTurretAim(false));
+    public AutoVisionShooter(boolean isFar) {
+        addParallel(new AutoLimelightServo(isFar));
+        //addParallel(new AutoShooterSetSpeed(isFar));
+        addSequential(new AutoTurretAim(false, isFar));
     }
 }

@@ -1,6 +1,7 @@
 
 package frc.lib.vision;
 
+import frc.lib.vision.LimeLight.CameraMode;
 import frc.lib.vision.LimeLight.LedMode;
 
 public class LimeLightManager {
@@ -35,8 +36,10 @@ public class LimeLightManager {
 
         if (ledOnRequest > 0) {
             mLimelightCamera.setLedMode(LedMode.On);
+            mLimelightCamera.setCameraMode(CameraMode.Vision);
         } else {
             mLimelightCamera.setLedMode(LedMode.Off);
+            mLimelightCamera.setCameraMode(CameraMode.Driver);
         }
     }
 }

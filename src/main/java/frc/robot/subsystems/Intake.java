@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -11,17 +11,17 @@ import frc.robot.commands.*;
 
 public class Intake extends Subsystem {
 
-    // Intake Motors (Shared with Color Wheel)
-    public TalonSRX intakeTalon;
+    // Intake Motors
+    private VictorSPX intakeMotor;
 
     // Intake Solenoids
     private Solenoid intakeDeploySol;
 
     public Intake() {
-        // Intake Motors (Shared with Color Wheel)
-        intakeTalon = new TalonSRX(5);
-        intakeTalon.setInverted(false);
-        intakeTalon.setNeutralMode(NeutralMode.Coast);
+        // Intake Motors
+        intakeMotor = new VictorSPX(9);
+        intakeMotor.setInverted(false);
+        intakeMotor.setNeutralMode(NeutralMode.Coast);
 
         // Intake Solenoids
         intakeDeploySol = new Solenoid(1);
@@ -29,7 +29,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new StopIntakeAndWheel());
+        setDefaultCommand(new StopIntake());
     }
 
     @Override
@@ -41,11 +41,11 @@ public class Intake extends Subsystem {
     // here. Call these from Commands.
 
     public void stopIntake() {
-        intakeTalon.set(ControlMode.PercentOutput, 0);
+        intakeMotor.set(ControlMode.PercentOutput, 0);
     }
 
     public void setIntakeSpeed(double speed) {
-        intakeTalon.set(ControlMode.PercentOutput, speed);
+        intakeMotor.set(ControlMode.PercentOutput, speed);
     }
 
     public void deployIntake(boolean toggle) {

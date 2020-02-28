@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends Subsystem {
 
@@ -32,7 +33,7 @@ public class Shooter extends Subsystem {
         shooterTalon.setNeutralMode(NeutralMode.Coast);
 
         shooterVictor = new VictorSPX(12);
-        shooterVictor.setInverted(false);
+        shooterVictor.setInverted(true);
         shooterVictor.follow(shooterTalon);
 
         // Shooter Speed List
@@ -50,6 +51,9 @@ public class Shooter extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        SmartDashboard.putNumber("Shooter Set Speed", shooterSetSpeed);
+        SmartDashboard.putNumber("Shooter Velocity RPM", getShooterRPM());
+        SmartDashboard.putNumber("Shooter Percentage", shooterTalon.getMotorOutputPercent());
     }
 
     // Put methods for controlling this subsystem
@@ -66,7 +70,7 @@ public class Shooter extends Subsystem {
         shooterTalon.set(ControlMode.Velocity, velocity);
     }
 
-    public int getShooterRPM() {
-        return (shooterTalon.getSelectedSensorVelocity() * 600) / (Constants.shooterEncoderPulses * 4);
+    public double getShooterRPM() {
+        return (shooterTalon.getSelectedSensorVelocity() * 600.0) / (Constants.shooterEncoderPulses * 4.0);
     }
 }

@@ -17,7 +17,7 @@ public class AutoRotateWheelSpin extends Command {
 
     public AutoRotateWheelSpin(double rotations, double timeout) {
         requires(Robot.colorWheel);
-        requires(Robot.intake);
+        requires(Robot.topLift);
 
         mRotations = rotations;
         mTimeout = timeout;

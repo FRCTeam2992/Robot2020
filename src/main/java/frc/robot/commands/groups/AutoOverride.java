@@ -8,7 +8,7 @@ public class AutoOverride extends CommandGroup {
 
   public AutoOverride() {
     addParallel(new IntakeDeploy(false));
-    addParallel(new StopIntakeAndWheel());
+    addParallel(new StopIntake());
     addParallel(new StopSorter());
     addParallel(new StopBottomLift());
   }

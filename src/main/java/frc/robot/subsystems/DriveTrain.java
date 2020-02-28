@@ -127,16 +127,8 @@ public class DriveTrain extends Subsystem {
     }
 
     public void arcadeDrive(double moveValue, double rotateValue) {
-        double leftMotorSpeed = 0;
-        double rightMotorSpeed = 0;
-
-        if (moveValue < 0) {
-            leftMotorSpeed = moveValue - rotateValue;
-            rightMotorSpeed = moveValue + rotateValue;
-        } else {
-            leftMotorSpeed = moveValue + rotateValue;
-            rightMotorSpeed = moveValue - rotateValue;
-        }
+        double leftMotorSpeed = moveValue - rotateValue;
+        double rightMotorSpeed = moveValue + rotateValue;
 
         double max = Math.max(Math.abs(leftMotorSpeed), Math.abs(rightMotorSpeed));
 

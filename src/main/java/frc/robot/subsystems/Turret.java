@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.commands.*;
 
@@ -37,6 +38,8 @@ public class Turret extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        SmartDashboard.putNumber("Turret Position", turretTalon.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Turret Angle", getTurretAngle());
     }
 
     // Put methods for controlling this subsystem

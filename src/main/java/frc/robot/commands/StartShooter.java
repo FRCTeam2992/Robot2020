@@ -7,7 +7,7 @@ import frc.robot.Robot;
 
 public class StartShooter extends Command {
 
-    private int m_shooterSpeed = 0;
+    private double m_shooterSpeed = 0;
 
     public StartShooter() {
         requires(Robot.shooter);
@@ -24,7 +24,7 @@ public class StartShooter extends Command {
     protected void execute() {
         // Convert RPM to Ticks per 100ms
         m_shooterSpeed = Robot.shooter.shooterSetSpeed;
-        m_shooterSpeed = (m_shooterSpeed / 600) * (Constants.shooterEncoderPulses * 4);
+        m_shooterSpeed = (m_shooterSpeed / 600.0) * (Constants.shooterEncoderPulses * 4.0);
 
         Robot.shooter.setShooterVelocity(m_shooterSpeed);
     }

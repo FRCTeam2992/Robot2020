@@ -10,7 +10,7 @@ public class ColorWheelMove extends Command {
 
     public ColorWheelMove(double rotateSpeed) {
         requires(Robot.colorWheel);
-        requires(Robot.intake);
+        requires(Robot.topLift);
 
         m_rotateSpeed = rotateSpeed;
     }

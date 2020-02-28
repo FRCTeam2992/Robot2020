@@ -7,7 +7,7 @@ import frc.robot.commands.*;
 public class AutoVisionLoadStation extends CommandGroup {
 
     public AutoVisionLoadStation() {
-        addSequential(new TurretToAngle(315, 3));
-        addSequential(new LimelightLoadStation());
+        addSequential(new TurretToAngle(315, 5));
+        addParallel(new LimelightLoadStation());
     }
 }

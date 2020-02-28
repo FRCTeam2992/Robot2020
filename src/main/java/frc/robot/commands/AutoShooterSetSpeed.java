@@ -8,15 +8,22 @@ import frc.robot.Robot;
 
 public class AutoShooterSetSpeed extends Command {
 
-    public AutoShooterSetSpeed() {
+    private boolean mIsFar = false;
 
+    public AutoShooterSetSpeed(boolean isFar) {
+        mIsFar = isFar;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
         Robot.vision.limeLightManager.ledModeRequest(LedMode.On);
-        Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipeline);
+
+        if (mIsFar) {
+            Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipelineFar);
+        } else {
+            Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipelineClose);
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -24,7 +31,7 @@ public class AutoShooterSetSpeed extends Command {
     protected void execute() {
         if (Robot.vision.limeLightCamera.hasTarget()) {
             double distanceToTarget = Robot.vision.limeLightCamera.getDistanceToTarget(
-                    Constants.cameraAngle + Robot.vision.limelightSetAngle, Constants.cameraHeight,
+                    Constants.cameraAngle + (180 - Robot.vision.limelightSetAngle), Constants.cameraHeight,
                     Constants.goalHeight);
 
             Robot.shooter.shooterSetSpeed = Robot.shooter.shooterSpeedList.getShooterSpeed(distanceToTarget);

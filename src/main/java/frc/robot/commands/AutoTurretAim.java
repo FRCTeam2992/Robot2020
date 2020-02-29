@@ -1,6 +1,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.lib.vision.LimeLight.LedMode;
 import frc.robot.Constants;
@@ -14,12 +15,22 @@ public class AutoTurretAim extends Command {
 
     private boolean mFinishWhenAligned = false;
     private boolean mIsFar = false;
+    private double mTimeout = 0;
 
-    public AutoTurretAim(boolean finishWhenAligned, boolean isFar) {
+    private Timer timeoutTimer;
+
+    public AutoTurretAim(boolean finishWhenAligned, boolean isFar, double timeout) {
         requires(Robot.turret);
 
         mFinishWhenAligned = finishWhenAligned;
         mIsFar = isFar;
+        mTimeout = timeout;
+
+        timeoutTimer = new Timer();
+    }
+
+    public AutoTurretAim(boolean finishWhenAligned, boolean isFar) {
+        this(finishWhenAligned, isFar, 0);
     }
 
     // Called just before this Command runs the first time
@@ -34,6 +45,9 @@ public class AutoTurretAim extends Command {
         } else {
             Robot.vision.limeLightCamera.setActivePipline(Constants.limelightShooterPipelineClose);
         }
+
+        timeoutTimer.reset();
+        timeoutTimer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -57,7 +71,8 @@ public class AutoTurretAim extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return mFinishWhenAligned && Robot.vision.limeLightCamera.getTargetXOffset() <= Constants.turretTolerance;
+        return mFinishWhenAligned && ((Robot.vision.limeLightCamera.getTargetXOffset() <= Constants.turretTolerance
+                && Robot.vision.limeLightCamera.hasTarget()) || timeoutTimer.get() >= mTimeout);
     }
 
     // Called once after isFinished returns true

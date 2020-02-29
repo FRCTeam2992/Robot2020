@@ -17,6 +17,7 @@ public class BottomLift extends Subsystem {
 
     // Bottom Lift Sensors
     public DigitalInput liftBallSensor;
+    public DigitalInput liftBallSensor2;
 
     public BottomLift() {
         // Bottom Lift Motors
@@ -26,6 +27,7 @@ public class BottomLift extends Subsystem {
 
         // Bottom Lift Sensors
         liftBallSensor = new DigitalInput(0);
+        liftBallSensor2 = new DigitalInput(1);
     }
 
     @Override

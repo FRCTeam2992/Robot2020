@@ -18,6 +18,7 @@ public class Sorter extends Subsystem {
 
     // Sorter Sensor
     public DigitalInput sorterBallSensor;
+    public DigitalInput sorterBallSensor2;
 
     public Sorter() {
         // Sorter Motors
@@ -31,6 +32,7 @@ public class Sorter extends Subsystem {
 
         // Sorter Sensor (Shared with Bottom Lift)
         sorterBallSensor = Robot.bottomLift.liftBallSensor;
+        sorterBallSensor2 = Robot.bottomLift.liftBallSensor2;
     }
 
     @Override

@@ -61,7 +61,7 @@ public class AutoSorterLoad extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.sorter.sorterBallSensor.get()) {
+        if (Robot.sorter.sorterBallSensor.get() && Robot.sorter.sorterBallSensor2.get()) {
             Robot.sorter.stopSorter();
         } else {
             double left = 0;

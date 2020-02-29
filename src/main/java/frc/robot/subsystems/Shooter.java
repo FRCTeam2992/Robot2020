@@ -51,9 +51,10 @@ public class Shooter extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+
+        // Update Dashboard
         SmartDashboard.putNumber("Shooter Set Speed", shooterSetSpeed);
         SmartDashboard.putNumber("Shooter Velocity RPM", getShooterRPM());
-        SmartDashboard.putNumber("Shooter Percentage", shooterTalon.getMotorOutputPercent());
     }
 
     // Put methods for controlling this subsystem

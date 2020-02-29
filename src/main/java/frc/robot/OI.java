@@ -184,11 +184,11 @@ public class OI {
         intakeDeploy.whenReleased(new IntakeDeploy(false));
 
         intakeManualForward = new JoystickButton(buttonBox, 5);
-        intakeManualForward.whenPressed(new IntakeFeed(1));
+        intakeManualForward.whenPressed(new IntakeFeed(0.8));
         intakeManualForward.whenReleased(new StopIntake());
 
         intakeManualReverse = new JoystickButton(buttonBox, 6);
-        intakeManualReverse.whenPressed(new IntakeFeed(-1));
+        intakeManualReverse.whenPressed(new IntakeFeed(-0.8));
         intakeManualReverse.whenReleased(new StopIntake());
 
         autoColorWheelSpin = new JoystickButton(buttonBox, 7);
@@ -248,7 +248,7 @@ public class OI {
         bottomLiftManualDown.whenReleased(new StopBottomLift());
 
         autoIntakePowerCell = new JoystickButton(buttonBox2, 5);
-        autoIntakePowerCell.whenPressed(new AutoIntakeBall(1, 0.6, 0.8, 0.45, 0.45));
+        autoIntakePowerCell.whenPressed(new AutoIntakeBall(0.8, 0.6, 0.8, 0.45, 0.45));
 
         autoOverride = new JoystickButton(buttonBox2, 6);
         autoOverride.whenPressed(new AutoOverride());

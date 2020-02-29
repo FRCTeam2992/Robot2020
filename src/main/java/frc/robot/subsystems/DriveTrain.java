@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
 
@@ -110,6 +111,9 @@ public class DriveTrain extends Subsystem {
         // Update Drive Odometry
         driveOdometry.update(Rotation2d.fromDegrees(navx.getYaw()), rotationsToMeters(leftDriveEncoder.getPosition()),
                 rotationsToMeters(rightDriveEncoder.getPosition()));
+
+        SmartDashboard.putNumber("Left Drive Encoder", leftDriveEncoder.getPosition());
+        SmartDashboard.putNumber("Right Drive Encoder", rightDriveEncoder.getPosition());
     }
 
     // Put methods for controlling this subsystem

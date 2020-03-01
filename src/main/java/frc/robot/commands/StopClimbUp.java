@@ -1,33 +1,43 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class StartShooter extends Command {
+public class StopClimbUp extends Command {
 
-    private double mShooterSpeed = 0;
+    private double mHoldSpeed = 0;
+    private double mHoldTime = 0;
 
-    public StartShooter() {
-        requires(Robot.shooter);
+    private Timer holdTimer;
+
+    public StopClimbUp(double holdSpeed, double holdTime) {
+        requires(Robot.climb);
+
+        mHoldSpeed = holdSpeed;
+        mHoldTime = holdTime;
+
+        holdTimer = new Timer();
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
         this.setInterruptible(true);
+
+        holdTimer.reset();
+        holdTimer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        // Convert RPM to Ticks per 100ms
-        mShooterSpeed = Robot.shooter.shooterSetSpeed;
-
-        mShooterSpeed = (mShooterSpeed / 600.0) * (Constants.shooterEncoderPulses * 4.0);
-
-        Robot.shooter.setShooterVelocity(mShooterSpeed);
+        if (holdTimer.get() < mHoldTime && Robot.oi.climbOverride.get()) {
+            Robot.climb.setClimbLiftSpeed(mHoldSpeed);
+        } else {
+            Robot.climb.stopClimb();
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,13 +49,11 @@ public class StartShooter extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.shooter.stopShooter();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.shooter.stopShooter();
     }
 }

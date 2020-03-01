@@ -4,6 +4,9 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import frc.robot.commands.*;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
@@ -14,6 +17,8 @@ import com.revrobotics.CANPIDController.ArbFFUnits;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -21,6 +26,8 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 
 public class DriveTrain extends Subsystem {
 
@@ -47,22 +54,25 @@ public class DriveTrain extends Subsystem {
     // Drive Odometery
     private DifferentialDriveOdometry driveOdometry;
 
+    // Motion Trajectories
+    public Trajectory RightTrench;
+
     public DriveTrain() {
         // Drive Motors
         leftSparkDrive1 = new CANSparkMax(1, MotorType.kBrushless);
-        leftSparkDrive1.setInverted(true);
+        leftSparkDrive1.setInverted(false);
         leftSparkDrive1.setIdleMode(IdleMode.kCoast);
         leftSparkDrive1.setSmartCurrentLimit(45);
-        leftSparkDrive1.setOpenLoopRampRate(0.2);
+        leftSparkDrive1.setOpenLoopRampRate(0.3);
 
         leftSparkDrive2 = new CANSparkMax(2, MotorType.kBrushless);
         leftSparkDrive2.follow(leftSparkDrive1);
 
         rightSparkDrive1 = new CANSparkMax(3, MotorType.kBrushless);
-        rightSparkDrive1.setInverted(false);
+        rightSparkDrive1.setInverted(true);
         rightSparkDrive1.setIdleMode(IdleMode.kCoast);
         rightSparkDrive1.setSmartCurrentLimit(45);
-        rightSparkDrive1.setOpenLoopRampRate(0.2);
+        rightSparkDrive1.setOpenLoopRampRate(0.3);
 
         rightSparkDrive2 = new CANSparkMax(4, MotorType.kBrushless);
         rightSparkDrive2.follow(rightSparkDrive1);
@@ -70,8 +80,10 @@ public class DriveTrain extends Subsystem {
         // Drive Encoders
         leftDriveEncoder = new CANEncoder(leftSparkDrive1, AlternateEncoderType.kQuadrature,
                 Constants.driveEncoderPulses);
+
         rightDriveEncoder = new CANEncoder(rightSparkDrive1, AlternateEncoderType.kQuadrature,
                 Constants.driveEncoderPulses);
+        rightDriveEncoder.setInverted(true);
 
         // Drive PID Controllers
         leftDriveController = leftSparkDrive1.getPIDController();
@@ -96,7 +108,10 @@ public class DriveTrain extends Subsystem {
 
         // Drive Odometry (Need to Reset Encoders First)
         resetEndoders();
-        driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(navx.getYaw()));
+        driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(-navx.getYaw()));
+
+        // Motion Trajectories
+        getMotionPaths();
     }
 
     @Override
@@ -109,11 +124,16 @@ public class DriveTrain extends Subsystem {
         // Put code here to be run every loop
 
         // Update Drive Odometry
-        driveOdometry.update(Rotation2d.fromDegrees(navx.getYaw()), rotationsToMeters(leftDriveEncoder.getPosition()),
+        driveOdometry.update(Rotation2d.fromDegrees(-navx.getYaw()), rotationsToMeters(leftDriveEncoder.getPosition()),
                 rotationsToMeters(rightDriveEncoder.getPosition()));
 
+        // Update Dashboard
         SmartDashboard.putNumber("Left Drive Encoder", leftDriveEncoder.getPosition());
         SmartDashboard.putNumber("Right Drive Encoder", rightDriveEncoder.getPosition());
+        SmartDashboard.putNumber("Gyro Yaw", navx.getAngle());
+        SmartDashboard.putNumber("Drive Odometry X", getCurrentPoseMeters().getTranslation().getX());
+        SmartDashboard.putNumber("Drive Odometry Y", getCurrentPoseMeters().getTranslation().getY());
+        SmartDashboard.putNumber("Drive Odometry Rotation", getCurrentPoseMeters().getRotation().getDegrees());
     }
 
     // Put methods for controlling this subsystem
@@ -158,13 +178,13 @@ public class DriveTrain extends Subsystem {
      */
     public void velocityDrive(double leftVelocity, double leftArbitraryFeedForward, double rightVelocity,
             double rightArbitraryFeedForward) {
-        leftVelocity = metersToRotations(leftVelocity) * 60;
-        leftDriveController.setReference(leftVelocity, ControlType.kVelocity, 0, leftArbitraryFeedForward,
-                ArbFFUnits.kVoltage);
+        leftVelocity = metersToRotations(leftVelocity * 60);
+        leftDriveController.setReference(leftVelocity, ControlType.kVelocity, 0, leftArbitraryFeedForward/12,
+                ArbFFUnits.kPercentOut);
 
-        rightVelocity = metersToRotations(rightVelocity) * 60;
-        rightDriveController.setReference(rightVelocity, ControlType.kVelocity, 0, rightArbitraryFeedForward,
-                ArbFFUnits.kVoltage);
+        rightVelocity = metersToRotations(rightVelocity * 60);
+        rightDriveController.setReference(rightVelocity, ControlType.kVelocity, 0, rightArbitraryFeedForward/12,
+                ArbFFUnits.kPercentOut);
     }
 
     public void setDriveGear(boolean toggle) {
@@ -215,5 +235,17 @@ public class DriveTrain extends Subsystem {
             angle += 360;
         }
         return angle;
+    }
+
+    public void getMotionPaths() {
+        // Right Trench
+        Path RightTrenchPath = Filesystem.getDeployDirectory().toPath().resolve("paths/output/output/RightTrench.wpilib.json");
+
+        try {
+            RightTrench = TrajectoryUtil.fromPathweaverJson(RightTrenchPath);
+        } catch (IOException e) {
+            DriverStation.reportError("Unable to open trajectory", e.getStackTrace());
+            e.printStackTrace();
+        }
     }
 }

@@ -2,6 +2,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -21,7 +22,15 @@ public class Climb extends Subsystem {
     public Climb() {
         // Climb Motors
         climbLiftMtr = new TalonSRX(13);
+        climbLiftMtr.setInverted(true);
+        climbLiftMtr.setNeutralMode(NeutralMode.Brake);
+        climbLiftMtr.configPeakCurrentLimit(70);
+        climbLiftMtr.configPeakCurrentDuration(2000);
+        climbLiftMtr.configContinuousCurrentLimit(55);
+        climbLiftMtr.enableCurrentLimit(true);
+
         climbSlideMtr = new VictorSPX(14);
+        climbSlideMtr.setInverted(false);
 
         // Climb Solenoids
         climbLockSol = new Solenoid(2);

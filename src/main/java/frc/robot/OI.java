@@ -6,6 +6,7 @@ import frc.lib.drive.mhJoystick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.groups.*;
 import frc.robot.commands.*;
 
@@ -92,6 +93,8 @@ public class OI {
 
         buttonBox2 = new Joystick(3);
         initButtonBox2Btns();
+
+        SmartDashboard.putData("Right Trench", new AutoFollowPath(Robot.driveTrain.RightTrench, false));
     }
 
     public void initJoystickBtns() {
@@ -112,9 +115,7 @@ public class OI {
 
         joystickAutoShoot = new JoystickButton(leftJoystick, 4);
         joystickAutoShoot.whenPressed(new AutoShoot(0.6, 0.8, 0.45, 0.45));
-        joystickAutoShoot.whenReleased(new StopTopLiftAndWheel());
-        joystickAutoShoot.whenReleased(new StopBottomLift());
-        joystickAutoShoot.whenReleased(new StopSorter());
+        joystickAutoShoot.whenReleased(new StopAutoShoot());
 
         // Right Joystick
         autoLimelightClose = new JoystickButton(rightJoystick, 3);
@@ -207,27 +208,24 @@ public class OI {
 
         climbLiftUp = new JoystickButton(buttonBox, 11);
         climbLiftUp.whenPressed(new ClimbLift(0.5));
-        climbLiftUp.whenReleased(new StopClimb());
+        climbLiftUp.whenReleased(new StopClimbUp(0.8, 0.25));
+        // climbLiftUp.whenReleased(new StopClimb());
 
         climbLiftDown = new JoystickButton(buttonBox, 12);
-        climbLiftDown.whenPressed(new ClimbLift(-0.5));
+        climbLiftDown.whenPressed(new ClimbLift(-0.8));
         climbLiftDown.whenReleased(new StopClimb());
 
         climbSlideLeft = new JoystickButton(buttonBox, 13);
-        climbSlideLeft.whenPressed(new ClimbSlide(-0.5));
+        climbSlideLeft.whenPressed(new ClimbSlide(-1));
         climbSlideLeft.whenReleased(new StopClimb());
 
         climbSlideRight = new JoystickButton(buttonBox, 14);
-        climbSlideRight.whenPressed(new ClimbSlide(0.5));
+        climbSlideRight.whenPressed(new ClimbSlide(1));
         climbSlideRight.whenReleased(new StopClimb());
 
-        climbOverride = new JoystickButton(buttonBox, 15);
+        autoSwitch2 = new JoystickButton(buttonBox, 18);
 
-        joystickSelector1 = new JoystickButton(buttonBox, 16);
-
-        joystickSelector2 = new JoystickButton(buttonBox, 17);
-
-        autoSwitch1 = new JoystickButton(buttonBox, 18);
+        autoSwitch3 = new JoystickButton(buttonBox, 17);
     }
 
     public void initButtonBox2Btns() {
@@ -269,8 +267,12 @@ public class OI {
         colorSensorDeploy.whenPressed(new ColorSensorDeploy(true));
         colorSensorDeploy.whenReleased(new ColorSensorDeploy(false));
 
-        autoSwitch2 = new JoystickButton(buttonBox2, 18);
+        climbOverride = new JoystickButton(buttonBox2, 15);
 
-        autoSwitch3 = new JoystickButton(buttonBox2, 17);
+        joystickSelector1 = new JoystickButton(buttonBox2, 16);
+
+        joystickSelector2 = new JoystickButton(buttonBox2, 17);
+
+        autoSwitch1 = new JoystickButton(buttonBox2, 18);
     }
 }

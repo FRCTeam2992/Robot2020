@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.autos.*;
 import frc.robot.subsystems.*;
 
 /**
@@ -39,8 +41,8 @@ public class Robot extends TimedRobot {
     private Command autonomousCommand;
 
     // Set Drive Controller Modes
-    public static boolean isJoystick = false;
-    public static boolean isTankDrive = false;
+    public static boolean isJoystick = true;
+    public static boolean isTankDrive = true;
     public static boolean isTriggers = false;
 
     // Robot Variables
@@ -109,6 +111,8 @@ public class Robot extends TimedRobot {
         updateDriveMode();
 
         updateDriveCameras();
+
+        setAutonomousCommand();
     }
 
     @Override
@@ -191,6 +195,26 @@ public class Robot extends TimedRobot {
 
         if (oi.autoSwitch3.get()) {
             autoNumber += 4;
+        }
+
+        switch(autoNumber) {
+            case 0:
+            autonomousCommand = null;
+            break;
+            case 1:
+            autonomousCommand = new ShootMoveNoEncoder();
+            break;
+            case 2:
+            autonomousCommand = new MoveOffLine();
+            break;
+            default:
+            autonomousCommand = null;
+        }
+
+        if(autonomousCommand != null) {
+            SmartDashboard.putString("Auto Name", autonomousCommand.getName());
+        } else {
+            SmartDashboard.putString("Auto Name", "DoNothing");
         }
     }
 }

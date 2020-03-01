@@ -16,18 +16,18 @@ public class Constants {
     public static final double driveTurnDamp = 0.2;
 
     // Drive PID Constants
-    public static final double driveP = 0.0;
+    public static final double driveP = 2.42;
     public static final double driveI = 0.0;
     public static final double driveD = 0.0;
     public static final double driveFeedForward = 0.0;
 
-    public static final double driveStaticGain = 0.0;
-    public static final double driveVelocityGain = 0.0;
-    public static final double driveAccelerationGain = 0.0;
+    public static final double driveStaticGain = 0.147;
+    public static final double driveVelocityGain = 1.22;
+    public static final double driveAccelerationGain = 0.0538;
 
     // Vision Constants
-    public static final double limelightShooterAngle = 175.0;
-    public static final double limelightLoadStationAngle = 20.0;
+    public static final double limelightShooterAngle = 20.0;
+    public static final double limelightLoadStationAngle = 175.0;
     public static final double cameraAngle = 2.0;
     public static final double cameraHeight = 42.0;
     public static final double goalHeight = 81.0;
@@ -50,7 +50,7 @@ public class Constants {
     public static final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
     // Shooter Constants
-    public static final int deafaultShooterSpeed = 4000;
+    public static final int deafaultShooterSpeed = 5000;
     public static final int shooterEncoderPulses = 2048;
 
     // Turret Constants

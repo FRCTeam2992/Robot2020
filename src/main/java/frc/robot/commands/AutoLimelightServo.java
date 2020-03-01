@@ -44,7 +44,7 @@ public class AutoLimelightServo extends Command {
                 double limelightYOffset = Robot.vision.limeLightCamera.getTargetYOffset();
 
                 if (Math.abs(limelightYOffset) > 1) {
-                    Robot.vision.limelightSetAngle -= limelightYOffset;
+                    Robot.vision.limelightSetAngle += limelightYOffset;
                 }
             }
 

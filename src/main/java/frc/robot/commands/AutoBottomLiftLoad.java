@@ -1,6 +1,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -8,10 +9,16 @@ public class AutoBottomLiftLoad extends Command {
 
     private double m_bottomLiftSpeed;
 
+    private Timer delayTimer;
+
+    private boolean sensorStarted = false;
+
     public AutoBottomLiftLoad(double bottomLiftSpeed) {
         requires(Robot.bottomLift);
 
         m_bottomLiftSpeed = bottomLiftSpeed;
+
+        delayTimer = new Timer();
     }
 
     // Called just before this Command runs the first time
@@ -24,6 +31,13 @@ public class AutoBottomLiftLoad extends Command {
     @Override
     protected void execute() {
         if (Robot.bottomLift.liftBallSensor.get() && Robot.bottomLift.liftBallSensor2.get()) {
+            if (sensorStarted) {
+                delayTimer.reset();
+                delayTimer.start();
+
+                sensorStarted = true;
+            }
+
             Robot.bottomLift.stopBottomLift();
         } else {
             Robot.bottomLift.setBottomLiftSpeed(m_bottomLiftSpeed);

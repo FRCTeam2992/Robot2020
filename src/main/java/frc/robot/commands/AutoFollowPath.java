@@ -1,11 +1,6 @@
 
 package frc.robot.commands;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -17,7 +12,6 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
@@ -25,9 +19,8 @@ public class AutoFollowPath extends Command {
 
   private boolean isDone = false;
 
-  private String mTrajectoryName = "";
+  private Trajectory mTrajectory;
   private boolean mIsLoadMode = false;
-  private boolean mReversePath = false;
 
   private Timer elpasedTimer;
   private double previousTime = 0;
@@ -35,19 +28,17 @@ public class AutoFollowPath extends Command {
   private Pose2d currentRobotPose;
 
   private RamseteController pathController;
-  private Trajectory trajectory;
 
   private DifferentialDriveKinematics driveKinematics;
   private DifferentialDriveWheelSpeeds previousWheelSpeeds;
 
   private SimpleMotorFeedforward driveFeedforward;
 
-  public AutoFollowPath(String trajectoryName, boolean isLoadMode, boolean reversePath) {
+  public AutoFollowPath(Trajectory trajectory, boolean isLoadMode) {
     requires(Robot.driveTrain);
 
-    mTrajectoryName = trajectoryName;
+    mTrajectory = trajectory;
     mIsLoadMode = isLoadMode;
-    mReversePath = reversePath;
 
     pathController = new RamseteController(2.0, 0.7);
 
@@ -59,12 +50,8 @@ public class AutoFollowPath extends Command {
     elpasedTimer = new Timer();
   }
 
-  public AutoFollowPath(String trajectoryName, boolean isLoadMode) {
-    this(trajectoryName, isLoadMode, false);
-  }
-
-  public AutoFollowPath(String trajectoryName) {
-    this(trajectoryName, false, false);
+  public AutoFollowPath(Trajectory trajectory) {
+    this(trajectory, false);
   }
 
   // Called just before this Command runs the first time
@@ -72,61 +59,39 @@ public class AutoFollowPath extends Command {
   protected void initialize() {
     this.setInterruptible(true);
 
-    try {
-      // Get Trajectory Path from Deploy Directory
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath()
-          .resolve("paths/output/" + mTrajectoryName + ".wpilib.json");
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-
+    if (mTrajectory != null) {
       // Update Current Robot Pose
       updateCurrentRobotPose();
 
       // Set Tarjectory Start Position to Current Robot Position
-      Transform2d transform;
+      Transform2d transform = currentRobotPose.minus(mTrajectory.getInitialPose());
 
-      if (mReversePath) {
-        Trajectory.State lastState = trajectory.sample(trajectory.getTotalTimeSeconds());
-
-        transform = currentRobotPose.minus(lastState.poseMeters);
-      } else {
-        transform = currentRobotPose.minus(trajectory.getInitialPose());
-      }
-
-      trajectory = trajectory.transformBy(transform);
+      mTrajectory = mTrajectory.transformBy(transform);
 
       // Set Trajectory Starting Speeds
-      Trajectory.State initialState = trajectory.sample(0);
+      Trajectory.State initialState = mTrajectory.sample(0);
       previousWheelSpeeds = driveKinematics.toWheelSpeeds(new ChassisSpeeds(initialState.velocityMetersPerSecond, 0,
           initialState.curvatureRadPerMeter * initialState.velocityMetersPerSecond));
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory " + mTrajectoryName, ex.getStackTrace());
+
+      Robot.driveTrain.setBrakeMode(true);
+
+      elpasedTimer.reset();
+      elpasedTimer.start();
+    } else {
       isDone = true;
     }
-
-    Robot.driveTrain.setBrakeMode(true);
-
-    elpasedTimer.reset();
-    elpasedTimer.start();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (trajectory != null) {
-      double currentTime;
-      double deltaTime;
-
-      if (mReversePath) {
-        currentTime = trajectory.getTotalTimeSeconds() - elpasedTimer.get();
-        deltaTime = previousTime - currentTime;
-      } else {
-        currentTime = elpasedTimer.get();
-        deltaTime = currentTime - previousTime;
-      }
+    if (mTrajectory != null) {
+      double currentTime = elpasedTimer.get();
+      double deltaTime = currentTime - previousTime;
 
       updateCurrentRobotPose();
 
-      Trajectory.State trajectoryState = trajectory.sample(currentTime);
+      Trajectory.State trajectoryState = mTrajectory.sample(currentTime);
       ChassisSpeeds adjustedSpeeds = pathController.calculate(currentRobotPose, trajectoryState);
       DifferentialDriveWheelSpeeds targetWheelSpeeds = driveKinematics.toWheelSpeeds(adjustedSpeeds);
 
@@ -138,8 +103,8 @@ public class AutoFollowPath extends Command {
       double rightFeedForward = driveFeedforward.calculate(rightSpeedSetpoint,
           (rightSpeedSetpoint - previousWheelSpeeds.rightMetersPerSecond) / deltaTime);
 
-      SmartDashboard.putNumber("Left Feedforward", leftSpeedSetpoint);
-      SmartDashboard.putNumber("Right Feedforward", rightSpeedSetpoint);
+      SmartDashboard.putNumber("Left Speed Set Point", leftSpeedSetpoint);
+      SmartDashboard.putNumber("Right Speed Set Point", rightSpeedSetpoint);
 
       if (mIsLoadMode) {
         Robot.driveTrain.velocityDrive(-rightSpeedSetpoint, -rightFeedForward, -leftSpeedSetpoint, -leftFeedForward);
@@ -157,7 +122,7 @@ public class AutoFollowPath extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isDone || elpasedTimer.get() >= trajectory.getTotalTimeSeconds();
+    return isDone || elpasedTimer.get() >= mTrajectory.getTotalTimeSeconds();
   }
 
   // Called once after isFinished returns true

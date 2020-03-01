@@ -71,8 +71,8 @@ public class AutoTurretAim extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return mFinishWhenAligned && ((Robot.vision.limeLightCamera.getTargetXOffset() <= Constants.turretTolerance
-                && Robot.vision.limeLightCamera.hasTarget()) || timeoutTimer.get() >= mTimeout);
+        return mFinishWhenAligned && ((Math.abs(Robot.vision.limeLightCamera.getTargetXOffset()) <= Constants.turretTolerance
+                && Robot.vision.limeLightCamera.hasTarget() && updateCounter > 10) || timeoutTimer.get() >= mTimeout);
     }
 
     // Called once after isFinished returns true

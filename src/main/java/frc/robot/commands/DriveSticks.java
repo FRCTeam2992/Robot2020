@@ -42,8 +42,8 @@ public class DriveSticks extends Command {
             left = Robot.oi.leftJoystick.smoothGetY();
             rightY = Robot.oi.rightJoystick.smoothGetY();
             rightX = Robot.oi.rightJoystick.smoothGetX();
-            rawLeft = Robot.oi.leftJoystick.getY();
-            rawRight = Robot.oi.rightJoystick.getY();
+            rawLeft = Robot.oi.leftJoystick.smoothGetY();
+            rawRight = Robot.oi.rightJoystick.smoothGetY();
 
             driveGear = Robot.oi.rightJoystick.getTrigger();
         } else {
@@ -51,6 +51,10 @@ public class DriveSticks extends Command {
                 left = Robot.oi.controller.smoothGetTrigger(Hand.kLeft);
                 rightY = Robot.oi.controller.smoothGetTrigger(Hand.kRight);
                 rightX = Robot.oi.controller.smoothGetX(Hand.kLeft);
+
+                if (rightY > 0) {
+                    left = -rightY;
+                }
             } else {
                 left = Robot.oi.controller.smoothGetY(Hand.kLeft);
                 rightY = Robot.oi.controller.smoothGetY(Hand.kRight);
@@ -102,15 +106,15 @@ public class DriveSticks extends Command {
         // Call Tank Drive and Arcade Drive Functions
         if (Robot.isLoadMode) {
             if (Robot.isTankDrive) {
-                Robot.driveTrain.tankDrive(-rightY, -left);
+                Robot.driveTrain.tankDrive(rightY, left);
             } else {
-                Robot.driveTrain.arcadeDrive(-left, rightX);
+                Robot.driveTrain.arcadeDrive(left, -rightX);
             }
         } else {
             if (Robot.isTankDrive) {
-                Robot.driveTrain.tankDrive(left, rightY);
+                Robot.driveTrain.tankDrive(-left, -rightY);
             } else {
-                Robot.driveTrain.arcadeDrive(left, rightX);
+                Robot.driveTrain.arcadeDrive(-left, -rightX);
             }
         }
     }

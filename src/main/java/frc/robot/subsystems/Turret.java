@@ -38,7 +38,8 @@ public class Turret extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.putNumber("Turret Position", turretTalon.getSelectedSensorPosition());
+
+        // Update Dashboard
         SmartDashboard.putNumber("Turret Angle", getTurretAngle());
     }
 

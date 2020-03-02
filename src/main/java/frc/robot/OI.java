@@ -94,11 +94,6 @@ public class OI {
 
         buttonBox2 = new Joystick(3);
         initButtonBox2Btns();
-
-        SmartDashboard.putData("Right Trench", new AutoFollowPath(Robot.driveTrain.RightTrench, false));
-        SmartDashboard.putData("Center Trench", new AutoFollowPath(Robot.driveTrain.CenterTrench, true));
-        SmartDashboard.putData("Auto Right Trench", new RightTrench());
-        SmartDashboard.putData("Auto Center Trench", new CenterTrench());
     }
 
     public void initJoystickBtns() {

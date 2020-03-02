@@ -137,13 +137,6 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putNumber("Left Drive Encoder", leftDriveEncoder.getPosition());
         SmartDashboard.putNumber("Right Drive Encoder", rightDriveEncoder.getPosition());
         SmartDashboard.putNumber("Gyro Yaw", navx.getYaw());
-        SmartDashboard.putNumber("Drive Odometry X", getCurrentPoseMeters().getTranslation().getX());
-        SmartDashboard.putNumber("Drive Odometry Y", getCurrentPoseMeters().getTranslation().getY());
-        SmartDashboard.putNumber("Drive Odometry Rotation", getCurrentPoseMeters().getRotation().getDegrees());
-        SmartDashboard.putNumber("Left Meters Per Second", rotationsToMeters(leftDriveEncoder.getVelocity()) / 60);
-        SmartDashboard.putNumber("Right Meters Per Second", rotationsToMeters(rightDriveEncoder.getVelocity()) / 60);
-        SmartDashboard.putNumber("Left Position Meters", rotationsToMeters(leftDriveEncoder.getPosition()));
-        SmartDashboard.putNumber("Left Position", leftDriveEncoder.getPosition());
     }
 
     // Put methods for controlling this subsystem

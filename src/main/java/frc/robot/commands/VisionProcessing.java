@@ -33,7 +33,8 @@ public class VisionProcessing extends Command {
       }
     } else {
       if (Robot.isLoadMode) {
-        visionGroup = new AutoVisionLoadStation();
+        //visionGroup = new AutoVisionLoadStation();
+        visionGroup = new AutoVisionShooter(mIsFar);
       } else {
         visionGroup = new AutoVisionShooter(mIsFar);
       }

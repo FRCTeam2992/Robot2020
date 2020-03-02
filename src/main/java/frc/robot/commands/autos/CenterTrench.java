@@ -7,9 +7,9 @@ import frc.robot.Robot;
 import frc.robot.commands.*;
 import frc.robot.commands.groups.*;
 
-public class RightTrench extends CommandGroup {
+public class CenterTrench extends CommandGroup {
 
-  public RightTrench() {
+  public CenterTrench() {
     addParallel(new SetShooterSpeed(5150));
     addParallel(new StartShooter());
     addSequential(new AutoTurretAim(true, false, 3));
@@ -21,6 +21,6 @@ public class RightTrench extends CommandGroup {
     addParallel(new SetShooterSpeed(5500));
     addParallel(new IntakeDeploy(true));
     addParallel(new IntakeFeed(0.8));
-    addSequential(new AutoFollowPath(Robot.driveTrain.RightTrench, true));
+    addSequential(new AutoFollowPath(Robot.driveTrain.CenterTrench, true));
   }
 }

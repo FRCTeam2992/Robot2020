@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.groups.*;
 import frc.robot.commands.*;
+import frc.robot.commands.autos.*;
 
 public class OI {
 
@@ -95,6 +96,9 @@ public class OI {
         initButtonBox2Btns();
 
         SmartDashboard.putData("Right Trench", new AutoFollowPath(Robot.driveTrain.RightTrench, false));
+        SmartDashboard.putData("Center Trench", new AutoFollowPath(Robot.driveTrain.CenterTrench, true));
+        SmartDashboard.putData("Auto Right Trench", new RightTrench());
+        SmartDashboard.putData("Auto Center Trench", new CenterTrench());
     }
 
     public void initJoystickBtns() {
@@ -114,7 +118,7 @@ public class OI {
         joystickTurretManualRight.whenReleased(new StopTurret());
 
         joystickAutoShoot = new JoystickButton(leftJoystick, 4);
-        joystickAutoShoot.whenPressed(new AutoShoot(0.6, 0.8, 0.45, 0.45));
+        joystickAutoShoot.whileHeld(new AutoShoot(0.6, 0.8, 0.45, 0.45));
         joystickAutoShoot.whenReleased(new StopAutoShoot());
 
         // Right Joystick
@@ -157,10 +161,8 @@ public class OI {
         autoLimelightFar.whenReleased(new VisionProcessing(true, true));
 
         controllerAutoShoot = new POVButton(controller, 90);
-        controllerAutoShoot.whenPressed(new AutoShoot(0.6, 0.8, 0.45, 0.45));
-        controllerAutoShoot.whenReleased(new StopTopLiftAndWheel());
-        controllerAutoShoot.whenReleased(new StopBottomLift());
-        controllerAutoShoot.whenReleased(new StopSorter());
+        controllerAutoShoot.whileHeld(new AutoShoot(0.6, 0.8, 0.45, 0.45));
+        controllerAutoShoot.whenReleased(new StopAutoShoot());
 
         limelightTiltUp = new POVButton(controller, 0);
         limelightTiltUp.whenPressed(new ChangeLimelightTilt(10));

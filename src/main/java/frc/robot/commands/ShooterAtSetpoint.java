@@ -32,7 +32,7 @@ public class ShooterAtSetpoint extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(Robot.shooter.shooterSetSpeed - Robot.shooter.getShooterRPM()) <= 100
+    return Math.abs(Robot.shooter.shooterSetSpeed - Robot.shooter.getShooterRPM()) <= 50
         || timeoutTimer.get() >= mTimeout;
   }
 

@@ -16,7 +16,7 @@ public class Constants {
     public static final double driveTurnDamp = 0.2;
 
     // Drive PID Constants
-    public static final double driveP = 2.42;
+    public static final double driveP = 0.005; //2.42
     public static final double driveI = 0.0;
     public static final double driveD = 0.0;
     public static final double driveFeedForward = 0.0;

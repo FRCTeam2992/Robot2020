@@ -55,7 +55,7 @@ public class AutoTurretAim extends Command {
     protected void execute() {
         updateCounter++;
 
-        if (updateCounter > 10) {
+        if (updateCounter > 20) {
             if (Robot.vision.limeLightCamera.hasTarget()) {
                 double xOffset = Robot.vision.limeLightCamera.getTargetXOffset();
 
@@ -72,7 +72,7 @@ public class AutoTurretAim extends Command {
     @Override
     protected boolean isFinished() {
         return mFinishWhenAligned && ((Math.abs(Robot.vision.limeLightCamera.getTargetXOffset()) <= Constants.turretTolerance
-                && Robot.vision.limeLightCamera.hasTarget() && updateCounter > 10) || timeoutTimer.get() >= mTimeout);
+                && Robot.vision.limeLightCamera.hasTarget() && updateCounter > 20) || timeoutTimer.get() >= mTimeout);
     }
 
     // Called once after isFinished returns true

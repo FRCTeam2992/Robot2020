@@ -56,6 +56,7 @@ public class DriveTrain extends Subsystem {
 
     // Motion Trajectories
     public Trajectory RightTrench;
+    public Trajectory CenterTrench;
 
     public DriveTrain() {
         // Drive Motors
@@ -79,10 +80,15 @@ public class DriveTrain extends Subsystem {
 
         // Drive Encoders
         leftDriveEncoder = new CANEncoder(leftSparkDrive1, AlternateEncoderType.kQuadrature,
-                Constants.driveEncoderPulses);
+                Constants.driveEncoderPulses * 4);
+        leftDriveEncoder.setVelocityConversionFactor(1);
+        leftDriveEncoder.setPositionConversionFactor(1);
+        leftDriveEncoder.setInverted(false);
 
         rightDriveEncoder = new CANEncoder(rightSparkDrive1, AlternateEncoderType.kQuadrature,
-                Constants.driveEncoderPulses);
+                Constants.driveEncoderPulses * 4);
+        rightDriveEncoder.setVelocityConversionFactor(1);
+        rightDriveEncoder.setPositionConversionFactor(1);
         rightDriveEncoder.setInverted(true);
 
         // Drive PID Controllers
@@ -130,10 +136,14 @@ public class DriveTrain extends Subsystem {
         // Update Dashboard
         SmartDashboard.putNumber("Left Drive Encoder", leftDriveEncoder.getPosition());
         SmartDashboard.putNumber("Right Drive Encoder", rightDriveEncoder.getPosition());
-        SmartDashboard.putNumber("Gyro Yaw", navx.getAngle());
+        SmartDashboard.putNumber("Gyro Yaw", navx.getYaw());
         SmartDashboard.putNumber("Drive Odometry X", getCurrentPoseMeters().getTranslation().getX());
         SmartDashboard.putNumber("Drive Odometry Y", getCurrentPoseMeters().getTranslation().getY());
         SmartDashboard.putNumber("Drive Odometry Rotation", getCurrentPoseMeters().getRotation().getDegrees());
+        SmartDashboard.putNumber("Left Meters Per Second", rotationsToMeters(leftDriveEncoder.getVelocity()) / 60);
+        SmartDashboard.putNumber("Right Meters Per Second", rotationsToMeters(rightDriveEncoder.getVelocity()) / 60);
+        SmartDashboard.putNumber("Left Position Meters", rotationsToMeters(leftDriveEncoder.getPosition()));
+        SmartDashboard.putNumber("Left Position", leftDriveEncoder.getPosition());
     }
 
     // Put methods for controlling this subsystem
@@ -179,12 +189,12 @@ public class DriveTrain extends Subsystem {
     public void velocityDrive(double leftVelocity, double leftArbitraryFeedForward, double rightVelocity,
             double rightArbitraryFeedForward) {
         leftVelocity = metersToRotations(leftVelocity * 60);
-        leftDriveController.setReference(leftVelocity, ControlType.kVelocity, 0, leftArbitraryFeedForward/12,
-                ArbFFUnits.kPercentOut);
+        leftDriveController.setReference(leftVelocity, ControlType.kVelocity, 0, leftArbitraryFeedForward,
+                ArbFFUnits.kVoltage);
 
         rightVelocity = metersToRotations(rightVelocity * 60);
-        rightDriveController.setReference(rightVelocity, ControlType.kVelocity, 0, rightArbitraryFeedForward/12,
-                ArbFFUnits.kPercentOut);
+        rightDriveController.setReference(rightVelocity, ControlType.kVelocity, 0, rightArbitraryFeedForward,
+                ArbFFUnits.kVoltage);
     }
 
     public void setDriveGear(boolean toggle) {
@@ -239,10 +249,16 @@ public class DriveTrain extends Subsystem {
 
     public void getMotionPaths() {
         // Right Trench
-        Path RightTrenchPath = Filesystem.getDeployDirectory().toPath().resolve("paths/output/output/RightTrench.wpilib.json");
+        Path RightTrenchPath = Filesystem.getDeployDirectory().toPath()
+                .resolve("paths/output/output/RightTrench.wpilib.json");
+
+        // Center Trench
+        Path CenterTrenchPath = Filesystem.getDeployDirectory().toPath()
+                .resolve("paths/output/output/CenterTrench.wpilib.json");
 
         try {
             RightTrench = TrajectoryUtil.fromPathweaverJson(RightTrenchPath);
+            CenterTrench = TrajectoryUtil.fromPathweaverJson(CenterTrenchPath);
         } catch (IOException e) {
             DriverStation.reportError("Unable to open trajectory", e.getStackTrace());
             e.printStackTrace();

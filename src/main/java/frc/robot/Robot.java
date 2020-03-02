@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
 
     // Set Drive Controller Modes
     public static boolean isJoystick = true;
-    public static boolean isTankDrive = true;
+    public static boolean isTankDrive = false;
     public static boolean isTriggers = false;
 
     // Robot Variables
@@ -144,6 +144,10 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+
+        // Reset Drive Sensors
+        Robot.driveTrain.navx.zeroYaw();
+        Robot.driveTrain.resetOdometry();
     }
 
     /**
@@ -206,6 +210,12 @@ public class Robot extends TimedRobot {
             break;
             case 2:
             autonomousCommand = new MoveOffLine();
+            break;
+            case 3:
+            autonomousCommand = new RightTrench();
+            break;
+            case 4:
+            autonomousCommand = new CenterTrench();
             break;
             default:
             autonomousCommand = null;

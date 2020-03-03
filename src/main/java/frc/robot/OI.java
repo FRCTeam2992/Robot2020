@@ -113,7 +113,7 @@ public class OI {
         joystickTurretManualRight.whenReleased(new StopTurret());
 
         joystickAutoShoot = new JoystickButton(leftJoystick, 4);
-        joystickAutoShoot.whileHeld(new AutoShoot(0.6, 0.8, 0.45, 0.45));
+        joystickAutoShoot.whileHeld(new AutoShoot(0.6, 0.8, 0.8, 0.45));
         joystickAutoShoot.whenReleased(new StopAutoShoot());
 
         // Right Joystick
@@ -156,7 +156,7 @@ public class OI {
         autoLimelightFar.whenReleased(new VisionProcessing(true, true));
 
         controllerAutoShoot = new POVButton(controller, 90);
-        controllerAutoShoot.whileHeld(new AutoShoot(0.6, 0.8, 0.45, 0.45));
+        controllerAutoShoot.whileHeld(new AutoShoot(0.6, 0.8, 0.8, 0.45));
         controllerAutoShoot.whenReleased(new StopAutoShoot());
 
         limelightTiltUp = new POVButton(controller, 0);
@@ -235,15 +235,15 @@ public class OI {
         topLiftManualDown.whenReleased(new StopTopLiftAndWheel());
 
         bottomLiftManualUp = new JoystickButton(buttonBox2, 3);
-        bottomLiftManualUp.whenPressed(new BottomLiftMove(0.45));
+        bottomLiftManualUp.whenPressed(new BottomLiftMove(0.8));  // was .45
         bottomLiftManualUp.whenReleased(new StopBottomLift());
 
         bottomLiftManualDown = new JoystickButton(buttonBox2, 4);
-        bottomLiftManualDown.whenPressed(new BottomLiftMove(-0.45));
+        bottomLiftManualDown.whenPressed(new BottomLiftMove(-0.45));  
         bottomLiftManualDown.whenReleased(new StopBottomLift());
 
         autoIntakePowerCell = new JoystickButton(buttonBox2, 5);
-        autoIntakePowerCell.whenPressed(new AutoIntakeBall(0.8, 0.6, 0.8, 0.45, 0.45));
+        autoIntakePowerCell.whenPressed(new AutoIntakeBall(0.8, 0.6, 0.8, 0.80, 0.45)); // changed bottom lift from 0.45
 
         autoOverride = new JoystickButton(buttonBox2, 6);
         autoOverride.whenPressed(new AutoOverride());

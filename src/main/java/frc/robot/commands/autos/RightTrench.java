@@ -15,7 +15,7 @@ public class RightTrench extends CommandGroup {
     addSequential(new AutoTurretAim(true, false, 3));
     addParallel(new AutoTurretAim(false, false));
     addSequential(new ShooterAtSetpoint(3));
-    addParallel(new AutoShoot(0.6, 0.8, 0.35, 0.35));
+    addParallel(new AutoShoot(0.6, 0.8, 0.60, 0.45));   // changed from 0.35 and 0.35 lift
     addSequential(new WaitCommand(2.0));
     addParallel(new AutoShoot(0.6, 0.8, 0.8, 0.8));
     addParallel(new SetShooterSpeed(5500));

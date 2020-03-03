@@ -15,9 +15,9 @@ public class CenterTrench extends CommandGroup {
     addSequential(new AutoTurretAim(true, false, 3));
     addParallel(new AutoTurretAim(false, false));
     addSequential(new ShooterAtSetpoint(3));
-    addParallel(new AutoShoot(0.6, 0.8, 0.35, 0.35));
+    addParallel(new AutoShoot(0.6, 0.8, 0.60, 0.45));  // changed bottom lift from 0.35 and top from 0.35
     addSequential(new WaitCommand(2.0));
-    addParallel(new AutoShoot(0.6, 0.8, 0.8, 0.8));
+    addParallel(new AutoShoot(0.6, 0.8, 0.8, 0.8));   // changed bottom lift from 0.35 and top from 0.35
     addParallel(new SetShooterSpeed(5500));
     addParallel(new IntakeDeploy(true));
     addParallel(new IntakeFeed(0.8));

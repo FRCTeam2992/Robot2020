@@ -113,7 +113,7 @@ public class OI {
         joystickTurretManualRight.whenReleased(new StopTurret());
 
         joystickAutoShoot = new JoystickButton(leftJoystick, 4);
-        joystickAutoShoot.whileHeld(new AutoShoot(0.6, 0.8, 0.8, 0.45));
+        joystickAutoShoot.whileHeld(new AutoShoot(0.4, 0.6, 1.0, 0.35));
         joystickAutoShoot.whenReleased(new StopAutoShoot());
 
         // Right Joystick
@@ -156,7 +156,7 @@ public class OI {
         autoLimelightFar.whenReleased(new VisionProcessing(true, true));
 
         controllerAutoShoot = new POVButton(controller, 90);
-        controllerAutoShoot.whileHeld(new AutoShoot(0.6, 0.8, 0.8, 0.45));
+        controllerAutoShoot.whileHeld(new AutoShoot(0.4, 0.6, 0.8, 0.35));
         controllerAutoShoot.whenReleased(new StopAutoShoot());
 
         limelightTiltUp = new POVButton(controller, 0);
@@ -182,11 +182,11 @@ public class OI {
         intakeDeploy.whenReleased(new IntakeDeploy(false));
 
         intakeManualForward = new JoystickButton(buttonBox, 5);
-        intakeManualForward.whenPressed(new IntakeFeed(0.8));
+        intakeManualForward.whenPressed(new IntakeFeed(1));
         intakeManualForward.whenReleased(new StopIntake());
 
         intakeManualReverse = new JoystickButton(buttonBox, 6);
-        intakeManualReverse.whenPressed(new IntakeFeed(-0.8));
+        intakeManualReverse.whenPressed(new IntakeFeed(-1));
         intakeManualReverse.whenReleased(new StopIntake());
 
         autoColorWheelSpin = new JoystickButton(buttonBox, 7);
@@ -243,7 +243,7 @@ public class OI {
         bottomLiftManualDown.whenReleased(new StopBottomLift());
 
         autoIntakePowerCell = new JoystickButton(buttonBox2, 5);
-        autoIntakePowerCell.whenPressed(new AutoIntakeBall(0.8, 0.6, 0.8, 0.80, 0.45)); // changed bottom lift from 0.45
+        autoIntakePowerCell.whenPressed(new AutoIntakeBall(1, 0.4, 0.6, 1.0, 0.45)); // changed bottom lift from 0.45
 
         autoOverride = new JoystickButton(buttonBox2, 6);
         autoOverride.whenPressed(new AutoOverride());

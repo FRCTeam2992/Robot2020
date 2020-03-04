@@ -37,10 +37,8 @@ public class Shooter extends Subsystem {
         shooterVictor.follow(shooterTalon);
 
         // Shooter Speed List
-        shooterSpeedList.addSetpoint(60, 4000);
-        shooterSpeedList.addSetpoint(120, 4500);
-        shooterSpeedList.addSetpoint(250, 5000);
-        shooterSpeedList.addSetpoint(400, 5500);
+        shooterSpeedList.addSetpoint(125, 5100);
+        shooterSpeedList.addSetpoint(160, 5300);
     }
 
     @Override

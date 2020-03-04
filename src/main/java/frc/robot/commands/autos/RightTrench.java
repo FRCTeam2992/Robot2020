@@ -10,17 +10,17 @@ import frc.robot.commands.groups.*;
 public class RightTrench extends CommandGroup {
 
   public RightTrench() {
-    addParallel(new SetShooterSpeed(5150));
+    addParallel(new SetShooterSpeed(5300));
     addParallel(new StartShooter());
     addSequential(new AutoTurretAim(true, false, 3));
     addParallel(new AutoTurretAim(false, false));
     addSequential(new ShooterAtSetpoint(3));
-    addParallel(new AutoShoot(0.6, 0.8, 0.60, 0.45));   // changed from 0.35 and 0.35 lift
+    addParallel(new AutoShoot(0.6, 0.8, 0.55, 0.3));   // changed from 0.35 and 0.35 lift
     addSequential(new WaitCommand(2.0));
-    addParallel(new AutoShoot(0.6, 0.8, 0.8, 0.8));
-    addParallel(new SetShooterSpeed(5500));
+    addParallel(new AutoShoot(0.6, 0.8, 1.0, 0.8));
+    addParallel(new SetShooterSpeed(5700));
     addParallel(new IntakeDeploy(true));
-    addParallel(new IntakeFeed(0.8));
+    addParallel(new IntakeFeed(1));
     addSequential(new AutoFollowPath(Robot.driveTrain.RightTrench, true));
   }
 }

@@ -103,10 +103,6 @@ public class AutoFollowPath extends Command {
       double rightFeedForward = driveFeedforward.calculate(rightSpeedSetpoint,
           (rightSpeedSetpoint - previousWheelSpeeds.rightMetersPerSecond) / deltaTime);
 
-      SmartDashboard.putNumber("Left Speed Set Point", leftSpeedSetpoint);
-      SmartDashboard.putNumber("Right Speed Set Point", rightSpeedSetpoint);
-      SmartDashboard.putNumber("Left Feedforward", leftFeedForward);
-      SmartDashboard.putNumber("Right Feedforward", rightFeedForward);
 
       if (mIsLoadMode) {
         Robot.driveTrain.velocityDrive(-rightSpeedSetpoint, -rightFeedForward, -leftSpeedSetpoint, -leftFeedForward);

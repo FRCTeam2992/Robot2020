@@ -10,6 +10,8 @@ public class AutoShooterSetSpeed extends Command {
 
     private boolean mIsFar = false;
 
+    private int counter = 0;
+
     public AutoShooterSetSpeed(boolean isFar) {
         mIsFar = isFar;
     }
@@ -29,10 +31,19 @@ public class AutoShooterSetSpeed extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.vision.limeLightCamera.hasTarget()) {
-            double distanceToTarget = Robot.vision.limeLightCamera.getDistanceToTarget(
-                    Constants.cameraAngle + Robot.vision.limelightSetAngle, Constants.cameraHeight,
-                    Constants.goalHeight);
+        counter++;
+        if (Robot.vision.limeLightCamera.hasTarget() && counter > 20) {
+            double distanceToTarget = 0;
+
+            if (mIsFar) {
+                distanceToTarget = Robot.vision.limeLightCamera.getDistanceToTarget(
+                        Constants.cameraAngle + Robot.vision.limelightSetAngle, Constants.cameraHeight,
+                        Constants.goalHeight) / 2;
+            } else {
+                distanceToTarget = Robot.vision.limeLightCamera.getDistanceToTarget(
+                        Constants.cameraAngle + Robot.vision.limelightSetAngle, Constants.cameraHeight,
+                        Constants.goalHeight);
+            }
 
             Robot.shooter.shooterSetSpeed = Robot.shooter.shooterSpeedList.getShooterSpeed(distanceToTarget);
         }

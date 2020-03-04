@@ -47,7 +47,7 @@ public class Vision extends Subsystem {
         // Put code here to be run every loop
         if (limeLightCamera.hasTarget()) {
             double distanceToTarget = limeLightCamera.getDistanceToTarget(
-                    Constants.cameraAngle + (180 - Robot.vision.limelightSetAngle), Constants.cameraHeight,
+                    Constants.cameraAngle + Robot.vision.limelightSetAngle, Constants.cameraHeight,
                     Constants.goalHeight);
 
             SmartDashboard.putNumber("Target Distance", distanceToTarget);

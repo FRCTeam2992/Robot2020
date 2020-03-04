@@ -28,7 +28,7 @@ public class Constants {
     // Vision Constants
     public static final double limelightShooterAngle = 20.0;
     public static final double limelightLoadStationAngle = 175.0;
-    public static final double cameraAngle = 2.0;
+    public static final double cameraAngle = -4.5;
     public static final double cameraHeight = 42.0;
     public static final double goalHeight = 81.0;
     public static final double visionSteerP = 0.025;
@@ -50,7 +50,7 @@ public class Constants {
     public static final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
     // Shooter Constants
-    public static final int deafaultShooterSpeed = 5000;
+    public static final int deafaultShooterSpeed = 5200;
     public static final int shooterEncoderPulses = 2048;
 
     // Turret Constants
@@ -58,7 +58,7 @@ public class Constants {
     public static final double turretI = 0.0;
     public static final double turretD = 0.003;
     public static final double turretTolerance = 1.0;
-    public static final int turretOffset = 2074; // 2586 512
+    public static final int turretOffset = 2074;
     public static final int turretMinEnd = 40;
     public static final int turretMaxEnd = 320;
 

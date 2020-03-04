@@ -20,7 +20,7 @@ public class Intake extends Subsystem {
     public Intake() {
         // Intake Motors
         intakeMotor = new VictorSPX(9);
-        intakeMotor.setInverted(true);
+        intakeMotor.setInverted(false);
         intakeMotor.setNeutralMode(NeutralMode.Coast);
 
         // Intake Solenoids

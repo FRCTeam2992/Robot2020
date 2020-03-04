@@ -41,8 +41,8 @@ public class BottomLift extends Subsystem {
         // Put code here to be run every loop
 
         // Update Dashboard
-        SmartDashboard.putBoolean("Ball Sensor 1", liftBallSensor.get());
-        SmartDashboard.putBoolean("Ball Sensor 2", liftBallSensor2.get());
+        SmartDashboard.putBoolean("Top Ball Sensor", liftBallSensor.get());
+        SmartDashboard.putBoolean("Bottom Ball Sensor", liftBallSensor2.get());
     }
 
     // Put methods for controlling this subsystem

@@ -6,10 +6,8 @@ import frc.lib.drive.mhJoystick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.groups.*;
 import frc.robot.commands.*;
-import frc.robot.commands.autos.*;
 
 public class OI {
 
@@ -206,7 +204,6 @@ public class OI {
         climbLiftUp = new JoystickButton(buttonBox, 11);
         climbLiftUp.whenPressed(new ClimbLift(0.5));
         climbLiftUp.whenReleased(new StopClimbUp(0.8, 0.25));
-        // climbLiftUp.whenReleased(new StopClimb());
 
         climbLiftDown = new JoystickButton(buttonBox, 12);
         climbLiftDown.whenPressed(new ClimbLift(-0.8));
@@ -243,7 +240,7 @@ public class OI {
         bottomLiftManualDown.whenReleased(new StopBottomLift());
 
         autoIntakePowerCell = new JoystickButton(buttonBox2, 5);
-        autoIntakePowerCell.whenPressed(new AutoIntakeBall(1, 0.4, 0.6, 1.0, 0.45)); // changed bottom lift from 0.45
+        autoIntakePowerCell.whenPressed(new AutoIntakeBall(1, 0.4, 0.6, 1.0, 0.45));
 
         autoOverride = new JoystickButton(buttonBox2, 6);
         autoOverride.whenPressed(new AutoOverride());

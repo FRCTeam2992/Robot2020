@@ -148,6 +148,9 @@ public class Robot extends TimedRobot {
         // Reset Drive Sensors
         Robot.driveTrain.navx.zeroYaw();
         Robot.driveTrain.resetOdometry();
+
+        // Reset Shooter Speed
+        Robot.shooter.shooterSetSpeed = Constants.deafaultShooterSpeed;
     }
 
     /**

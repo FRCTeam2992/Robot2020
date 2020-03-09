@@ -9,7 +9,7 @@ import frc.robot.commands.groups.*;
 public class ShootMoveNoEncoder extends CommandGroup {
 
   public ShootMoveNoEncoder() {
-    addParallel(new SetShooterSpeed(5150));
+    addParallel(new SetShooterSpeed(5300));
     addParallel(new StartShooter());
     addSequential(new AutoTurretAim(true, false, 3));
     addSequential(new ShooterAtSetpoint(3));

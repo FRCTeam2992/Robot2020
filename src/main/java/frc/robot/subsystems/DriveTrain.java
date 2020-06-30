@@ -64,7 +64,7 @@ public class DriveTrain extends Subsystem {
         leftSparkDrive1.setInverted(false);
         leftSparkDrive1.setIdleMode(IdleMode.kCoast);
         leftSparkDrive1.setSmartCurrentLimit(45);
-        leftSparkDrive1.setOpenLoopRampRate(0.3);
+        leftSparkDrive1.setOpenLoopRampRate(0.6);
 
         leftSparkDrive2 = new CANSparkMax(2, MotorType.kBrushless);
         leftSparkDrive2.follow(leftSparkDrive1);
@@ -73,7 +73,7 @@ public class DriveTrain extends Subsystem {
         rightSparkDrive1.setInverted(true);
         rightSparkDrive1.setIdleMode(IdleMode.kCoast);
         rightSparkDrive1.setSmartCurrentLimit(45);
-        rightSparkDrive1.setOpenLoopRampRate(0.3);
+        rightSparkDrive1.setOpenLoopRampRate(0.6);
 
         rightSparkDrive2 = new CANSparkMax(4, MotorType.kBrushless);
         rightSparkDrive2.follow(rightSparkDrive1);

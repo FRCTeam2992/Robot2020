@@ -111,7 +111,7 @@ public class OI {
         joystickTurretManualRight.whenReleased(new StopTurret());
 
         joystickAutoShoot = new JoystickButton(leftJoystick, 4);
-        joystickAutoShoot.whileHeld(new AutoShoot(0.4, 0.6, 1.0, 0.35));
+        joystickAutoShoot.whileHeld(new AutoShoot(0.4, 0.6, 1.0, 0.5));
         joystickAutoShoot.whenReleased(new StopAutoShoot());
 
         // Right Joystick

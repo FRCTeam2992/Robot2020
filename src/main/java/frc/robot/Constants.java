@@ -12,7 +12,7 @@ public class Constants {
     public static final double driveTrackWidthMeters = 0.590804; // 23.26"
 
     public static final double straightDriveThreshold = 0.2;
-    public static final double straightDriveP = 0.015;
+    public static final double straightDriveP = 0.0;
     public static final double driveTurnDamp = 0.2;
 
     // Drive PID Constants

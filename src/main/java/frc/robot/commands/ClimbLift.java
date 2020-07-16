@@ -29,9 +29,10 @@ public class ClimbLift extends Command {
 
         if (Robot.oi.climbOverride.get()) {
             if (m_climbLiftSpeed > 0) {
-                movingUp = true;
+                // movingUp = true;
+                movingUp = false;
 
-                Robot.climb.lockClimb(false);
+                //Robot.climb.lockClimb(false);
             }
         }
 
@@ -66,7 +67,7 @@ public class ClimbLift extends Command {
     protected void end() {
         Robot.climb.stopClimb();
 
-        Robot.climb.lockClimb(true);
+        //Robot.climb.lockClimb(true);
     }
 
     // Called when another command which requires one or more of the same
@@ -75,6 +76,6 @@ public class ClimbLift extends Command {
     protected void interrupted() {
         Robot.climb.stopClimb();
 
-        Robot.climb.lockClimb(true);
+        //Robot.climb.lockClimb(true);
     }
 }

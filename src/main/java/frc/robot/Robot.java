@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
 
     // Set Drive Controller Modes
     public static boolean isJoystick = true;
-    public static boolean isTankDrive = true;
+    public static boolean isTankDrive = false;
     public static boolean isTriggers = false;
 
     // Robot Variables

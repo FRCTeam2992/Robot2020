@@ -203,7 +203,8 @@ public class OI {
 
         climbLiftUp = new JoystickButton(buttonBox, 11);
         climbLiftUp.whenPressed(new ClimbLift(0.5));
-        climbLiftUp.whenReleased(new StopClimbUp(0.8, 0.25));
+        climbLiftUp.whenPressed(new StopClimb());
+        // climbLiftUp.whenReleased(new StopClimbUp(0.8, 0.25));
 
         climbLiftDown = new JoystickButton(buttonBox, 12);
         climbLiftDown.whenPressed(new ClimbLift(-0.8));
@@ -232,11 +233,11 @@ public class OI {
         topLiftManualDown.whenReleased(new StopTopLiftAndWheel());
 
         bottomLiftManualUp = new JoystickButton(buttonBox2, 3);
-        bottomLiftManualUp.whenPressed(new BottomLiftMove(0.8));  // was .45
+        bottomLiftManualUp.whenPressed(new BottomLiftMove(0.8)); // was .45
         bottomLiftManualUp.whenReleased(new StopBottomLift());
 
         bottomLiftManualDown = new JoystickButton(buttonBox2, 4);
-        bottomLiftManualDown.whenPressed(new BottomLiftMove(-0.45));  
+        bottomLiftManualDown.whenPressed(new BottomLiftMove(-0.45));
         bottomLiftManualDown.whenReleased(new StopBottomLift());
 
         autoIntakePowerCell = new JoystickButton(buttonBox2, 5);
@@ -262,6 +263,8 @@ public class OI {
         colorSensorDeploy.whenReleased(new ColorSensorDeploy(false));
 
         climbOverride = new JoystickButton(buttonBox2, 15);
+        climbOverride.whenPressed(new ClimbLock(false));
+        climbOverride.whenReleased(new ClimbLock(true));
 
         joystickSelector1 = new JoystickButton(buttonBox2, 16);
 

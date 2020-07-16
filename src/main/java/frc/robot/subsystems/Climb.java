@@ -63,6 +63,6 @@ public class Climb extends Subsystem {
     }
 
     public void lockClimb(boolean toggle) {
-        climbLockSol.set(!toggle);
+        climbLockSol.set(toggle);
     }
 }

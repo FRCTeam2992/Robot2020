@@ -63,7 +63,7 @@ public class Constants {
     public static final int turretMaxEnd = 320;
 
     // Climb Constants
-    public static final double climbUpDelay = 0.25;
+    public static final double climbMoveDelay = 0.25;
 
     // Sorter Constants
     public static final double autoSorterSpeedChangeDelay = 3.0;

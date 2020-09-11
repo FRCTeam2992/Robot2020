@@ -203,8 +203,7 @@ public class OI {
 
         climbLiftUp = new JoystickButton(buttonBox, 11);
         climbLiftUp.whenPressed(new ClimbLift(0.5));
-        climbLiftUp.whenPressed(new StopClimb());
-        // climbLiftUp.whenReleased(new StopClimbUp(0.8, 0.25));
+        climbLiftUp.whenReleased(new StopClimb());
 
         climbLiftDown = new JoystickButton(buttonBox, 12);
         climbLiftDown.whenPressed(new ClimbLift(-0.8));
@@ -263,8 +262,6 @@ public class OI {
         colorSensorDeploy.whenReleased(new ColorSensorDeploy(false));
 
         climbOverride = new JoystickButton(buttonBox2, 15);
-        climbOverride.whenPressed(new ClimbLock(false));
-        climbOverride.whenReleased(new ClimbLock(true));
 
         joystickSelector1 = new JoystickButton(buttonBox2, 16);
 

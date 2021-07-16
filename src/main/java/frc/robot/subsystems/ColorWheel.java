@@ -72,7 +72,7 @@ public class ColorWheel extends Subsystem {
         colorWheelMotor.set(ControlMode.Position, position);
     }
 
-    public int getMotorPostion() {
+    public double getMotorPostion() {
         return colorWheelMotor.getSelectedSensorPosition();
     }
 

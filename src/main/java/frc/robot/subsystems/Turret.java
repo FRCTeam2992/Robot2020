@@ -65,8 +65,8 @@ public class Turret extends Subsystem {
         setTurretSpeed(turretRotate.calculate(getTurretAngle(), angle));
     }
 
-    public int getTurretPostion() {
-        int position = turretTalon.getSelectedSensorPosition() - Constants.turretOffset;
+    public double getTurretPostion() {
+        double position = turretTalon.getSelectedSensorPosition() - Constants.turretOffset;
 
         if (position < 0) {
             position += 4096;

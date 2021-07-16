@@ -50,7 +50,7 @@ public class Constants {
     public static final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
     // Shooter Constants
-    public static final int deafaultShooterSpeed = 5200;
+    public static final int deafaultShooterSpeed = 6000;
     public static final int shooterEncoderPulses = 2048;
 
     // Turret Constants

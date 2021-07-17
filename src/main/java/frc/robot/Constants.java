@@ -26,7 +26,7 @@ public class Constants {
     public static final double driveAccelerationGain = 0.0538;
 
     // Vision Constants
-    public static final double limelightShooterAngle = 20.0;
+    public static final double limelightShooterAngle = 70.0;
     public static final double limelightLoadStationAngle = 175.0;
     public static final double cameraAngle = -4.5;
     public static final double cameraHeight = 42.0;

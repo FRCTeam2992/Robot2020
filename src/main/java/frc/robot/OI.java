@@ -262,6 +262,8 @@ public class OI {
         colorSensorDeploy.whenReleased(new ColorSensorDeploy(false));
 
         climbOverride = new JoystickButton(buttonBox2, 15);
+        climbOverride.whileHeld(new ClimbLock(false));
+        climbOverride.whenReleased(new ClimbLock(true));
 
         joystickSelector1 = new JoystickButton(buttonBox2, 16);
 

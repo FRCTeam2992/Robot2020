@@ -35,7 +35,7 @@ public class ClimbLift extends Command {
     @Override
     protected void execute() {
         if (Robot.oi.climbOverride.get()) {
-            if (CJTimer.get() >= Constants.climbMoveDelay) {
+            if (CJTimer.get() >= Constants.climbMoveDelay) { 
                 Robot.climb.setClimbLiftSpeed(m_climbLiftSpeed);
             }
         } else {
@@ -54,7 +54,7 @@ public class ClimbLift extends Command {
     protected void end() {
         Robot.climb.stopClimb();
 
-        Robot.climb.lockClimb(true);
+        //Robot.climb.lockClimb(true);
     }
 
     // Called when another command which requires one or more of the same
@@ -63,6 +63,6 @@ public class ClimbLift extends Command {
     protected void interrupted() {
         Robot.climb.stopClimb();
 
-        Robot.climb.lockClimb(true);
+        //Robot.climb.lockClimb(true);
     }
 }

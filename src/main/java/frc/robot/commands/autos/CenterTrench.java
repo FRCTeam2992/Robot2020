@@ -16,7 +16,7 @@ public class CenterTrench extends CommandGroup {
     addParallel(new AutoTurretAim(false, false));
     addSequential(new ShooterAtSetpoint(3));
     addParallel(new AutoShoot(0.6, 0.8, 0.55, 0.3));
-    addSequential(new WaitCommand(2.0));
+    addSequential(new WaitCommand(4.0));
     //addParallel(new AutoShoot(0.6, 0.8, 1.0, 0.8));
     addParallel(new SetShooterSpeed(6150));
     addParallel(new IntakeDeploy(true));

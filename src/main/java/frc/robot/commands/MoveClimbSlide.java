@@ -4,11 +4,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ClimbSlide extends Command {
+public class MoveClimbSlide extends Command {
 
     private double m_climbSlideSpeed = 0;
 
-    public ClimbSlide(double climbSlideSpeed) {
+    public MoveClimbSlide(double climbSlideSpeed) {
         requires(Robot.climb);
 
         m_climbSlideSpeed = climbSlideSpeed;

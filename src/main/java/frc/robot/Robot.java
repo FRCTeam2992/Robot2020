@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
     public static Intake intake;
     public static ColorWheel colorWheel;
     public static Vision vision;
+    public static ClimbSlide climbSlide;
 
     // Autonomous Command and Selector
     private Command autonomousCommand;
@@ -72,7 +73,8 @@ public class Robot extends TimedRobot {
         intake = new Intake();
         colorWheel = new ColorWheel();
         vision = new Vision();
-
+        climbSlide = new ClimbSlide();
+        
         // OI must be constructed after subsystems. If the OI creates Commands
         // (which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null

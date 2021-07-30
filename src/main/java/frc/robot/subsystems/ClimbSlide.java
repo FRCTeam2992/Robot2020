@@ -10,21 +10,32 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.StopClimbSlide;
 
-/** Add your docs here. */
 public class ClimbSlide extends Subsystem {
- 
+
+  // Climb Slide Motors
   private VictorSPX climbSlideMtr;
 
-public ClimbSlide() {
-  climbSlideMtr = new VictorSPX(14);
-  climbSlideMtr.setInverted(false);
-}
+  public ClimbSlide() {
+    // Climb Slide Motors
+    climbSlideMtr = new VictorSPX(14);
+    climbSlideMtr.setInverted(true);
+  }
 
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new StopClimbSlide());
   }
+
+  @Override
+  public void periodic() {
+    // Put code here to be run every loop
+  }
+
   public void stopClimbSlide() {
     climbSlideMtr.set(ControlMode.PercentOutput, 0);
-}
+  }
+
+  public void setClimbSlideSpeed(double speed) {
+    climbSlideMtr.set(ControlMode.PercentOutput, speed);
+  }
 }

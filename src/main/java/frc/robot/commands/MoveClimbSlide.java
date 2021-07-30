@@ -9,7 +9,7 @@ public class MoveClimbSlide extends Command {
     private double m_climbSlideSpeed = 0;
 
     public MoveClimbSlide(double climbSlideSpeed) {
-        requires(Robot.climb);
+        requires(Robot.climbSlide);
 
         m_climbSlideSpeed = climbSlideSpeed;
     }
@@ -23,11 +23,7 @@ public class MoveClimbSlide extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.oi.climbOverride.get()) {
-            Robot.climb.setClimbSlideSpeed(m_climbSlideSpeed);
-        } else {
-            Robot.climb.stopClimb();
-        }
+        Robot.climbSlide.setClimbSlideSpeed(m_climbSlideSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

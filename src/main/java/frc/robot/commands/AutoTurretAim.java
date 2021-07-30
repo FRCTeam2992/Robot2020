@@ -59,7 +59,7 @@ public class AutoTurretAim extends Command {
             if (Robot.vision.limeLightCamera.hasTarget()) {
                 double xOffset = Robot.vision.limeLightCamera.getTargetXOffset();
 
-                if (Math.abs(xOffset) > 1) {
+                if (Math.abs(xOffset) > 0.5) {
                     turretSetAngle = Robot.turret.getTurretAngle() + xOffset;
                 }
             }

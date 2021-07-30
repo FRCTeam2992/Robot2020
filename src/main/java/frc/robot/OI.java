@@ -210,12 +210,12 @@ public class OI {
         climbLiftDown.whenReleased(new StopClimb());
 
         climbSlideLeft = new JoystickButton(buttonBox, 13);
-        climbSlideLeft.whenPressed(new ClimbSlide(-1));
-        climbSlideLeft.whenReleased(new StopClimb());
+        climbSlideLeft.whenPressed(new MoveClimbSlide(-1.0));
+        climbSlideLeft.whenReleased(new StopClimbSlide());
 
         climbSlideRight = new JoystickButton(buttonBox, 14);
-        climbSlideRight.whenPressed(new ClimbSlide(1));
-        climbSlideRight.whenReleased(new StopClimb());
+        climbSlideRight.whenPressed(new MoveClimbSlide(1.0));
+        climbSlideRight.whenReleased(new StopClimbSlide());
 
         autoSwitch2 = new JoystickButton(buttonBox, 18);
 

@@ -28,7 +28,7 @@ public class Constants {
     // Vision Constants
     public static final double limelightShooterAngle = 70.0;
     public static final double limelightLoadStationAngle = 175.0;
-    public static final double cameraAngle = -4.5;
+    public static final double cameraAngle = -40.0;
     public static final double cameraHeight = 42.0;
     public static final double goalHeight = 81.0;
     public static final double visionSteerP = 0.025;
@@ -57,13 +57,10 @@ public class Constants {
     public static final double turretP = 0.05;
     public static final double turretI = 0.0;
     public static final double turretD = 0.003;
-    public static final double turretTolerance = 1.0;
+    public static final double turretTolerance = 0.5;
     public static final int turretOffset = 2074;
     public static final int turretMinEnd = 40;
     public static final int turretMaxEnd = 320;
-
-    // Climb Constants
-    public static final double climbMoveDelay = 0.25;
 
     // Sorter Constants
     public static final double autoSorterSpeedChangeDelay = 3.0;

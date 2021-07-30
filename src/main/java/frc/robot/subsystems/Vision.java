@@ -56,7 +56,6 @@ public class Vision extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-
     public void setLimelightVisionMode(boolean toggle) {
         if (toggle) {
             limeLightCamera.setLedMode(LedMode.On);

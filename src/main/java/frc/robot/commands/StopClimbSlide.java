@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class StopClimbSlide extends Command {
+  
   public StopClimbSlide() {
     requires(Robot.climbSlide);
   }

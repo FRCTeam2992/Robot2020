@@ -72,7 +72,7 @@ public class OI {
     private JoystickButton shooterToggle;
     private JoystickButton turretManualLeft;
     private JoystickButton turretManualRight;
-    private JoystickButton colorSensorDeploy;
+    public JoystickButton colorSensorDeploy;
     public JoystickButton autoSwitch2;
     public JoystickButton autoSwitch3;
 

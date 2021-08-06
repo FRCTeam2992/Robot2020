@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ColorWheel extends Subsystem {
 
@@ -54,7 +55,10 @@ public class ColorWheel extends Subsystem {
 
     @Override
     public void periodic() {
-        // Put code here to be run every loop
+        if(Robot.oi.colorSensorDeploy.get()) {
+            SmartDashboard.putString("Detected Color", getDetectedColor().toString());
+        }
+
     }
 
     // Put methods for controlling this subsystem

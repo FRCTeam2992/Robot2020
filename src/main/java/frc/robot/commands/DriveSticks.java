@@ -104,7 +104,8 @@ public class DriveSticks extends Command {
         Robot.driveTrain.setDriveGear(driveGear);
 
         // Call Tank Drive and Arcade Drive Functions
-        if (Robot.isLoadMode) {
+        // if (Robot.isLoadMode) {
+        if (false) {                        // Killed loadmode impacting driving   
             if (Robot.isTankDrive) {
                 Robot.driveTrain.tankDrive(rightY, left);
             } else {

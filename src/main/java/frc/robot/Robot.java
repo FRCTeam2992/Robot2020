@@ -85,12 +85,17 @@ public class Robot extends TimedRobot {
 
         // Initialize Drive Cameras
         shooterCamera = CameraServer.getInstance().startAutomaticCapture("Shooter Camera", 0);
-        shooterCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+        shooterCamera.setFPS(30);
+        shooterCamera.setResolution(160,90);
+        shooterCamera.setConnectionStrategy(ConnectionStrategy.kAutoManage);
 
         loadCamera = CameraServer.getInstance().startAutomaticCapture("Load Camera", 1);
-        loadCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+        loadCamera.setFPS(30);
+        loadCamera.setResolution(160,90);
+        loadCamera.setConnectionStrategy(ConnectionStrategy.kAutoManage);
 
         virtualCamera = CameraServer.getInstance().addSwitchedCamera("Drive Cameras");
+
     }
 
     /**

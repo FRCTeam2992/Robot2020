@@ -8,7 +8,7 @@ public class AutoVisionShooter extends CommandGroup {
 
     public AutoVisionShooter(boolean isFar) {
         addParallel(new AutoLimelightServo(isFar));
-        //addParallel(new AutoShooterSetSpeed(isFar));
+        addParallel(new AutoShooterSetSpeed(isFar));
         addSequential(new AutoTurretAim(false, isFar));
     }
 }

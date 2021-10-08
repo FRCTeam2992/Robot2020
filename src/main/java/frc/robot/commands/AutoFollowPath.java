@@ -35,6 +35,7 @@ public class AutoFollowPath extends Command {
 
   public AutoFollowPath(Trajectory trajectory, boolean isLoadMode) {
     requires(Robot.driveTrain);
+    setInterruptible(true);
 
     mTrajectory = trajectory;
     mIsLoadMode = isLoadMode;

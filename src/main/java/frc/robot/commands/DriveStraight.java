@@ -9,18 +9,21 @@ public class DriveStraight extends Command {
   private double mSpeed = 0.0;
 
   public DriveStraight(double speed) {
+    requires(Robot.driveTrain);
+    setInterruptible(true);
     mSpeed = speed;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.driveTrain.tankDrive(mSpeed, mSpeed);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.tankDrive(mSpeed, mSpeed);
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()

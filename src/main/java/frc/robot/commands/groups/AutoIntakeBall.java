@@ -8,6 +8,7 @@ public class AutoIntakeBall extends CommandGroup {
 
     public AutoIntakeBall(double intakeSpeed, double sorterSpeed, double bottomLiftSpeed, double topLiftSpeed) {
         addParallel(new IntakeFeed(intakeSpeed));
+        addParallel(new IntakeDeploy(true));
         addParallel(new AutoSorterLoad(sorterSpeed, sorterSpeed));
         addParallel(new AutoBottomLiftLoad(bottomLiftSpeed));
         addParallel(new IntakeDeploy(true));
@@ -18,6 +19,7 @@ public class AutoIntakeBall extends CommandGroup {
     public AutoIntakeBall(double intakeSpeed, double minSorterSpeed, double maxSorterSpeed, double bottomLiftSpeed,
             double topLiftSpeed) {
         addParallel(new IntakeFeed(intakeSpeed));
+        addParallel(new IntakeDeploy(true));
         addParallel(new AutoSorterLoad(minSorterSpeed, maxSorterSpeed, minSorterSpeed, maxSorterSpeed));
         addParallel(new AutoBottomLiftLoad(bottomLiftSpeed));
         addParallel(new IntakeDeploy(true));

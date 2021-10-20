@@ -7,7 +7,9 @@ package frc.robot.commands.groups;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.BottomLiftMove;
 import frc.robot.commands.IntakeFeed;
+import frc.robot.commands.SetShooterSpeed;
 import frc.robot.commands.SorterFeed;
+import frc.robot.commands.StartShooter;
 import frc.robot.commands.TopLiftMove;
 
 public class AutoUnclog extends CommandGroup {
@@ -18,6 +20,8 @@ public class AutoUnclog extends CommandGroup {
     addParallel(new BottomLiftMove(-0.9));
     addParallel(new TopLiftMove(-0.4));
     addParallel(new IntakeFeed(-0.75));
+    addParallel(new SetShooterSpeed(-400));
+    addParallel(new StartShooter());
 
 
     // To run multiple commands at the same time,

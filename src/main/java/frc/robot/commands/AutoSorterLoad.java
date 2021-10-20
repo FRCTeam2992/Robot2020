@@ -84,11 +84,11 @@ public class AutoSorterLoad extends Command {
                 right = mMinRightSorterSpeed;
             }
 
-            if (Robot.oi.sorterSwitch.get()) {
-                Robot.sorter.setSorterSpeed(left, -right);
-            } else {
+            // if (Robot.oi.sorterSwitch.get()) {
+            //     Robot.sorter.setSorterSpeed(left, -right);
+            // } else {
                 Robot.sorter.setSorterSpeed(left, right);
-            }
+            
         }
     }
 

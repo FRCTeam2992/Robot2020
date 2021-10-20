@@ -45,7 +45,7 @@ public class OI {
     // Button Box 1 Buttons
     private JoystickButton sorterManualForward;
     private JoystickButton sorterManualReverse;
-    public JoystickButton sorterSwitch;
+    // public JoystickButton sorterSwitch;
     private JoystickButton intakeDeploy;
     private JoystickButton intakeManualForward;
     private JoystickButton intakeManualReverse;
@@ -75,6 +75,7 @@ public class OI {
     public JoystickButton colorSensorDeploy;
     public JoystickButton autoSwitch2;
     public JoystickButton autoSwitch3;
+    public JoystickButton autoUnclog;
 
     public OI() {
         // Joystick and Controller Init
@@ -173,7 +174,8 @@ public class OI {
         sorterManualReverse.whenPressed(new SorterFeed(-0.6, -0.8));
         sorterManualReverse.whenReleased(new StopSorter());
 
-        sorterSwitch = new JoystickButton(buttonBox, 3);
+        autoUnclog = new JoystickButton(buttonBox, 3);
+        autoUnclog.whileHeld(new AutoUnclog());
 
         intakeDeploy = new JoystickButton(buttonBox, 4);
         intakeDeploy.whenPressed(new IntakeDeploy(true));

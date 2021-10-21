@@ -69,6 +69,11 @@ public class Shooter extends Subsystem {
         shooterTalon.set(ControlMode.Velocity, velocity);
     }
 
+
+    public boolean isRunning() {
+        return (shooterTalon.getControlMode() == ControlMode.Velocity); 
+    }
+
     public double getShooterRPM() {
         return (shooterTalon.getSelectedSensorVelocity() * 600.0) / (Constants.shooterEncoderPulses * 4.0);
     }

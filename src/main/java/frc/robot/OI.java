@@ -176,8 +176,8 @@ public class OI {
 
         autoUnclog = new JoystickButton(buttonBox, 3);
         autoUnclog.whileHeld(new AutoUnclog());
-        autoUnclog.whenReleased(new StopShooter());
-        autoUnclog.whenReleased(new SetShooterSpeed(6000));
+        // autoUnclog.whenPressed(new SetShooterSpeedUnclog(-400));
+        
 
         intakeDeploy = new JoystickButton(buttonBox, 4);
         intakeDeploy.whenPressed(new IntakeDeploy(true));

@@ -175,9 +175,9 @@ public class OI {
         sorterManualReverse.whenReleased(new StopSorter());
 
         autoUnclog = new JoystickButton(buttonBox, 3);
-        autoUnclog.whileHeld(new AutoUnclog());
-        // autoUnclog.whenPressed(new SetShooterSpeedUnclog(-400));
-        
+        autoUnclog.whileHeld(new AutoUnclog());  
+        autoUnclog.whenPressed(new SetShooterSpeedUnclog(-400, autoUnclog));    // Command will monitor autoUnclog button and reset shooter on switch release
+    
 
         intakeDeploy = new JoystickButton(buttonBox, 4);
         intakeDeploy.whenPressed(new IntakeDeploy(true));

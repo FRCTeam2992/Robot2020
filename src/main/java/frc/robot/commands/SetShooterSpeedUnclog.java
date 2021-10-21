@@ -2,19 +2,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class SetShooterSpeedUnclog extends Command {
 
     private double mShooterSpeed;
+    private JoystickButton mButton;
 
-    private int oldShooterSpeed;
     private boolean wasRunning;
 
-    public SetShooterSpeedUnclog(int shooterSpeed) {
+    public SetShooterSpeedUnclog(int shooterSpeed, JoystickButton stopButton) {
         mShooterSpeed = shooterSpeed;
+        mButton = stopButton;
         requires(Robot.shooter);
     }
 
@@ -22,22 +23,26 @@ public class SetShooterSpeedUnclog extends Command {
     @Override
     protected void initialize() {
         this.setInterruptible(true);
-        oldShooterSpeed = Robot.shooter.shooterSetSpeed;
-        wasRunning = Robot.shooter.isRunning();
-        
+
+        // Keep track of prior state before we try to unclog shooter
+        wasRunning = Robot.shooter.isRunning();    
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
-        if (wasRunning) {
-            Robot.shooter.setShooterVelocity(oldShooterSpeed);
-        } else if (Robot.shooter.getShooterRPM() < 400) {
-            mShooterSpeed = -400;
-            mShooterSpeed = (mShooterSpeed / 600.0) * (Constants.shooterEncoderPulses * 4.0);
-            Robot.shooter.setShooterVelocity(mShooterSpeed);
+    protected void execute() { 
+        if (mButton.get() && Robot.shooter.getShooterRPM() < 400) {
+            // Unclog button is still pressed and either shooter not running or its jammed so try to unclog
+            double velocity = (mShooterSpeed / 600.0) * (Constants.shooterEncoderPulses * 4.0);
+            Robot.shooter.setShooterVelocity(velocity);
+        } else if (wasRunning) {
+            // It was already running and its spinning forward  or we have released unclog button so let it spin!
+            double velocity = (Robot.shooter.shooterSetSpeed / 600.0) * (Constants.shooterEncoderPulses * 4.0);
+            Robot.shooter.setShooterVelocity(velocity);     // This will let it spin at prior set volocity
+        } else {
+            // We have released button and it wasn't running before, so stop it
+            Robot.shooter.stopShooter();
         }
-        
         
     }
 
@@ -50,16 +55,13 @@ public class SetShooterSpeedUnclog extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-
+        Robot.shooter.stopShooter();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.shooter.shooterSetSpeed = oldShooterSpeed;
-        if (!wasRunning) {
-           // Scheduler.getInstance().add(new StartShooter());
-        }
+        Robot.shooter.stopShooter();
     }
 }

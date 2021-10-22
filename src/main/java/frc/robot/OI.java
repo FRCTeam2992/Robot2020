@@ -176,7 +176,8 @@ public class OI {
 
         autoUnclog = new JoystickButton(buttonBox, 3);
         autoUnclog.whileHeld(new AutoUnclog());  
-        autoUnclog.whenPressed(new SetShooterSpeedUnclog(-400, autoUnclog));    // Command will monitor autoUnclog button and reset shooter on switch release
+        // Command will monitor autoUnclog button and reset shooter to state based on shooterToggle button when Unclog is released
+        autoUnclog.whenPressed(new SetShooterSpeedUnclog(-400, autoUnclog, shooterToggle));    
     
 
         intakeDeploy = new JoystickButton(buttonBox, 4);

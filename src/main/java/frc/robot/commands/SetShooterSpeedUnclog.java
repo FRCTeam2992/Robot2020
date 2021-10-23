@@ -13,8 +13,10 @@ public class SetShooterSpeedUnclog extends Command {
     private JoystickButton mShootButton;    // The main shooter on/off switch
 
     private boolean wasRunning;
+    private double oldShooterSpeed;
+    
 
-    public SetShooterSpeedUnclog(int shooterSpeed, JoystickButton stopButton, JoystickButton shooterButton) {
+    public SetShooterSpeedUnclog(double shooterSpeed, JoystickButton stopButton, JoystickButton shooterButton) {
         mShooterSpeed = shooterSpeed;
         mStopButton = stopButton;
         mShootButton = shooterButton;
@@ -24,23 +26,32 @@ public class SetShooterSpeedUnclog extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        this.setInterruptible(true);  
+        this.setInterruptible(true); 
+        oldShooterSpeed = Robot.shooter.getShooterRPM();
+        wasRunning = Robot.shooter.getShooterRPM() > 400;
+
+         
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() { 
-        if (mStopButton.get() && Robot.shooter.getShooterRPM() < 400) {
+        if (mStopButton.get() && !wasRunning) {
             // Unclog button is still pressed and either shooter not running or its jammed so try to unclog
-            double velocity = (mShooterSpeed / 600.0) * (Constants.shooterEncoderPulses * 4.0);
+            double velocity = (-400 / 600.0) * (Constants.shooterEncoderPulses * 4.0);
             Robot.shooter.setShooterVelocity(velocity);
-        } else if (mShootButton.get()) {
+        } else if (mStopButton.get() && wasRunning) {
             // Either it's already running so keep it going or unclog finished so restart is needed
             double velocity = (Robot.shooter.shooterSetSpeed / 600.0) * (Constants.shooterEncoderPulses * 4.0);
             Robot.shooter.setShooterVelocity(velocity);     // This will let it spin at prior set volocity
         } else {
             // We have released unclog button and shooter switch is off so stop it
-            Robot.shooter.stopShooter();
+            if (mShootButton.get()) {
+                double velocity = (Robot.shooter.shooterSetSpeed / 600.0) * (Constants.shooterEncoderPulses * 4.0);
+                Robot.shooter.setShooterVelocity(velocity);
+            } else {
+                Robot.shooter.stopShooter();
+            }
         }
         
     }
@@ -54,8 +65,9 @@ public class SetShooterSpeedUnclog extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.shooter.stopShooter();
-    }
+            Robot.shooter.stopShooter();
+        }
+
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run

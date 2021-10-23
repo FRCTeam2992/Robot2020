@@ -88,11 +88,15 @@ public class OI {
             initControllerBtns();
         }
 
-        buttonBox = new Joystick(2);
-        initButtonBoxBtns();
-
+        buttonBox = new Joystick(2);  
         buttonBox2 = new Joystick(3);
+      
+        initButtonBoxBtns();
         initButtonBox2Btns();
+
+      
+      
+
     }
 
     public void initJoystickBtns() {
@@ -174,6 +178,10 @@ public class OI {
         sorterManualReverse.whenPressed(new SorterFeed(-0.6, -0.8));
         sorterManualReverse.whenReleased(new StopSorter());
 
+        shooterToggle = new JoystickButton(buttonBox2, 7);
+        shooterToggle.whenPressed(new StartShooter());
+        shooterToggle.whenReleased(new StopShooter());
+
         autoUnclog = new JoystickButton(buttonBox, 3);
         autoUnclog.whileHeld(new AutoUnclog());  
         // Command will monitor autoUnclog button and reset shooter to state based on shooterToggle button when Unclog is released
@@ -249,10 +257,6 @@ public class OI {
 
         autoOverride = new JoystickButton(buttonBox2, 6);
         autoOverride.whenPressed(new AutoOverride());
-
-        shooterToggle = new JoystickButton(buttonBox2, 7);
-        shooterToggle.whenPressed(new StartShooter());
-        shooterToggle.whenReleased(new StopShooter());
 
         turretManualLeft = new JoystickButton(buttonBox2, 8);
         turretManualLeft.whenPressed(new TurretMove(-1));

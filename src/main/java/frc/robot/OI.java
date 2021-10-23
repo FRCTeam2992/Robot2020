@@ -201,10 +201,10 @@ public class OI {
         intakeManualReverse.whenReleased(new StopIntake());
 
         autoColorWheelSpin = new JoystickButton(buttonBox, 7);
-        autoColorWheelSpin.whenPressed(new AutoRotateWheelSpin(Constants.colorWheelSpinRotations, 5));
+        autoColorWheelSpin.whenPressed(new AutoRotateWheelSpin(Constants.colorWheelSpinRotations, 7));
 
         autoColorWheelColor = new JoystickButton(buttonBox, 8);
-        autoColorWheelColor.whenPressed(new AutoRotateWheelColor(5));
+        autoColorWheelColor.whenPressed(new AutoRotateWheelColor(7));
 
         colorWheelManualLeft = new JoystickButton(buttonBox, 9);
         colorWheelManualLeft.whenPressed(new ColorWheelMove(-0.65));

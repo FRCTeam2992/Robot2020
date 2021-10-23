@@ -22,6 +22,7 @@ public class AutoRotateWheelSpin extends Command {
         mRotations = rotations;
         mTimeout = timeout;
         
+        
         timeoutTimer = new Timer();
     }
 

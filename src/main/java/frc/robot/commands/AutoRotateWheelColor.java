@@ -31,21 +31,29 @@ public class AutoRotateWheelColor extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        this.setInterruptible(true);
         detectedPosition = getColorID(Robot.colorWheel.getDetectedColor());
         targetPosition = getColorID(Robot.colorWheel.getFMSColorData());
+        // System.out.println("Detected = " + detectedPosition);
+        // System.out.println("Target = " + targetPosition);
 
         if (detectedPosition == 0 || targetPosition == 0) {
             isDone = true;
         }
 
-        rotations = targetPosition - detectedPosition;
+        targetPosition = (targetPosition -1 +2)%4 + 1;
+        // System.out.println("Calcultated target color = " + targetPosition);
+       // rotations = -targetPosition + detectedPosition + 2;
+       // while (rotations > 0) {
+       //     rotations -= 4;  // Make sure only spin negative
+       // }
+       //  System.out.println("Rotations = " + rotations);
 
-        if (Math.abs(rotations) > 2) {
-            rotations += detectedPosition;
-        }
-
-        Robot.colorWheel.zeroMotorPosition();
-        encoderSetValue = ((rotations / 8) * Constants.colorWheelSpinRatio) * (Constants.colorWheelEncoderPulses * 4);
+    
+        
+        // Robot.colorWheel.zeroMotorPosition();
+        //encoderSetValue = (((rotations - 0.25) / 8.0) * Constants.colorWheelSpinRatio) * (Constants.colorWheelEncoderPulses * 4);
+        // System.out.println("encoderSet = " + encoderSetValue);
 
         timeoutTimer.reset();
         timeoutTimer.start();
@@ -54,20 +62,22 @@ public class AutoRotateWheelColor extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.colorWheel.setColorWheelPostion(encoderSetValue);
+        //Robot.colorWheel.setColorWheelPostion(encoderSetValue);
+        Robot.colorWheel.setColorWheelSpeed(-0.3 );     // Spin it reverse 75% until we are on right color
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return isDone || Math.abs(encoderSetValue - Robot.colorWheel.getMotorPostion()) <= 50
+        return isDone || getColorID(Robot.colorWheel.getDetectedColor()) == targetPosition
                 || timeoutTimer.get() >= mTimeout;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.colorWheel.stopColorWheel();
+        // System.out.println("Stopped at "+ timeoutTimer.get());
+        // Robot.colorWheel.stopColorWheel();
     }
 
     // Called when another command which requires one or more of the same

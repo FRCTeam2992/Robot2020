@@ -38,10 +38,10 @@ public class Constants {
 
     // Color Wheel Constants
     public static final int colorWheelEncoderPulses = 1024;
-    public static final double colorWheelSpinRatio = 8.0;
+    public static final double colorWheelSpinRatio = 8.0 * 0.8;  // Calculated value should be 8.0 but spinning about 25% too far so magin number of 6.4
     public static final double colorSensorMinAngle = 0.0;
     public static final double colorSensorMaxAngle = 180.0;
-    public static final double colorWheelSpinRotations = 4.0;
+    public static final double colorWheelSpinRotations = 4.2;
 
     // Color Wheel Target Colors
     public static final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);

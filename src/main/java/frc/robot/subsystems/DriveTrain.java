@@ -155,6 +155,33 @@ public class DriveTrain extends Subsystem {
         rightSparkDrive1.set(right);
     }
 
+
+    public void autoTurnArcade(double moveValue, double rotateValue, double POVValue) {
+        // Calculate how far we are from the right heading
+        double headingError = calcGyroError(POVValue);
+
+        if (Math.abs(headingError) < 2.0) {
+            // We are close enough so just pass joysticks in raw
+            arcadeDrive(moveValue, rotateValue);
+        }
+        else {
+            // Normalize headingError
+            while (headingError < -180.0) {
+                headingError += 360.0;
+            }
+            while (headingError > 180.0) {
+                headingError -= 360.0;
+            }
+
+            // Calculate a compute rotateValue based on headingError
+            final double autoTurnP = 0.05;     // Anything over 20 degree error is full turn speed
+            rotateValue = autoTurnP * headingError;
+            rotateValue = Math.max(-1.0, Math.min(1.0, rotateValue));
+            arcadeDrive(moveValue, rotateValue);        // Drive with the computed turn correction
+        }
+
+    }
+
     public void arcadeDrive(double moveValue, double rotateValue) {
         double leftMotorSpeed = moveValue - rotateValue;
         double rightMotorSpeed = moveValue + rotateValue;

@@ -115,7 +115,15 @@ public class DriveSticks extends Command {
             if (Robot.isTankDrive) {
                 Robot.driveTrain.tankDrive(-left, -rightY);
             } else {
-                Robot.driveTrain.arcadeDrive(-left, -rightX);
+                // Check if in "autoturn" Driving in the Dark mode
+                if (Robot.oi.leftJoystick.getPOV() != -1) {
+                    // Pushing the POV so turn robot
+                    Robot.driveTrain.autoTurnArcade(-left, -rightX, Robot.oi.leftJoystick.getPOV());
+                }
+                else {
+                    // Not in autoturn mode so normal arcade drive
+                    Robot.driveTrain.arcadeDrive(-left, -rightX);
+                }
             }
         }
     }

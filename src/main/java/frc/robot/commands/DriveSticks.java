@@ -39,10 +39,10 @@ public class DriveSticks extends Command {
     protected void execute() {
         // Read Joystick and Controller Values
         if (Robot.isJoystick) {
-            left = Robot.oi.leftJoystick.smoothGetY();
+            left = -Robot.oi.leftJoystick.smoothGetY();
             rightY = Robot.oi.rightJoystick.smoothGetY();
             rightX = Robot.oi.rightJoystick.smoothGetX();
-            rawLeft = Robot.oi.leftJoystick.smoothGetY();
+            rawLeft = -Robot.oi.leftJoystick.smoothGetY();
             rawRight = Robot.oi.rightJoystick.smoothGetY();
 
             driveGear = Robot.oi.rightJoystick.getTrigger();
@@ -116,9 +116,9 @@ public class DriveSticks extends Command {
                 Robot.driveTrain.tankDrive(-left, -rightY);
             } else {
                 // Check if in "autoturn" Driving in the Dark mode
-                if (Robot.oi.leftJoystick.getPOV() != -1) {
+                if (Robot.oi.rightJoystick.getPOV() != -1) {
                     // Pushing the POV so turn robot
-                    Robot.driveTrain.autoTurnArcade(-left, -rightX, Robot.oi.leftJoystick.getPOV());
+                    Robot.driveTrain.autoTurnArcade(-left, -rightX, Robot.oi.rightJoystick.getPOV());
                 }
                 else {
                     // Not in autoturn mode so normal arcade drive

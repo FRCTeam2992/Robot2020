@@ -158,7 +158,9 @@ public class DriveTrain extends Subsystem {
 
     public void autoTurnArcade(double moveValue, double rotateValue, double POVValue) {
         // Calculate how far we are from the right heading
+        System.out.println("POV " + POVValue);
         double headingError = calcGyroError(POVValue);
+        System.out.println("GyroError " + headingError);
 
          // Normalize headingError
          while (headingError < -180.0) {
@@ -174,7 +176,7 @@ public class DriveTrain extends Subsystem {
         }
         else {
             // Calculate a compute rotateValue based on headingError
-            final double autoTurnP = 0.05;     // Anything over 20 degree error is full turn speed
+            final double autoTurnP = 0.013;     // Anything over 20 degree error is full turn speed
             rotateValue = autoTurnP * headingError;
             rotateValue = Math.max(-1.0, Math.min(1.0, rotateValue));
             arcadeDrive(moveValue, rotateValue);        // Drive with the computed turn correction

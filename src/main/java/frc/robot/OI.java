@@ -129,10 +129,10 @@ public class OI {
         autoLimelightFar.whenReleased(new VisionProcessing(true, true));
 
         limelightTiltUp = new POVButton(rightJoystick, 0);
-        limelightTiltUp.whenPressed(new ChangeLimelightTilt(10));
+        // limelightTiltUp.whenPressed(new ChangeLimelightTilt(10));
 
         limelightTiltDown = new POVButton(rightJoystick, 180);
-        limelightTiltDown.whenPressed(new ChangeLimelightTilt(-10));
+        // limelightTiltDown.whenPressed(new ChangeLimelightTilt(-10));
     }
 
     public void initControllerBtns() {
